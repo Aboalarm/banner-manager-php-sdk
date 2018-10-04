@@ -1,0 +1,6 @@
+### PHPSTORM ###
+.idea/*
+/.idea/*
+
+### 
+/vendor

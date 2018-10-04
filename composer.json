@@ -1,0 +1,41 @@
+{
+    "name": "evis/banner-manager",
+    "license": "",
+    "description": "Banner Manager API integration for laravel",
+    "keywords": ["banner", "laravel"],
+    "authors": [
+        {
+            "name": "evis",
+            "email": "evis.bregu@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.3",
+        "orchestra/testbench": "^3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "evis\\BannerManager\\": "src/",
+            "evis\\BannerManager\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "evis\\BannerManager\\Laravel\\ServiceProvider"
+            ],
+            "aliases": {
+                "Banner": "evis\\BannerManager\\Laravel\\Facade"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable"
+}
