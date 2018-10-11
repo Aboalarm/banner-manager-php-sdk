@@ -5,14 +5,14 @@
  * Time: 2:32 PM
  */
 
-namespace evis\BannerManager\BannerSDK;
+namespace aboalarm\BannerManagerSdk\BannerSDK;
 
 use GuzzleHttp\Client as Http;
 
 
 /**
  * Class Client
- * @package evis\BannerManager\BannerSDK
+ * @package aboalarm\BannerManagerSdk\BannerSDK
  */
 class Client
 {

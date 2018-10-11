@@ -5,10 +5,10 @@
  * Time: 11:37 AM
  */
 
-namespace evis\BannerManager\Test;
+namespace aboalarm\BannerManagerSdk\Test;
 
-use evis\BannerManager\Laravel\Facade;
-use evis\BannerManager\Laravel\ServiceProvider;
+use aboalarm\BannerManagerSdk\Laravel\Facade;
+use aboalarm\BannerManagerSdk\Laravel\ServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 class TestCase extends OrchestraTestCase
 {

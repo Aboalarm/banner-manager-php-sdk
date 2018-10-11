@@ -1,8 +1,8 @@
 <?php
 
-namespace evis\BannerManager\Laravel;
+namespace aboalarm\BannerManagerSdk\Laravel;
 
-use evis\BannerManager\BannerSDK\Client;
+use aboalarm\BannerManagerSdk\BannerSDK\Client;
 
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -42,7 +42,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             }
         );
 
-        $this->app->bind('evis\BannerManager\BannerSDK\Client', 'evis.banner');
+        $this->app->bind('aboalarm\BannerManagerSdk\BannerSDK\Client', 'aboalarm.bannersdk');
     }
 
     /**
@@ -52,6 +52,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function provides()
     {
-        return ['evis.banner'];
+        return ['aboalarm.bannersdk'];
     }
 }

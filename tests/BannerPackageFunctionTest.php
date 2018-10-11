@@ -1,5 +1,5 @@
 <?php
-namespace evis\BannerManager\Test;
+namespace aboalarm\BannerManagerSdk\Test;
 
 use BannerSDK;
 

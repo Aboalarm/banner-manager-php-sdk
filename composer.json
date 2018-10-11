@@ -1,8 +1,8 @@
 {
-    "name": "evis/banner-manager",
+    "name": "aboalarm/banner-manager-sdk",
     "license": "",
     "description": "Banner Manager API integration for laravel",
-    "keywords": ["banner", "laravel"],
+    "keywords": ["banner", "aboalarm", "laravel"],
     "authors": [
         {
             "name": "evis",
@@ -20,17 +20,17 @@
     },
     "autoload": {
         "psr-4": {
-            "evis\\BannerManager\\": "src/",
-            "evis\\BannerManager\\Test\\": "tests/"
+            "aboalarm\\BannerManagerSdk\\": "src/",
+            "aboalarm\\BannerManagerSdk\\Test\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "evis\\BannerManager\\Laravel\\ServiceProvider"
+                "aboalarm\\BannerManagerSdk\\Laravel\\ServiceProvider"
             ],
             "aliases": {
-                "Banner": "evis\\BannerManager\\Laravel\\Facade"
+                "Banner": "aboalarm\\BannerManagerSdk\\Laravel\\Facade"
             }
         }
     },

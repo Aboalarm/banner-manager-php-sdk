@@ -10,14 +10,14 @@ This is a Laravel Package providing access to Banner Manager API.
             "repositories": [
                 {
                     "type": "vcs",
-                    "url": "https://github.com/visi27/BannerSDK"
+                    "url": "https://github.com/Aboalarm/banner-manager-php-sdk"
                 }
             ]
         }
     
 2. Then add the requirement:
     
-        $ composer require evis/banner-manager @dev
+        $ composer require aboalarm/banner-manager-sdk @dev
 
 
 ### Laravel
@@ -27,7 +27,7 @@ This is a Laravel Package providing access to Banner Manager API.
         
         ...
         
-        evis\BannerManager\Laravel\ServiceProvider::class,
+        aboalarm\BannerManagerSdk\Laravel\ServiceProvider::class,
         
     ];
 
@@ -36,7 +36,7 @@ This is a Laravel Package providing access to Banner Manager API.
     'aliases' => [
         ...
         
-        'BannerSDK' => evis\BannerManager\Laravel\Facade::class,
+        'BannerSDK' => aboalarm\BannerManagerSdk\Laravel\Facade::class,
     ]
 
 To set the params used by the SDK, you have to publish the config files:
