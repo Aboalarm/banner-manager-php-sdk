@@ -41,7 +41,7 @@ This is a Laravel Package providing access to Banner Manager API.
 
 To set the params used by the SDK, you have to publish the config files:
 
-    $ php artisan vendor:publish --provider="evis\BannerManager\Laravel\ServiceProvider::class"
+    $ php artisan vendor:publish --provider="aboalarm\BannerManagerSdk\Laravel\ServiceProvider::class"
 
 Then go to `/config/banner.php` to see the config values.
 
