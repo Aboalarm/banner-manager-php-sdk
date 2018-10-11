@@ -32,7 +32,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/config/config.php', 'banner');
 
         $this->app->singleton(
-            'evis.banner',
+            'aboalarm.bannersdk',
             function ($app) {
                 return new Client(
                     config()->get('banner.base_uri'),
