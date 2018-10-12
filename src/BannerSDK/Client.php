@@ -8,6 +8,7 @@
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
 use GuzzleHttp\Client as Http;
+use GuzzleHttp\Exception\GuzzleException;
 
 
 /**
@@ -72,21 +73,24 @@ class Client
      * @param string $device Device identifier
      *
      * @return string HTML to render
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function render($position, $session, $device): string
     {
         $uri = sprintf('/api/banner-positions/%s/rotation', $position);
 
 
-        $response = $this->doRequest('GET', $uri, ['session' => $session, 'device' => $device]);
+        try {
+            $response = $this->doRequest('GET', $uri, ['session' => $session, 'device' => $device]);
 
-        if($response->getStatusCode() === 200) {
-            $data = json_decode($response->getBody(), true);
-        }
+            if($response->getStatusCode() === 200) {
+                $data = json_decode($response->getBody(), true);
+            }
 
-        if (!empty($data) && array_key_exists('html', $data)) {
-            return $data['html'];
+            if (!empty($data) && array_key_exists('html', $data)) {
+                return $data['html'];
+            }
+        } catch (GuzzleException $e) {
+            return '';
         }
 
         return '';
