@@ -60,7 +60,8 @@ class Client
      */
     public function getBanners()
     {
-        return $this->doRequest('GET', '/api/banners');
+        $response = $this->doRequest('GET', '/api/banners');
+        return json_decode($response, true);
     }
 
     /**
