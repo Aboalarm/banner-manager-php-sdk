@@ -32,7 +32,7 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri  The API base uri
+     * @param string $baseUri The API base uri
      * @param string $username The API user username.
      * @param string $password The API user password.
      */
@@ -64,11 +64,33 @@ class Client
     }
 
     /**
+     * Get rotation data for a given banner position name and returns the html to render.
+     *
+     * @param string $position Position name
+     * @param string $session Session identifier
+     * @param string $device Device identifier
+     *
+     * @return string HTML to render
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function render($position, $session, $device): string
+    {
+        $uri = sprintf('/api/banner-positions/%s/rotation', $position);
+        $data = $this->doRequest('GET', $uri, ['session' => $session, 'device' => $device]);
+
+        if (!empty($data) && array_key_exists('html', $data)) {
+            return $data['html'];
+        }
+
+        return '';
+    }
+
+    /**
      * Send a request to the API.
      *
-     * @param  string $method   The HTTP method.
+     * @param  string $method The HTTP method.
      * @param  string $endpoint The endpoint.
-     * @param  array  $params   The params to send with the request.
+     * @param  array $params The params to send with the request.
      *
      * @return array|object The response as JSON.
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -77,10 +99,10 @@ class Client
     {
         $options = [];
         if (!empty($params)) {
-            $options['json'] = $params;
+            $options['query'] = $params;
         }
         $response = $this->http->request($method, $endpoint, $options);
 
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(), true);
     }
 }
