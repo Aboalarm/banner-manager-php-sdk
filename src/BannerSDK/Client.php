@@ -76,7 +76,13 @@ class Client
     public function render($position, $session, $device): string
     {
         $uri = sprintf('/api/banner-positions/%s/rotation', $position);
-        $data = $this->doRequest('GET', $uri, ['session' => $session, 'device' => $device]);
+
+
+        $response = $this->doRequest('GET', $uri, ['session' => $session, 'device' => $device]);
+
+        if($response->getStatusCode() === 200) {
+            $data = json_decode($response->getBody(), true);
+        }
 
         if (!empty($data) && array_key_exists('html', $data)) {
             return $data['html'];
@@ -92,7 +98,7 @@ class Client
      * @param  string $endpoint The endpoint.
      * @param  array $params The params to send with the request.
      *
-     * @return array|object The response as JSON.
+     * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function doRequest($method, $endpoint, array $params = null)
@@ -101,8 +107,6 @@ class Client
         if (!empty($params)) {
             $options['query'] = $params;
         }
-        $response = $this->http->request($method, $endpoint, $options);
-
-        return json_decode($response->getBody(), true);
+        return $this->http->request($method, $endpoint, $options);
     }
 }
