@@ -62,7 +62,8 @@ class Client
     public function getBanners()
     {
         $response = $this->doRequest('GET', '/api/banners');
-        return json_decode($response, true);
+
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -70,30 +71,48 @@ class Client
      *
      * @param string $position Position name
      * @param string $session Session identifier
-     * @param string $device Device identifier
      *
      * @return string HTML to render
      */
-    public function render($position, $session, $device): string
+    public function render($position, $session = null): string
+    {
+        $data = $this->getPositionBanner($position, $session);
+
+        if (!empty($data) && array_key_exists('html', $data)) {
+            return $data['html'];
+        }
+
+        return '<!-- Could not load banner for position '.$position.' -->';
+    }
+
+    /**
+     * Get rotation data for a given banner position name and returns the raw data.
+     *
+     * @param string $position Position name
+     * @param string $session Session identifier
+     *
+     * @return array Raw Data
+     */
+    public function getPositionBanner($position, $session = null): array
     {
         $uri = sprintf('/api/banner-positions/%s/rotation', $position);
 
-
         try {
-            $response = $this->doRequest('GET', $uri, ['session' => $session, 'device' => $device]);
-
-            if($response->getStatusCode() === 200) {
-                $data = json_decode($response->getBody(), true);
+            $params = [];
+            if ($session) {
+                $params['session'] = $session;
             }
 
-            if (!empty($data) && array_key_exists('html', $data)) {
-                return $data['html'];
+            $response = $this->doRequest('GET', $uri, $params);
+
+            if ($response->getStatusCode() === 200) {
+                return json_decode($response->getBody(), true);
             }
         } catch (GuzzleException $e) {
-            return '';
+            return ['error' => 'Could not load banner for position '.$position];
         }
 
-        return '';
+        return [];
     }
 
     /**
@@ -112,6 +131,7 @@ class Client
         if (!empty($params)) {
             $options['query'] = $params;
         }
+
         return $this->http->request($method, $endpoint, $options);
     }
 }
