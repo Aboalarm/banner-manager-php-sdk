@@ -1,0 +1,41 @@
+{
+    "name": "aboalarm/banner-manager-sdk",
+    "license": "",
+    "description": "Banner Manager API integration for laravel",
+    "keywords": ["banner", "aboalarm", "laravel"],
+    "authors": [
+        {
+            "name": "Evis Bregu",
+            "email": "evis.ext@aboalarm.de"
+        }
+    ],
+    "require": {
+        "php": ">=7",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.3",
+        "orchestra/testbench": "^3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "aboalarm\\BannerManagerSdk\\": "src/",
+            "aboalarm\\BannerManagerSdk\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "aboalarm\\BannerManagerSdk\\Laravel\\ServiceProvider"
+            ],
+            "aliases": {
+                "Banner": "aboalarm\\BannerManagerSdk\\Laravel\\Facade"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable"
+}
