@@ -10,7 +10,6 @@ namespace aboalarm\BannerManagerSdk\BannerSDK;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
 
-
 /**
  * Class Client
  * @package aboalarm\BannerManagerSdk\BannerSDK
