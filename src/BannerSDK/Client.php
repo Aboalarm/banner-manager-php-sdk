@@ -8,7 +8,7 @@
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
 use GuzzleHttp\Client as Http;
-
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Class Client
@@ -32,7 +32,7 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri  The API base uri
+     * @param string $baseUri The API base uri
      * @param string $username The API user username.
      * @param string $password The API user password.
      */
@@ -60,27 +60,77 @@ class Client
      */
     public function getBanners()
     {
-        return $this->doRequest('GET', '/api/banners');
+        $response = $this->doRequest('GET', '/api/banners');
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Get rotation data for a given banner position name and returns the html to render.
+     *
+     * @param string $position Position name
+     * @param string $session Session identifier
+     *
+     * @return string HTML to render
+     */
+    public function render($position, $session = null): string
+    {
+        $data = $this->getPositionBanner($position, $session);
+
+        if (!empty($data) && array_key_exists('html', $data)) {
+            return $data['html'];
+        }
+
+        return '<!-- Could not load banner for position '.$position.' -->';
+    }
+
+    /**
+     * Get rotation data for a given banner position name and returns the raw data.
+     *
+     * @param string $position Position name
+     * @param string $session Session identifier
+     *
+     * @return array Raw Data
+     */
+    public function getPositionBanner($position, $session = null): array
+    {
+        $uri = sprintf('/api/banner-positions/%s/rotation', $position);
+
+        try {
+            $params = [];
+            if ($session) {
+                $params['session'] = $session;
+            }
+
+            $response = $this->doRequest('GET', $uri, $params);
+
+            if ($response->getStatusCode() === 200) {
+                return json_decode($response->getBody(), true);
+            }
+        } catch (GuzzleException $e) {
+            return ['error' => 'Could not load banner for position '.$position];
+        }
+
+        return [];
     }
 
     /**
      * Send a request to the API.
      *
-     * @param  string $method   The HTTP method.
+     * @param  string $method The HTTP method.
      * @param  string $endpoint The endpoint.
-     * @param  array  $params   The params to send with the request.
+     * @param  array $params The params to send with the request.
      *
-     * @return array|object The response as JSON.
+     * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function doRequest($method, $endpoint, array $params = null)
     {
         $options = [];
         if (!empty($params)) {
-            $options['json'] = $params;
+            $options['query'] = $params;
         }
-        $response = $this->http->request($method, $endpoint, $options);
 
-        return json_decode($response->getBody());
+        return $this->http->request($method, $endpoint, $options);
     }
 }
