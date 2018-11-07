@@ -18,15 +18,31 @@ class BannerPackageFunctionTest extends TestCase
     public function testRenderBanner()
     {
         $this->assertNotEmpty(
-            BannerSDK::render('adr_436928_top_horizotal', 'session')
+            BannerSDK::render('adr_438820_cancellation_right')
         );
     }
 
     public function testGetPositionBanner()
     {
-        $data = BannerSDK::getPositionBanner('adr_436928_top_horizotal', 'session');
+        $data = BannerSDK::getPositionBanner('adr_438820_cancellation_right');
 
-        print_r($data);
+        $this->assertArrayHasKey('banner_url', $data);
+        $this->assertArrayHasKey('text', $data);
+        $this->assertArrayHasKey('phone_number', $data);
+        $this->assertArrayHasKey('html', $data);
+    }
+
+    public function testRenderMultiplePositions()
+    {
+        $this->assertNotEmpty(
+            BannerSDK::renderMultiplePositions(['adr_438820_cancellation_right'])
+        );
+    }
+
+    public function testGetMultiplePositionsBanner()
+    {
+        $data = BannerSDK::getMultiplePositionsBanner(['adr_438820_cancellation_right']);
+
         $this->assertArrayHasKey('banner_url', $data);
         $this->assertArrayHasKey('text', $data);
         $this->assertArrayHasKey('phone_number', $data);
