@@ -32,7 +32,7 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri The API base uri
+     * @param string $baseUri  The API base uri
      * @param string $username The API user username.
      * @param string $password The API user password.
      */
@@ -69,7 +69,7 @@ class Client
      * Get rotation data for a given banner position name and returns the html to render.
      *
      * @param string $position Position name
-     * @param string $session Session identifier
+     * @param string $session  Session identifier
      *
      * @return string HTML to render
      */
@@ -88,7 +88,7 @@ class Client
      * Get rotation data for a given banner position name and returns the raw data.
      *
      * @param string $position Position name
-     * @param string $session Session identifier
+     * @param string $session  Session identifier
      *
      * @return array Raw Data
      */
@@ -115,11 +115,64 @@ class Client
     }
 
     /**
+     * Get rotation data for a list of banner position names and returns the html to render.
+     *
+     * @param array  $positions
+     * @param string $session Session identifier
+     *
+     * @return string HTML to render
+     */
+    public function renderMultiplePositions(array $positions, $session = null): string
+    {
+        $data = $this->getMultiplePositionsBanner($positions, $session);
+
+        if (!empty($data) && array_key_exists('html', $data)) {
+            return $data['html'];
+        }
+
+        return '<!-- Could not load banner for positions '.implode(', ', $positions).' -->';
+    }
+
+    /**
+     * Get rotation data for a list of banner position names and return the raw data.
+     *
+     * @param array  $positions
+     * @param string $session Session identifier
+     *
+     * @return array Raw Data
+     */
+    public function getMultiplePositionsBanner(array $positions, $session = null): array
+    {
+        $uri = '/api/rotation';
+
+        try {
+            $params = [];
+            if ($session) {
+                $params['session'] = $session;
+            }
+
+            $params['positions'] = $positions;
+
+            $response = $this->doRequest('GET', $uri, $params);
+
+            if ($response->getStatusCode() === 200) {
+                return json_decode($response->getBody(), true);
+            }
+        } catch (GuzzleException $e) {
+            return [
+                'error' => 'Could not load banner for positions '.implode(', ', $positions)
+            ];
+        }
+
+        return [];
+    }
+
+    /**
      * Send a request to the API.
      *
-     * @param  string $method The HTTP method.
+     * @param  string $method   The HTTP method.
      * @param  string $endpoint The endpoint.
-     * @param  array $params The params to send with the request.
+     * @param  array  $params   The params to send with the request.
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
