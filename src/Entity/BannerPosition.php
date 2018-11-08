@@ -1,17 +1,19 @@
 <?php
-/**
- * Created by Evis Bregu <evis.bregu@gmail.com>.
- * Date: 11/8/18
- * Time: 2:50 PM
- */
 
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
 use DateTime;
 
+/**
+ * Class BannerPosition
+ * @package aboalarm\BannerManagerSdk\Entity
+ */
 class BannerPosition
 {
+    /**
+     * @var string
+     */
     private $id;
 
     /**
@@ -55,7 +57,7 @@ class BannerPosition
     private $height;
 
     /**
-     * @var BannerPosition
+     * @var BannerPosition|null
      */
     private $parent;
 
@@ -84,9 +86,9 @@ class BannerPosition
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -156,7 +158,7 @@ class BannerPosition
     }
 
     /**
-     * @return BannerPosition
+     * @return BannerPosition|null
      */
     public function getParent(): BannerPosition
     {
