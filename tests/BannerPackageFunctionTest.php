@@ -23,13 +23,13 @@ class BannerPackageFunctionTest extends TestCase
     public function testRenderBanner()
     {
         $this->assertNotEmpty(
-            BannerSDK::render('adr_438820_cancellation_right')
+            BannerSDK::render('adr_438820_web_cancellation_vertical_right')
         );
     }
 
     public function testGetPositionBanner()
     {
-        $data = BannerSDK::getPositionBanner('adr_438820_cancellation_right');
+        $data = BannerSDK::getPositionBanner('adr_438820_web_cancellation_vertical_right');
 
         $this->assertArrayHasKey('banner_url', $data);
         $this->assertArrayHasKey('text', $data);
@@ -40,13 +40,13 @@ class BannerPackageFunctionTest extends TestCase
     public function testRenderMultiplePositions()
     {
         $this->assertNotEmpty(
-            BannerSDK::renderMultiplePositions(['adr_438820_cancellation_right'])
+            BannerSDK::renderMultiplePositions(['adr_438820_web_cancellation_vertical_right'])
         );
     }
 
     public function testGetMultiplePositionsBanner()
     {
-        $data = BannerSDK::getMultiplePositionsBanner(['adr_438820_cancellation_right']);
+        $data = BannerSDK::getMultiplePositionsBanner(['adr_438820_web_cancellation_vertical_right']);
 
         $this->assertArrayHasKey('banner_url', $data);
         $this->assertArrayHasKey('text', $data);

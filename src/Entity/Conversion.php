@@ -41,10 +41,47 @@ class Conversion extends Base
     }
 
     /**
+     * @param string $type
+     *
+     * @return Conversion
+     */
+    public function setType(string $type): Conversion
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getExternalIdentifier(): string
     {
         return $this->externalIdentifier;
+    }
+
+    /**
+     * @param string $externalIdentifier
+     *
+     * @return Conversion
+     */
+    public function setExternalIdentifier(string $externalIdentifier): Conversion
+    {
+        $this->externalIdentifier = $externalIdentifier;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $data = [];
+
+        $data['type'] = $this->type;
+        $data['external_identifier'] = $this->externalIdentifier;
+
+        return $data;
     }
 }

@@ -54,6 +54,14 @@ class ABTest extends Base
     }
 
     /**
+     * @param string $name
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
      * @return string
      */
     public function getDescription(): string
@@ -62,10 +70,47 @@ class ABTest extends Base
     }
 
     /**
+     * @param string $description
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
+
+    /**
      * @return Campaign[]|null
      */
     public function getCampaigns(): array
     {
         return $this->campaigns;
+    }
+
+    /**
+     * @param Campaign[]|null $campaigns
+     */
+    public function setCampaigns(array $campaigns)
+    {
+        $this->campaigns = $campaigns;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $data = [];
+        $data['name'] = $this->name;
+        $data['description'] = $this->description;
+
+        if ($this->campaigns) {
+            $data['campaigns'] = [];
+            foreach ($this->campaigns as $campaign) {
+                $data['campaigns'][] = $campaign->toArray();
+            }
+        } else {
+            $data['campaigns'] = null;
+        }
+
+        return $data;
     }
 }

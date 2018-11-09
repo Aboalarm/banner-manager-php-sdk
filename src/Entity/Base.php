@@ -14,7 +14,7 @@ use DateTime;
  * Class Base
  * @package aboalarm\BannerManagerSdk\Entity
  */
-class Base
+abstract class Base implements EntityInterface
 {
     /**
      * @var string

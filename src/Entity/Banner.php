@@ -3,8 +3,6 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
-use DateTime;
-
 /**
  * Class Banner
  * @package aboalarm\BannerManagerSdk\Entity
@@ -74,11 +72,35 @@ class Banner extends Base
     }
 
     /**
+     * @param string $name
+     *
+     * @return Banner
+     */
+    public function setName(string $name): Banner
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return Banner
+     */
+    public function setPath(string $path): Banner
+    {
+        $this->path = $path;
+
+        return $this;
     }
 
     /**
@@ -90,11 +112,35 @@ class Banner extends Base
     }
 
     /**
+     * @param string $text
+     *
+     * @return Banner
+     */
+    public function setText(string $text): Banner
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getLink(): string
     {
         return $this->link;
+    }
+
+    /**
+     * @param string $link
+     *
+     * @return Banner
+     */
+    public function setLink(string $link): Banner
+    {
+        $this->link = $link;
+
+        return $this;
     }
 
     /**
@@ -106,10 +152,59 @@ class Banner extends Base
     }
 
     /**
+     * @param string $phoneNumber
+     *
+     * @return Banner
+     */
+    public function setPhoneNumber(string $phoneNumber): Banner
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
      * @return BannerPosition[]|null
      */
     public function getBannerPositions(): array
     {
         return $this->bannerPositions;
+    }
+
+    /**
+     * @param BannerPosition[]|null $bannerPositions
+     *
+     * @return Banner
+     */
+    public function setBannerPositions(array $bannerPositions): Banner
+    {
+        $this->bannerPositions = $bannerPositions;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $data = [];
+
+        $data['name'] = $this->name;
+        $data['path'] = $this->path;
+        $data['text'] = $this->text;
+        $data['link'] = $this->link;
+        $data['phone_number'] = $this->phoneNumber;
+
+        if ($this->bannerPositions) {
+            $data['banner_positions'] = [];
+            foreach ($this->bannerPositions as $bannerPosition) {
+                $data['banner_positions'][] = $bannerPosition->toArray();
+            }
+        } else {
+            $data['banner_positions'] = null;
+        }
+
+        return $data;
     }
 }
