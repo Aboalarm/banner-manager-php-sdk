@@ -55,10 +55,14 @@ class ABTest extends Base
 
     /**
      * @param string $name
+     *
+     * @return ABTest
      */
-    public function setName(string $name)
+    public function setName(string $name): ABTest
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -71,10 +75,14 @@ class ABTest extends Base
 
     /**
      * @param string $description
+     *
+     * @return ABTest
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description): ABTest
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -87,10 +95,14 @@ class ABTest extends Base
 
     /**
      * @param Campaign[]|null $campaigns
+     *
+     * @return ABTest
      */
-    public function setCampaigns(array $campaigns)
+    public function setCampaigns(array $campaigns): ABTest
     {
         $this->campaigns = $campaigns;
+
+        return $this;
     }
 
     /**
