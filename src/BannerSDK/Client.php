@@ -7,6 +7,7 @@
 
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
+use aboalarm\BannerManagerSdk\Entity\Banner;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -53,16 +54,28 @@ class Client
     }
 
     /**
-     * Get current API user.
+     * Get all banners.
      *
-     * @return object The user.
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return Banner[]|null Banner collection.
+     * @throws GuzzleException
      */
     public function getBanners()
     {
         $response = $this->doRequest('GET', '/api/banners');
 
-        return json_decode($response->getBody(), true);
+        $data = json_decode($response->getBody(), true);
+
+        if(!empty($data)) {
+            $banners = [];
+
+            foreach ($data as $datum) {
+                $banners[] = new Banner($datum);
+            }
+
+            return $banners;
+        }
+
+        return null;
     }
 
     /**
