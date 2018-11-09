@@ -8,6 +8,7 @@
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
 use aboalarm\BannerManagerSdk\Entity\Banner;
+use aboalarm\BannerManagerSdk\Entity\Campaign;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -33,7 +34,7 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri  The API base uri
+     * @param string $baseUri The API base uri
      * @param string $username The API user username.
      * @param string $password The API user password.
      */
@@ -63,9 +64,13 @@ class Client
     {
         $response = $this->doRequest('GET', '/api/banners');
 
+        if (!$response->getStatusCode() == 200) {
+            return null;
+        }
+
         $data = json_decode($response->getBody(), true);
 
-        if(!empty($data)) {
+        if (!empty($data)) {
             $banners = [];
 
             foreach ($data as $datum) {
@@ -79,10 +84,127 @@ class Client
     }
 
     /**
+     * Get all campaigns.
+     *
+     * @return Campaign[]|null Campaign collection.
+     * @throws GuzzleException
+     */
+    public function getCampaigns()
+    {
+        $response = $this->doRequest('GET', '/api/campaigns');
+
+        if (!$response->getStatusCode() == 200) {
+            return null;
+        }
+
+        $data = json_decode($response->getBody(), true);
+
+        if (!empty($data)) {
+            $campaigns = [];
+
+            foreach ($data as $datum) {
+                $campaigns[] = new Campaign($datum);
+            }
+
+            return $campaigns;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get single campaign by id
+     *
+     * @param string $identifier Campaign identifier
+     *
+     * @return Campaign|null
+     * @throws GuzzleException
+     */
+    public function getCampaign(string $identifier)
+    {
+        $response = $this->doRequest('GET', '/api/campaigns/'.$identifier);
+
+        if (!$response->getStatusCode() == 200) {
+            return null;
+        }
+
+        $data = json_decode($response->getBody(), true);
+
+        if (!empty($data)) {
+            return new Campaign($data);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Campaign $campaign
+     *
+     * @return Campaign|bool
+     * @throws GuzzleException
+     */
+    public function postCampaign(Campaign $campaign)
+    {
+        $formParams = $campaign->toArray();
+
+        $response = $this->doRequest('POST', '/api/campaigns', null, $formParams);
+
+        if ($response->getStatusCode() === 201) {
+            $data = json_decode($response->getBody(), true);
+
+            if ($data) {
+                return new Campaign($data);
+            }
+        };
+
+        return false;
+    }
+
+    /**
+     * @param Campaign $campaign
+     *
+     * @return Campaign|bool
+     * @throws GuzzleException
+     */
+    public function putCampaign(Campaign $campaign)
+    {
+        $formParams = $campaign->toArray();
+
+        $uri = '/api/campaigns/'.$campaign->getId();
+
+        $response = $this->doRequest('PUT', $uri, null, $formParams);
+
+        if ($response->getStatusCode() === 200) {
+            $data = json_decode($response->getBody(), true);
+
+            if ($data) {
+                return new Campaign($data);
+            }
+        };
+
+        return false;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return bool
+     * @throws GuzzleException
+     */
+    public function deleteCampaign(string $identifier)
+    {
+        $uri = '/api/campaigns/'.$identifier;
+
+        $response = $this->doRequest('DELETE', $uri);
+
+        return $response->getStatusCode() === 200;
+    }
+
+    /**
      * Get rotation data for a given banner position name and returns the html to render.
      *
      * @param string $position Position name
-     * @param string $session  Session identifier
+     * @param string $session Session identifier
      *
      * @return string HTML to render
      */
@@ -101,7 +223,7 @@ class Client
      * Get rotation data for a given banner position name and returns the raw data.
      *
      * @param string $position Position name
-     * @param string $session  Session identifier
+     * @param string $session Session identifier
      *
      * @return array Raw Data
      */
@@ -130,7 +252,7 @@ class Client
     /**
      * Get rotation data for a list of banner position names and returns the html to render.
      *
-     * @param array  $positions
+     * @param array $positions
      * @param string $session Session identifier
      *
      * @return string HTML to render
@@ -149,7 +271,7 @@ class Client
     /**
      * Get rotation data for a list of banner position names and return the raw data.
      *
-     * @param array  $positions
+     * @param array $positions
      * @param string $session Session identifier
      *
      * @return array Raw Data
@@ -173,7 +295,7 @@ class Client
             }
         } catch (GuzzleException $e) {
             return [
-                'error' => 'Could not load banner for positions '.implode(', ', $positions)
+                'error' => 'Could not load banner for positions '.implode(', ', $positions),
             ];
         }
 
@@ -183,18 +305,27 @@ class Client
     /**
      * Send a request to the API.
      *
-     * @param  string $method   The HTTP method.
+     * @param  string $method The HTTP method.
      * @param  string $endpoint The endpoint.
-     * @param  array  $params   The params to send with the request.
+     * @param  array $queryParams The query params to send with the request.
+     * @param array|null $formParams The form params to send in POST requests.
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    private function doRequest($method, $endpoint, array $params = null)
-    {
+    private function doRequest(
+        $method,
+        $endpoint,
+        array $queryParams = null,
+        array $formParams = null
+    ) {
         $options = [];
-        if (!empty($params)) {
-            $options['query'] = $params;
+        if (!empty($queryParams)) {
+            $options['query'] = $queryParams;
+        }
+
+        if (!empty($formParams)) {
+            $options['form_params'] = $formParams;
         }
 
         return $this->http->request($method, $endpoint, $options);
