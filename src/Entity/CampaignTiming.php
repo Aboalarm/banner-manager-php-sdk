@@ -9,24 +9,8 @@ use DateTime;
  * Class CampaignTiming
  * @package aboalarm\BannerManagerSdk\Entity
  */
-class CampaignTiming
+class CampaignTiming extends Base
 {
-
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var DateTime
-     */
-    private $createdAt;
-
-    /**
-     * @var DateTime
-     */
-    private $updatedAt;
-
     /**
      * @var string
      */
@@ -69,9 +53,8 @@ class CampaignTiming
      */
     public function __construct(array $data)
     {
-        $this->id = $data['id'];
-        $this->createdAt = new DateTime($data['created_at']);
-        $this->updatedAt = new DateTime($data['updated_at']);
+        parent::__construct($data);
+
         $this->type = $data['type'];
         $this->dateFrom = $data['date_from'];
         $this->dateUntil = $data['date_until'];
@@ -79,30 +62,6 @@ class CampaignTiming
         $this->timeUntil = $data['time_until'];
         $this->weekday = $data['weekday'];
         $this->isHotline = boolval($data['is_hotline']);
-    }
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
     }
 
     /**

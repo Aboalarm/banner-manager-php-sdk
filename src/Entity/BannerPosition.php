@@ -9,23 +9,8 @@ use DateTime;
  * Class BannerPosition
  * @package aboalarm\BannerManagerSdk\Entity
  */
-class BannerPosition
+class BannerPosition extends Base
 {
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var DateTime
-     */
-    private $createdAt;
-
-    /**
-     * @var DateTime
-     */
-    private $updatedAt;
-
     /**
      * @var string
      */
@@ -68,9 +53,8 @@ class BannerPosition
      */
     public function __construct(array $data)
     {
-        $this->id = $data['id'];
-        $this->createdAt = new DateTime($data['created_at']);
-        $this->updatedAt = new DateTime($data['updated_at']);
+        parent::__construct($data);
+
         $this->name = $data['name'];
         $this->device = $data['device'];
         $this->viewPort = $data['view_port'];
@@ -83,30 +67,6 @@ class BannerPosition
         } else {
             $this->parent = null;
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
     }
 
     /**

@@ -3,29 +3,12 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
-use DateTime;
-
 /**
  * Class ABTest
  * @package aboalarm\BannerManagerSdk\Entity
  */
-class ABTest
+class ABTest extends Base
 {
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var DateTime
-     */
-    private $createdAt;
-
-    /**
-     * @var DateTime
-     */
-    private $updatedAt;
-
     /**
      * @var string
      */
@@ -48,9 +31,8 @@ class ABTest
      */
     public function __construct(array $data)
     {
-        $this->id = $data['id'];
-        $this->createdAt = new DateTime($data['created_at']);
-        $this->updatedAt = new DateTime($data['updated_at']);
+        parent::__construct($data);
+
         $this->name = $data['name'];
         $this->description = $data['description'];
 
@@ -61,30 +43,6 @@ class ABTest
         } else {
             $this->campaigns = null;
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
     }
 
     /**
