@@ -44,34 +44,36 @@ class Campaign extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if ($data) {
+            parent::__construct($data);
 
-        $this->name = $data['name'];
-        $this->description = $data['description'];
-        $this->weight = $data['weight'];
+            $this->name = $data['name'];
+            $this->description = $data['description'];
+            $this->weight = $data['weight'];
 
-        if ($data['banners']) {
-            foreach ($data['banners'] as $banner) {
-                $this->banners[] = new Banner($banner);
+            if ($data['banners']) {
+                foreach ($data['banners'] as $banner) {
+                    $this->banners[] = new Banner($banner);
+                }
+            } else {
+                $this->banners = null;
             }
-        } else {
-            $this->banners = null;
-        }
 
-        if ($data['campaign_timings']) {
-            foreach ($data['campaign_timings'] as $campaignTiming) {
-                $this->campaignTimings[] = new Banner($campaignTiming);
+            if ($data['campaign_timings']) {
+                foreach ($data['campaign_timings'] as $campaignTiming) {
+                    $this->campaignTimings[] = new Banner($campaignTiming);
+                }
+            } else {
+                $this->campaignTimings = null;
             }
-        } else {
-            $this->campaignTimings = null;
-        }
 
-        if ($data['ab_test']) {
-            $this->abTest = new ABTest($data['ab_test']);
-        } else {
-            $this->abTest = null;
+            if ($data['ab_test']) {
+                $this->abTest = new ABTest($data['ab_test']);
+            } else {
+                $this->abTest = null;
+            }
         }
     }
 
@@ -202,17 +204,23 @@ class Campaign extends Base
     {
         $data = [];
 
-        $data['name'] = $this->name;
-        $data['description'] = $this->description;
-        $data['weight'] = $this->weight;
+        if ($this->name) {
+            $data['name'] = $this->name;
+        }
+
+        if ($this->description) {
+            $data['description'] = $this->description;
+        }
+
+        if ($this->weight) {
+            $data['weight'] = $this->weight;
+        }
 
         if ($this->banners) {
             $data['banners'] = [];
             foreach ($this->banners as $banner) {
                 $data['banners'][] = $banner->toArray();
             }
-        } else {
-            $data['banners'] = null;
         }
 
         if ($this->campaignTimings) {
@@ -220,15 +228,11 @@ class Campaign extends Base
             foreach ($this->campaignTimings as $campaignTiming) {
                 $data['campaign_timings'][] = $campaignTiming->toArray();
             }
-        } else {
-            $data['campaign_timings'] = null;
         }
 
         if ($this->abTest) {
             $data['ab_test'] = [];
             $data['ab_test'] = $this->abTest->toArray();
-        } else {
-            $data['ab_test'] = null;
         }
 
         return $data;
