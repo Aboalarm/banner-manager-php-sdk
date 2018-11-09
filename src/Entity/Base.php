@@ -52,6 +52,14 @@ abstract class Base implements EntityInterface
     }
 
     /**
+     * @param string $id
+     */
+    public function setId(string $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return DateTime
      */
     public function getCreatedAt(): DateTime
