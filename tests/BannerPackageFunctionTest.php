@@ -3,6 +3,7 @@
 namespace aboalarm\BannerManagerSdk\Test;
 
 use aboalarm\BannerManagerSdk\Entity\Banner;
+use aboalarm\BannerManagerSdk\Entity\Campaign;
 use BannerSDK;
 
 class BannerPackageFunctionTest extends TestCase
@@ -52,5 +53,26 @@ class BannerPackageFunctionTest extends TestCase
         $this->assertArrayHasKey('text', $data);
         $this->assertArrayHasKey('phone_number', $data);
         $this->assertArrayHasKey('html', $data);
+    }
+
+    public function testCampaignCRUD()
+    {
+        $campaign = new Campaign();
+
+        $campaign->setWeight(1)
+            ->setDescription('test')
+            ->setName('test');
+
+        /** @var Campaign $storedCampaign */
+        $storedCampaign = BannerSDK::postCampaign($campaign);
+        $this->assertInstanceOf(Campaign::class, $storedCampaign);
+
+        $storedCampaign->setName('EDITED BY PUT');
+
+        /** @var Campaign $updatedCampaign */
+        $updatedCampaign = BannerSDK::putCampaign($storedCampaign);
+        $this->assertEquals('EDITED BY PUT', $updatedCampaign->getName());
+
+        $this->assertTrue(BannerSDK::deleteCampaign($updatedCampaign->getId()));
     }
 }
