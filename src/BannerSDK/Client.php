@@ -3,6 +3,7 @@
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
 use aboalarm\BannerManagerSdk\Entity\Banner;
+use aboalarm\BannerManagerSdk\Entity\Base;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
@@ -60,16 +61,7 @@ class Client
      */
     public function getBanners()
     {
-        $response = $this->doRequest('GET', '/api/banners');
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        $data = json_decode($response->getBody(), true);
+        $data = $this->doGetRequest('/api/banners');
 
         $banners = [];
 
@@ -89,16 +81,7 @@ class Client
      */
     public function getCampaigns()
     {
-        $response = $this->doRequest('GET', '/api/campaigns');
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        $data = json_decode($response->getBody(), true);
+        $data = $this->doGetRequest('/api/campaigns');
 
         $campaigns = [];
 
@@ -120,16 +103,7 @@ class Client
      */
     public function getCampaign(string $identifier)
     {
-        $response = $this->doRequest('GET', '/api/campaigns/'.$identifier);
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        $data = json_decode($response->getBody(), true);
+        $data = $this->doGetRequest('/api/campaigns/'.$identifier);
 
         if (!empty($data)) {
             return new Campaign($data);
@@ -147,19 +121,9 @@ class Client
      */
     public function postCampaign(Campaign $campaign)
     {
-        $formParams = $campaign->toArray();
+        $data = $this->doPostRequest('/api/campaigns', $campaign);
 
-        $response = $this->doRequest('POST', '/api/campaigns', null, $formParams);
-
-        if ($response->getStatusCode() === 201) {
-            $data = json_decode($response->getBody(), true);
-
-            if ($data) {
-                return new Campaign($data);
-            }
-        };
-
-        throw new BannerManagerException($response->getReasonPhrase(), $response->getStatusCode());
+        return new Campaign($data);
     }
 
     /**
@@ -171,21 +135,10 @@ class Client
      */
     public function putCampaign(Campaign $campaign)
     {
-        $formParams = $campaign->toArray();
-
         $uri = '/api/campaigns/'.$campaign->getId();
+        $data = $this->doPutRequest($uri, $campaign);
 
-        $response = $this->doRequest('PUT', $uri, null, $formParams);
-
-        if ($response->getStatusCode() === 200) {
-            $data = json_decode($response->getBody(), true);
-
-            if ($data) {
-                return new Campaign($data);
-            }
-        };
-
-        throw new BannerManagerException($response->getReasonPhrase(), $response->getStatusCode());
+        return new Campaign($data);
     }
 
     /**
@@ -199,16 +152,7 @@ class Client
     {
         $uri = '/api/campaigns/'.$identifier;
 
-        $response = $this->doRequest('DELETE', $uri);
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        return true;
+        return $this->doDeleteRequest($uri);
     }
 
     /**
@@ -311,6 +255,104 @@ class Client
         }
 
         return [];
+    }
+
+    /**
+     * Helper method to send GET requests
+     *
+     * @param $url
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doGetRequest($url)
+    {
+        $response = $this->doRequest('GET', $url);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Helper method to send POST requests
+     *
+     * @param string $uri
+     * @param Base   $entity
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doPostRequest(string $uri, Base $entity)
+    {
+        $formParams = $entity->toArray();
+
+        $response = $this->doRequest('POST', $uri, null, $formParams);
+
+        if ($response->getStatusCode() !== 201) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Helper method to send PUT requests
+     *
+     * @param string $uri
+     * @param Base   $entity
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doPutRequest(string $uri, Base $entity)
+    {
+        $formParams = $entity->toArray();
+
+        $response = $this->doRequest('PUT', $uri, null, $formParams);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Helper method to send DELETE requests
+     *
+     * @param $url
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doDeleteRequest($url)
+    {
+        $response = $this->doRequest('DELETE', $url);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return true;
     }
 
     /**
