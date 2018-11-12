@@ -2,5 +2,10 @@
 .idea/*
 /.idea/*
 
-### 
-/vendor
+### Composer template
+composer.phar
+/vendor/
+
+### phpunit.xml ###
+phpunit.xml
+
