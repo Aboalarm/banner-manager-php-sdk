@@ -3,7 +3,6 @@
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
 use aboalarm\BannerManagerSdk\Entity\Banner;
-use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Base;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
@@ -152,89 +151,6 @@ class Client
     public function deleteCampaign(string $identifier)
     {
         $uri = '/api/campaigns/'.$identifier;
-
-        return $this->doDeleteRequest($uri);
-    }
-
-    /**
-     * Get all banner positions.
-     *
-     * @return PaginatedCollection Campaign collection.
-     * @throws BannerManagerException
-     * @throws GuzzleException
-     */
-    public function getBannerPositions()
-    {
-        $data = $this->doGetRequest('/api/banner-positions');
-
-        $positions = [];
-
-        foreach ($data as $datum) {
-            $positions[] = new BannerPosition($datum);
-        }
-
-        return new PaginatedCollection($positions, count($positions), 1, 1);
-    }
-
-    /**
-     * Get single campaign by id
-     *
-     * @param string $identifier Campaign identifier
-     *
-     * @return BannerPosition
-     * @throws BannerManagerException
-     * @throws GuzzleException
-     */
-    public function getBannerPosition(string $identifier)
-    {
-        $data = $this->doGetRequest('/api/banner-positions/'.$identifier);
-
-        if (!empty($data)) {
-            return new BannerPosition($data);
-        }
-
-        throw new BannerManagerException("Error reading banner position data");
-    }
-
-    /**
-     * @param BannerPosition $bannerPosition
-     *
-     * @return BannerPosition
-     * @throws BannerManagerException
-     * @throws GuzzleException
-     */
-    public function postBannerPosition(BannerPosition $bannerPosition)
-    {
-        $data = $this->doPostRequest('/api/banner-positions', $bannerPosition);
-
-        return new BannerPosition($data);
-    }
-
-    /**
-     * @param BannerPosition $bannerPosition
-     *
-     * @return BannerPosition
-     * @throws BannerManagerException
-     * @throws GuzzleException
-     */
-    public function putBannerPosition(BannerPosition $bannerPosition)
-    {
-        $uri = '/api/banner-positions/'.$bannerPosition->getId();
-        $data = $this->doPutRequest($uri, $bannerPosition);
-
-        return new BannerPosition($data);
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @return bool
-     * @throws BannerManagerException
-     * @throws GuzzleException
-     */
-    public function deleteBannerPosition(string $identifier)
-    {
-        $uri = '/api/banner-positions/'.$identifier;
 
         return $this->doDeleteRequest($uri);
     }
