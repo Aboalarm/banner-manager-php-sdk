@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Evis Bregu <evis.bregu@gmail.com>.
- * Date: 11/9/18
- * Time: 10:45 AM
- */
 
 namespace aboalarm\BannerManagerSdk\Entity;
 
