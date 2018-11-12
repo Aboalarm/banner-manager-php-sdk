@@ -63,7 +63,7 @@ class Campaign extends Base
 
             if ($data['campaign_timings']) {
                 foreach ($data['campaign_timings'] as $campaignTiming) {
-                    $this->campaignTimings[] = new Banner($campaignTiming);
+                    $this->campaignTimings[] = new CampaignTiming($campaignTiming);
                 }
             } else {
                 $this->campaignTimings = null;
