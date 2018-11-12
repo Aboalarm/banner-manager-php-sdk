@@ -1,13 +1,11 @@
 <?php
-/**
- * Created by Evis Bregu <evis.bregu@gmail.com>.
- * Date: 10/2/18
- * Time: 2:32 PM
- */
 
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
 use aboalarm\BannerManagerSdk\Entity\Banner;
+use aboalarm\BannerManagerSdk\Entity\Campaign;
+use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
+use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -56,26 +54,161 @@ class Client
     /**
      * Get all banners.
      *
-     * @return Banner[]|null Banner collection.
+     * @return PaginatedCollection Banner collection.
+     * @throws BannerManagerException
      * @throws GuzzleException
      */
     public function getBanners()
     {
         $response = $this->doRequest('GET', '/api/banners');
 
-        $data = json_decode($response->getBody(), true);
-
-        if(!empty($data)) {
-            $banners = [];
-
-            foreach ($data as $datum) {
-                $banners[] = new Banner($datum);
-            }
-
-            return $banners;
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
         }
 
-        return null;
+        $data = json_decode($response->getBody(), true);
+
+        $banners = [];
+
+        foreach ($data as $datum) {
+            $banners[] = new Banner($datum);
+        }
+
+        return new PaginatedCollection($banners, count($banners), 1, 1);
+    }
+
+    /**
+     * Get all campaigns.
+     *
+     * @return PaginatedCollection Campaign collection.
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function getCampaigns()
+    {
+        $response = $this->doRequest('GET', '/api/campaigns');
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        $data = json_decode($response->getBody(), true);
+
+        $campaigns = [];
+
+        foreach ($data as $datum) {
+            $campaigns[] = new Campaign($datum);
+        }
+
+        return new PaginatedCollection($campaigns, count($campaigns), 1, 1);
+    }
+
+    /**
+     * Get single campaign by id
+     *
+     * @param string $identifier Campaign identifier
+     *
+     * @return Campaign|null
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function getCampaign(string $identifier)
+    {
+        $response = $this->doRequest('GET', '/api/campaigns/'.$identifier);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        $data = json_decode($response->getBody(), true);
+
+        if (!empty($data)) {
+            return new Campaign($data);
+        }
+
+        throw new BannerManagerException("Error reading campaign data");
+    }
+
+    /**
+     * @param Campaign $campaign
+     *
+     * @return Campaign|bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postCampaign(Campaign $campaign)
+    {
+        $formParams = $campaign->toArray();
+
+        $response = $this->doRequest('POST', '/api/campaigns', null, $formParams);
+
+        if ($response->getStatusCode() === 201) {
+            $data = json_decode($response->getBody(), true);
+
+            if ($data) {
+                return new Campaign($data);
+            }
+        };
+
+        throw new BannerManagerException($response->getReasonPhrase(), $response->getStatusCode());
+    }
+
+    /**
+     * @param Campaign $campaign
+     *
+     * @return Campaign|bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function putCampaign(Campaign $campaign)
+    {
+        $formParams = $campaign->toArray();
+
+        $uri = '/api/campaigns/'.$campaign->getId();
+
+        $response = $this->doRequest('PUT', $uri, null, $formParams);
+
+        if ($response->getStatusCode() === 200) {
+            $data = json_decode($response->getBody(), true);
+
+            if ($data) {
+                return new Campaign($data);
+            }
+        };
+
+        throw new BannerManagerException($response->getReasonPhrase(), $response->getStatusCode());
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function deleteCampaign(string $identifier)
+    {
+        $uri = '/api/campaigns/'.$identifier;
+
+        $response = $this->doRequest('DELETE', $uri);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return true;
     }
 
     /**
@@ -173,7 +306,7 @@ class Client
             }
         } catch (GuzzleException $e) {
             return [
-                'error' => 'Could not load banner for positions '.implode(', ', $positions)
+                'error' => 'Could not load banner for positions '.implode(', ', $positions),
             ];
         }
 
@@ -183,18 +316,27 @@ class Client
     /**
      * Send a request to the API.
      *
-     * @param  string $method   The HTTP method.
-     * @param  string $endpoint The endpoint.
-     * @param  array  $params   The params to send with the request.
+     * @param  string    $method      The HTTP method.
+     * @param  string    $endpoint    The endpoint.
+     * @param  array     $queryParams The query params to send with the request.
+     * @param array|null $formParams  The form params to send in POST requests.
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    private function doRequest($method, $endpoint, array $params = null)
-    {
+    private function doRequest(
+        $method,
+        $endpoint,
+        array $queryParams = null,
+        array $formParams = null
+    ) {
         $options = [];
-        if (!empty($params)) {
-            $options['query'] = $params;
+        if (!empty($queryParams)) {
+            $options['query'] = $queryParams;
+        }
+
+        if (!empty($formParams)) {
+            $options['form_params'] = $formParams;
         }
 
         return $this->http->request($method, $endpoint, $options);

@@ -3,6 +3,7 @@
 namespace aboalarm\BannerManagerSdk\Test;
 
 use aboalarm\BannerManagerSdk\Entity\Banner;
+use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 use BannerSDK;
 
 class BannerPackageFunctionTest extends TestCase
@@ -13,9 +14,11 @@ class BannerPackageFunctionTest extends TestCase
      */
     public function testGetBanners()
     {
-        $banners = BannerSDK::getBanners();
-        $this->assertNotEmpty($banners);
-        foreach ($banners as $banner) {
+        /** @var PaginatedCollection $bannersCollection */
+        $bannersCollection = BannerSDK::getBanners();
+        $this->assertInstanceOf(PaginatedCollection::class, $bannersCollection);
+
+        foreach ($bannersCollection->getItems() as $banner) {
             $this->assertInstanceOf(Banner::class, $banner);
         }
     }

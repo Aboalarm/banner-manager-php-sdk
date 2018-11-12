@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by Evis Bregu <evis.bregu@gmail.com>.
- * Date: 11/9/18
- * Time: 10:45 AM
- */
 
 namespace aboalarm\BannerManagerSdk\Entity;
 
@@ -49,6 +44,14 @@ abstract class Base implements EntityInterface
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId(string $id)
+    {
+        $this->id = $id;
     }
 
     /**
