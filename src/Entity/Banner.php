@@ -44,22 +44,24 @@ class Banner extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if($data) {
+            parent::__construct($data);
 
-        $this->name = $data['name'];
-        $this->path = $data['path'];
-        $this->text = $data['text'];
-        $this->link = $data['link'];
-        $this->phoneNumber = $data['phone_number'];
+            $this->name = $data['name'];
+            $this->path = $data['path'];
+            $this->text = $data['text'];
+            $this->link = $data['link'];
+            $this->phoneNumber = $data['phone_number'];
 
-        if ($data['banner_positions']) {
-            foreach ($data['banner_positions'] as $bannerPosition) {
-                $this->bannerPositions[] = new BannerPosition($bannerPosition);
+            if ($data['banner_positions']) {
+                foreach ($data['banner_positions'] as $bannerPosition) {
+                    $this->bannerPositions[] = new BannerPosition($bannerPosition);
+                }
+            } else {
+                $this->bannerPositions = null;
             }
-        } else {
-            $this->bannerPositions = null;
         }
     }
 
@@ -190,19 +192,31 @@ class Banner extends Base
     {
         $data = [];
 
-        $data['name'] = $this->name;
-        $data['path'] = $this->path;
-        $data['text'] = $this->text;
-        $data['link'] = $this->link;
-        $data['phone_number'] = $this->phoneNumber;
+        if($this->name) {
+            $data['name'] = $this->name;
+        }
+
+        if($this->path) {
+            $data['path'] = $this->path;
+        }
+
+        if($this->text) {
+            $data['text'] = $this->text;
+        }
+
+        if($this->link) {
+            $data['link'] = $this->link;
+        }
+
+        if($this->phoneNumber) {
+            $data['phone_number'] = $this->phoneNumber;
+        }
 
         if ($this->bannerPositions) {
             $data['banner_positions'] = [];
             foreach ($this->bannerPositions as $bannerPosition) {
                 $data['banner_positions'][] = $bannerPosition->toArray();
             }
-        } else {
-            $data['banner_positions'] = null;
         }
 
         return $data;

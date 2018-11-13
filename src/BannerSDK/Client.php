@@ -74,6 +74,69 @@ class Client
     }
 
     /**
+     * Get single banner by id
+     *
+     * @param string $identifier Banner identifier
+     *
+     * @return Banner
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function getBanner(string $identifier)
+    {
+        $data = $this->doGetRequest('/api/banners/'.$identifier);
+
+        if (!empty($data)) {
+            return new Banner($data);
+        }
+
+        throw new BannerManagerException("Error reading banner data");
+    }
+
+    /**
+     * @param Banner $banner
+     *
+     * @return Banner
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postBanner(Banner $banner)
+    {
+        $data = $this->doPostRequest('/api/banners', $banner);
+
+        return new Banner($data);
+    }
+
+    /**
+     * @param Banner $banner
+     *
+     * @return Banner
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function putBanner(Banner $banner)
+    {
+        $uri = '/api/banners/'.$banner->getId();
+        $data = $this->doPutRequest($uri, $banner);
+
+        return new Banner($data);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function deleteBanner(string $identifier)
+    {
+        $uri = '/api/banners/'.$identifier;
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
      * Get all campaigns.
      *
      * @return PaginatedCollection Campaign collection.
@@ -159,7 +222,7 @@ class Client
     /**
      * Get all banner positions.
      *
-     * @return PaginatedCollection Campaign collection.
+     * @return PaginatedCollection BannerPosition collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
@@ -179,7 +242,7 @@ class Client
     /**
      * Get single campaign by id
      *
-     * @param string $identifier Campaign identifier
+     * @param string $identifier BannerPosition identifier
      *
      * @return BannerPosition
      * @throws BannerManagerException
