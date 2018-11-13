@@ -49,21 +49,23 @@ class BannerPosition extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if ($data) {
+            parent::__construct($data);
 
-        $this->name = $data['name'];
-        $this->device = $data['device'];
-        $this->viewPort = $data['view_port'];
-        $this->description = $data['description'];
-        $this->width = $data['width'];
-        $this->height = $data['height'];
+            $this->name = $data['name'];
+            $this->device = $data['device'];
+            $this->viewPort = $data['view_port'];
+            $this->description = $data['description'];
+            $this->width = $data['width'];
+            $this->height = $data['height'];
 
-        if ($data['parent']) {
-            $this->parent = new BannerPosition($data['parent']);
-        } else {
-            $this->parent = null;
+            if ($data['parent']) {
+                $this->parent = new BannerPosition($data['parent']);
+            } else {
+                $this->parent = null;
+            }
         }
     }
 
@@ -208,24 +210,41 @@ class BannerPosition extends Base
     }
 
     /**
-     * @return array|void
+     * @return array
      */
     public function toArray()
     {
         $data = [];
 
-        $data['name'] = $this->name;
-        $data['device'] = $this->device;
-        $data['view_port'] = $this->viewPort;
-        $data['description'] = $this->description;
-        $data['width'] = $this->width;
-        $data['height'] = $this->height;
+        if ($this->name) {
+            $data['name'] = $this->name;
+        }
+
+        if ($this->device) {
+            $data['device'] = $this->device;
+        }
+
+        if ($this->viewPort) {
+            $data['view_port'] = $this->viewPort;
+        }
+
+        if ($this->description) {
+            $data['description'] = $this->description;
+        }
+
+        if ($this->width) {
+            $data['width'] = $this->width;
+        }
+
+        if ($this->height) {
+            $data['height'] = $this->height;
+        }
 
         if ($this->parent) {
             $data['parent'] = [];
             $data['parent'] = $this->parent->toArray();
-        } else {
-            $data['parent'] = null;
         }
+
+        return $data;
     }
 }

@@ -3,6 +3,8 @@
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
 use aboalarm\BannerManagerSdk\Entity\Banner;
+use aboalarm\BannerManagerSdk\Entity\BannerPosition;
+use aboalarm\BannerManagerSdk\Entity\Base;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
@@ -60,16 +62,7 @@ class Client
      */
     public function getBanners()
     {
-        $response = $this->doRequest('GET', '/api/banners');
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        $data = json_decode($response->getBody(), true);
+        $data = $this->doGetRequest('/api/banners');
 
         $banners = [];
 
@@ -89,16 +82,7 @@ class Client
      */
     public function getCampaigns()
     {
-        $response = $this->doRequest('GET', '/api/campaigns');
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        $data = json_decode($response->getBody(), true);
+        $data = $this->doGetRequest('/api/campaigns');
 
         $campaigns = [];
 
@@ -114,22 +98,13 @@ class Client
      *
      * @param string $identifier Campaign identifier
      *
-     * @return Campaign|null
+     * @return Campaign
      * @throws BannerManagerException
      * @throws GuzzleException
      */
     public function getCampaign(string $identifier)
     {
-        $response = $this->doRequest('GET', '/api/campaigns/'.$identifier);
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        $data = json_decode($response->getBody(), true);
+        $data = $this->doGetRequest('/api/campaigns/'.$identifier);
 
         if (!empty($data)) {
             return new Campaign($data);
@@ -141,51 +116,30 @@ class Client
     /**
      * @param Campaign $campaign
      *
-     * @return Campaign|bool
+     * @return Campaign
      * @throws BannerManagerException
      * @throws GuzzleException
      */
     public function postCampaign(Campaign $campaign)
     {
-        $formParams = $campaign->toArray();
+        $data = $this->doPostRequest('/api/campaigns', $campaign);
 
-        $response = $this->doRequest('POST', '/api/campaigns', null, $formParams);
-
-        if ($response->getStatusCode() === 201) {
-            $data = json_decode($response->getBody(), true);
-
-            if ($data) {
-                return new Campaign($data);
-            }
-        };
-
-        throw new BannerManagerException($response->getReasonPhrase(), $response->getStatusCode());
+        return new Campaign($data);
     }
 
     /**
      * @param Campaign $campaign
      *
-     * @return Campaign|bool
+     * @return Campaign
      * @throws BannerManagerException
      * @throws GuzzleException
      */
     public function putCampaign(Campaign $campaign)
     {
-        $formParams = $campaign->toArray();
-
         $uri = '/api/campaigns/'.$campaign->getId();
+        $data = $this->doPutRequest($uri, $campaign);
 
-        $response = $this->doRequest('PUT', $uri, null, $formParams);
-
-        if ($response->getStatusCode() === 200) {
-            $data = json_decode($response->getBody(), true);
-
-            if ($data) {
-                return new Campaign($data);
-            }
-        };
-
-        throw new BannerManagerException($response->getReasonPhrase(), $response->getStatusCode());
+        return new Campaign($data);
     }
 
     /**
@@ -199,16 +153,90 @@ class Client
     {
         $uri = '/api/campaigns/'.$identifier;
 
-        $response = $this->doRequest('DELETE', $uri);
+        return $this->doDeleteRequest($uri);
+    }
 
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
+    /**
+     * Get all banner positions.
+     *
+     * @return PaginatedCollection Campaign collection.
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function getBannerPositions()
+    {
+        $data = $this->doGetRequest('/api/banner-positions');
+
+        $positions = [];
+
+        foreach ($data as $datum) {
+            $positions[] = new BannerPosition($datum);
         }
 
-        return true;
+        return new PaginatedCollection($positions, count($positions), 1, 1);
+    }
+
+    /**
+     * Get single campaign by id
+     *
+     * @param string $identifier Campaign identifier
+     *
+     * @return BannerPosition
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function getBannerPosition(string $identifier)
+    {
+        $data = $this->doGetRequest('/api/banner-positions/'.$identifier);
+
+        if (!empty($data)) {
+            return new BannerPosition($data);
+        }
+
+        throw new BannerManagerException("Error reading banner position data");
+    }
+
+    /**
+     * @param BannerPosition $bannerPosition
+     *
+     * @return BannerPosition
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postBannerPosition(BannerPosition $bannerPosition)
+    {
+        $data = $this->doPostRequest('/api/banner-positions', $bannerPosition);
+
+        return new BannerPosition($data);
+    }
+
+    /**
+     * @param BannerPosition $bannerPosition
+     *
+     * @return BannerPosition
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function putBannerPosition(BannerPosition $bannerPosition)
+    {
+        $uri = '/api/banner-positions/'.$bannerPosition->getId();
+        $data = $this->doPutRequest($uri, $bannerPosition);
+
+        return new BannerPosition($data);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function deleteBannerPosition(string $identifier)
+    {
+        $uri = '/api/banner-positions/'.$identifier;
+
+        return $this->doDeleteRequest($uri);
     }
 
     /**
@@ -311,6 +339,104 @@ class Client
         }
 
         return [];
+    }
+
+    /**
+     * Helper method to send GET requests
+     *
+     * @param $url
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doGetRequest($url)
+    {
+        $response = $this->doRequest('GET', $url);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Helper method to send POST requests
+     *
+     * @param string $uri
+     * @param Base   $entity
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doPostRequest(string $uri, Base $entity)
+    {
+        $formParams = $entity->toArray();
+
+        $response = $this->doRequest('POST', $uri, null, $formParams);
+
+        if ($response->getStatusCode() !== 201) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Helper method to send PUT requests
+     *
+     * @param string $uri
+     * @param Base   $entity
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doPutRequest(string $uri, Base $entity)
+    {
+        $formParams = $entity->toArray();
+
+        $response = $this->doRequest('PUT', $uri, null, $formParams);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Helper method to send DELETE requests
+     *
+     * @param $url
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doDeleteRequest($url)
+    {
+        $response = $this->doRequest('DELETE', $url);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return true;
     }
 
     /**
