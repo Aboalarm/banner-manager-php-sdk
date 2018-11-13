@@ -29,19 +29,21 @@ class ABTest extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if ($data) {
+            parent::__construct($data);
 
-        $this->name = $data['name'];
-        $this->description = $data['description'];
+            $this->name = $data['name'];
+            $this->description = $data['description'];
 
-        if ($data['campaigns']) {
-            foreach ($data['campaigns'] as $campaign) {
-                $this->campaigns[] = new Campaign($campaign);
+            if ($data['campaigns']) {
+                foreach ($data['campaigns'] as $campaign) {
+                    $this->campaigns[] = new Campaign($campaign);
+                }
+            } else {
+                $this->campaigns = null;
             }
-        } else {
-            $this->campaigns = null;
         }
     }
 
@@ -111,16 +113,20 @@ class ABTest extends Base
     public function toArray(): array
     {
         $data = [];
-        $data['name'] = $this->name;
-        $data['description'] = $this->description;
+
+        if($this->name) {
+            $data['name'] = $this->name;
+        }
+
+        if($this->description) {
+            $data['description'] = $this->description;
+        }
 
         if ($this->campaigns) {
             $data['campaigns'] = [];
             foreach ($this->campaigns as $campaign) {
                 $data['campaigns'][] = $campaign->toArray();
             }
-        } else {
-            $data['campaigns'] = null;
         }
 
         return $data;

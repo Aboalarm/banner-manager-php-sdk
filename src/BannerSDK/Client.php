@@ -2,6 +2,7 @@
 
 namespace aboalarm\BannerManagerSdk\BannerSDK;
 
+use aboalarm\BannerManagerSdk\Entity\ABTest;
 use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Base;
@@ -298,6 +299,89 @@ class Client
     public function deleteBannerPosition(string $identifier)
     {
         $uri = '/api/banner-positions/'.$identifier;
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
+     * Get all ABtests.
+     *
+     * @return PaginatedCollection ABTest collection.
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function getABTests()
+    {
+        $data = $this->doGetRequest('/api/ab-tests');
+
+        $abtests = [];
+
+        foreach ($data as $datum) {
+            $abtests[] = new ABTest($datum);
+        }
+
+        return new PaginatedCollection($abtests, count($abtests), 1, 1);
+    }
+
+    /**
+     * Get single ABTest by id
+     *
+     * @param string $identifier ABTest identifier
+     *
+     * @return ABTest
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function getABTest(string $identifier)
+    {
+        $data = $this->doGetRequest('/api/ab-tests/'.$identifier);
+
+        if (!empty($data)) {
+            return new ABTest($data);
+        }
+
+        throw new BannerManagerException("Error reading ABTest data");
+    }
+
+    /**
+     * @param ABTest $abtest
+     *
+     * @return ABTest
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postABTest(ABTest $abtest)
+    {
+        $data = $this->doPostRequest('/api/ab-tests', $abtest);
+
+        return new ABTest($data);
+    }
+
+    /**
+     * @param ABTest $abtest
+     *
+     * @return ABTest
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function putABTest(ABTest $abtest)
+    {
+        $uri = '/api/ab-tests/'.$abtest->getId();
+        $data = $this->doPutRequest($uri, $abtest);
+
+        return new ABTest($data);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function deleteABTest(string $identifier)
+    {
+        $uri = '/api/ab-tests/'.$identifier;
 
         return $this->doDeleteRequest($uri);
     }
