@@ -98,11 +98,11 @@ class BannerPosition extends Base
     }
 
     /**
-     * @param string $device
+     * @param string|null $device
      *
      * @return BannerPosition
      */
-    public function setDevice(string $device): BannerPosition
+    public function setDevice(string $device = null): BannerPosition
     {
         $this->device = $device;
 
@@ -118,11 +118,11 @@ class BannerPosition extends Base
     }
 
     /**
-     * @param string $viewPort
+     * @param string|null $viewPort
      *
      * @return BannerPosition
      */
-    public function setViewPort(string $viewPort): BannerPosition
+    public function setViewPort(string $viewPort = null): BannerPosition
     {
         $this->viewPort = $viewPort;
 

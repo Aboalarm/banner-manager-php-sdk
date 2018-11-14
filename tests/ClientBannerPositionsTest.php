@@ -44,4 +44,26 @@ class ClientBannerPositionsTest extends TestCase
 
         $this->assertTrue(BannerSDK::deleteBannerPosition($updatedPosition->getId()));
     }
+
+    public function testBannerPositionCRUDWithoutDeviceAndViewPort()
+    {
+        $position = new BannerPosition();
+
+        $position->setDescription('test')
+            ->setName('test')
+            ->setWidth(320)
+            ->setHeight(1360);
+
+        /** @var BannerPosition $storedPosition */
+        $storedPosition = BannerSDK::postBannerPosition($position);
+        $this->assertInstanceOf(BannerPosition::class, $storedPosition);
+
+        $storedPosition->setName('EDITED BY PUT');
+
+        /** @var BannerPosition $updatedPosition */
+        $updatedPosition = BannerSDK::putBannerPosition($storedPosition);
+        $this->assertEquals('EDITED BY PUT', $updatedPosition->getName());
+
+        $this->assertTrue(BannerSDK::deleteBannerPosition($updatedPosition->getId()));
+    }
 }

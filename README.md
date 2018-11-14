@@ -50,3 +50,8 @@ You now are able to use BannerSDK sample method:
     <?php
     ...
         BannerSDK::getBanners()
+
+## Testing
+
+To execute the test you first need to run `composer install`.
+Then you need a test banner API running. The connection data of the API need to be added in the `phpunit.xml`.
