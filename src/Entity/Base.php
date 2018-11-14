@@ -12,17 +12,17 @@ use DateTime;
 abstract class Base implements EntityInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $id;
 
     /**
-     * @var DateTime
+     * @var DateTime|null
      */
     private $createdAt;
 
     /**
-     * @var DateTime
+     * @var DateTime|null
      */
     private $updatedAt;
 
@@ -31,17 +31,19 @@ abstract class Base implements EntityInterface
      *
      * @param array $data Data from json response
      */
-    public function __construct($data)
+    public function __construct(array $data = null)
     {
-        $this->id = $data['id'];
-        $this->createdAt = new DateTime($data['created_at']);
-        $this->updatedAt = new DateTime($data['updated_at']);
+        if($data) {
+            $this->id = $data['id'];
+            $this->createdAt = new DateTime($data['created_at']);
+            $this->updatedAt = new DateTime($data['updated_at']);
+        }
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getId(): string
+    public function getId()
     {
         return $this->id;
     }
@@ -55,17 +57,17 @@ abstract class Base implements EntityInterface
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }

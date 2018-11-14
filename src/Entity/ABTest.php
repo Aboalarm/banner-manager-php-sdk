@@ -10,12 +10,12 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class ABTest extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $description;
 
@@ -48,9 +48,9 @@ class ABTest extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -68,9 +68,9 @@ class ABTest extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description;
     }
@@ -90,7 +90,7 @@ class ABTest extends Base
     /**
      * @return Campaign[]|null
      */
-    public function getCampaigns(): array
+    public function getCampaigns()
     {
         return $this->campaigns;
     }

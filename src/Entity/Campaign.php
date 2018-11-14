@@ -3,6 +3,8 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
+use phpDocumentor\Reflection\Types\Nullable;
+
 /**
  * Class Campaign
  * @package aboalarm\BannerManagerSdk\Entity
@@ -10,17 +12,17 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class Campaign extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $description;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $weight;
 
@@ -78,9 +80,9 @@ class Campaign extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -98,9 +100,9 @@ class Campaign extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description;
     }
@@ -118,9 +120,9 @@ class Campaign extends Base
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWeight(): int
+    public function getWeight()
     {
         return $this->weight;
     }
@@ -140,7 +142,7 @@ class Campaign extends Base
     /**
      * @return Banner[]|null
      */
-    public function getBanners(): array
+    public function getBanners()
     {
         return $this->banners;
     }
@@ -160,7 +162,7 @@ class Campaign extends Base
     /**
      * @return CampaignTiming[]|null
      */
-    public function getCampaignTimings(): array
+    public function getCampaignTimings()
     {
         return $this->campaignTimings;
     }
@@ -180,7 +182,7 @@ class Campaign extends Base
     /**
      * @return ABTest|null
      */
-    public function getAbTest(): ABTest
+    public function getAbTest()
     {
         return $this->abTest;
     }

@@ -10,27 +10,27 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class Banner extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $path;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $text;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $link;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $phoneNumber;
 
@@ -66,9 +66,9 @@ class Banner extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -86,9 +86,9 @@ class Banner extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPath(): string
+    public function getPath()
     {
         return $this->path;
     }
@@ -106,9 +106,9 @@ class Banner extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText(): string
+    public function getText()
     {
         return $this->text;
     }
@@ -126,9 +126,9 @@ class Banner extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getLink(): string
+    public function getLink()
     {
         return $this->link;
     }
@@ -146,9 +146,9 @@ class Banner extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhoneNumber(): string
+    public function getPhoneNumber()
     {
         return $this->phoneNumber;
     }
@@ -168,7 +168,7 @@ class Banner extends Base
     /**
      * @return BannerPosition[]|null
      */
-    public function getBannerPositions(): array
+    public function getBannerPositions()
     {
         return $this->bannerPositions;
     }

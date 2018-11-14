@@ -13,21 +13,21 @@ interface EntityInterface
     /**
      * Get id
      *
-     * @return string
+     * @return string|null
      */
     public function getId();
 
     /**
      * Get created at
      *
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getCreatedAt();
 
     /**
      * Get updated at
      *
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getUpdatedAt();
 

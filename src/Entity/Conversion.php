@@ -10,12 +10,12 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class Conversion extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $type;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $externalIdentifier;
 
@@ -24,18 +24,20 @@ class Conversion extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if ($data) {
+            parent::__construct($data);
 
-        $this->type = $data['type'];
-        $this->externalIdentifier = $data['external_identifier'];
+            $this->type = $data['type'];
+            $this->externalIdentifier = $data['external_identifier'];
+        }
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType(): string
+    public function getType()
     {
         return $this->type;
     }
@@ -53,9 +55,9 @@ class Conversion extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getExternalIdentifier(): string
+    public function getExternalIdentifier()
     {
         return $this->externalIdentifier;
     }
@@ -79,8 +81,13 @@ class Conversion extends Base
     {
         $data = [];
 
-        $data['type'] = $this->type;
-        $data['external_identifier'] = $this->externalIdentifier;
+        if ($this->type) {
+            $data['type'] = $this->type;
+        }
+
+        if ($this->externalIdentifier) {
+            $data['external_identifier'] = $this->externalIdentifier;
+        }
 
         return $data;
     }

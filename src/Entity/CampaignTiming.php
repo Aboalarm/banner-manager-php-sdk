@@ -10,37 +10,37 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class CampaignTiming extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $type;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $dateFrom;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $dateUntil;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $timeFrom;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $timeUntil;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $weekday;
 
     /**
-     * @var bool
+     * @var bool|null
      */
     private $isHotline;
 
@@ -49,23 +49,25 @@ class CampaignTiming extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if ($data) {
+            parent::__construct($data);
 
-        $this->type = $data['type'];
-        $this->dateFrom = $data['date_from'];
-        $this->dateUntil = $data['date_until'];
-        $this->timeFrom = $data['time_from'];
-        $this->timeUntil = $data['time_until'];
-        $this->weekday = $data['weekday'];
-        $this->isHotline = boolval($data['is_hotline']);
+            $this->type = $data['type'];
+            $this->dateFrom = $data['date_from'];
+            $this->dateUntil = $data['date_until'];
+            $this->timeFrom = $data['time_from'];
+            $this->timeUntil = $data['time_until'];
+            $this->weekday = $data['weekday'];
+            $this->isHotline = boolval($data['is_hotline']);
+        }
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType(): string
+    public function getType()
     {
         return $this->type;
     }
@@ -83,9 +85,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateFrom(): string
+    public function getDateFrom()
     {
         return $this->dateFrom;
     }
@@ -103,9 +105,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateUntil(): string
+    public function getDateUntil()
     {
         return $this->dateUntil;
     }
@@ -123,9 +125,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTimeFrom(): string
+    public function getTimeFrom()
     {
         return $this->timeFrom;
     }
@@ -143,9 +145,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTimeUntil(): string
+    public function getTimeUntil()
     {
         return $this->timeUntil;
     }
@@ -163,9 +165,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getWeekday(): string
+    public function getWeekday()
     {
         return $this->weekday;
     }
@@ -183,9 +185,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isHotline(): bool
+    public function isHotline()
     {
         return $this->isHotline;
     }
@@ -209,13 +211,33 @@ class CampaignTiming extends Base
     {
         $data = [];
 
-        $data['type'] = $this->type;
-        $data['date_from'] = $this->dateFrom;
-        $data['date_until'] = $this->dateUntil;
-        $data['time_from'] = $this->timeFrom;
-        $data['time_until'] = $this->timeUntil;
-        $data['weekday'] = $this->weekday;
-        $data['is_hotline'] = $this->isHotline;
+        if ($this->type) {
+            $data['type'] = $this->type;
+        }
+
+        if ($this->dateFrom) {
+            $data['date_from'] = $this->dateFrom;
+        }
+
+        if ($this->dateUntil) {
+            $data['date_until'] = $this->dateUntil;
+        }
+
+        if ($this->timeFrom) {
+            $data['time_from'] = $this->timeFrom;
+        }
+
+        if ($this->timeUntil) {
+            $data['time_until'] = $this->timeUntil;
+        }
+
+        if ($this->weekday) {
+            $data['weekday'] = $this->weekday;
+        }
+
+        if ($this->isHotline) {
+            $data['is_hotline'] = $this->isHotline;
+        }
 
         return $data;
     }
