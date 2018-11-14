@@ -24,12 +24,14 @@ class Conversion extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if ($data) {
+            parent::__construct($data);
 
-        $this->type = $data['type'];
-        $this->externalIdentifier = $data['external_identifier'];
+            $this->type = $data['type'];
+            $this->externalIdentifier = $data['external_identifier'];
+        }
     }
 
     /**
@@ -79,8 +81,13 @@ class Conversion extends Base
     {
         $data = [];
 
-        $data['type'] = $this->type;
-        $data['external_identifier'] = $this->externalIdentifier;
+        if ($this->type) {
+            $data['type'] = $this->type;
+        }
+
+        if ($this->externalIdentifier) {
+            $data['external_identifier'] = $this->externalIdentifier;
+        }
 
         return $data;
     }

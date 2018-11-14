@@ -35,25 +35,27 @@ class Session extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if ($data) {
+            parent::__construct($data);
 
-        $this->session = $data['session'];
-        $this->external = boolval($data['external']);
+            $this->session = $data['session'];
+            $this->external = boolval($data['external']);
 
-        if ($data['campaign']) {
-            $this->campaign = new Session($data['campaign']);
-        } else {
-            $this->campaign = null;
-        }
-
-        if ($data['conversions']) {
-            foreach ($data['conversions'] as $conversion) {
-                $this->conversions[] = new Conversion($conversion);
+            if ($data['campaign']) {
+                $this->campaign = new Session($data['campaign']);
+            } else {
+                $this->campaign = null;
             }
-        } else {
-            $this->conversions = null;
+
+            if ($data['conversions']) {
+                foreach ($data['conversions'] as $conversion) {
+                    $this->conversions[] = new Conversion($conversion);
+                }
+            } else {
+                $this->conversions = null;
+            }
         }
     }
 
@@ -141,14 +143,17 @@ class Session extends Base
     {
         $data = [];
 
-        $data['session'] = $this->session;
-        $data['external'] = $this->external;
+        if ($this->session) {
+            $data['session'] = $this->session;
+        }
+
+        if ($this->external) {
+            $data['external'] = $this->external;
+        }
 
         if ($this->campaign) {
             $data['campaign'] = [];
             $data['campaign'] = $this->campaign->toArray();
-        } else {
-            $data['campaign'] = null;
         }
 
         if ($this->conversions) {
@@ -156,8 +161,6 @@ class Session extends Base
             foreach ($this->conversions as $conversion) {
                 $data['conversions'][] = $conversion->toArray();
             }
-        } else {
-            $data['conversions'] = null;
         }
     }
 }

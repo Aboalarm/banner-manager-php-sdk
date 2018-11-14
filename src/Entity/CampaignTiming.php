@@ -49,17 +49,19 @@ class CampaignTiming extends Base
      *
      * @param array $data Data from json response
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
-        parent::__construct($data);
+        if ($data) {
+            parent::__construct($data);
 
-        $this->type = $data['type'];
-        $this->dateFrom = $data['date_from'];
-        $this->dateUntil = $data['date_until'];
-        $this->timeFrom = $data['time_from'];
-        $this->timeUntil = $data['time_until'];
-        $this->weekday = $data['weekday'];
-        $this->isHotline = boolval($data['is_hotline']);
+            $this->type = $data['type'];
+            $this->dateFrom = $data['date_from'];
+            $this->dateUntil = $data['date_until'];
+            $this->timeFrom = $data['time_from'];
+            $this->timeUntil = $data['time_until'];
+            $this->weekday = $data['weekday'];
+            $this->isHotline = boolval($data['is_hotline']);
+        }
     }
 
     /**
@@ -209,13 +211,33 @@ class CampaignTiming extends Base
     {
         $data = [];
 
-        $data['type'] = $this->type;
-        $data['date_from'] = $this->dateFrom;
-        $data['date_until'] = $this->dateUntil;
-        $data['time_from'] = $this->timeFrom;
-        $data['time_until'] = $this->timeUntil;
-        $data['weekday'] = $this->weekday;
-        $data['is_hotline'] = $this->isHotline;
+        if ($this->type) {
+            $data['type'] = $this->type;
+        }
+
+        if ($this->dateFrom) {
+            $data['date_from'] = $this->dateFrom;
+        }
+
+        if ($this->dateUntil) {
+            $data['date_until'] = $this->dateUntil;
+        }
+
+        if ($this->timeFrom) {
+            $data['time_from'] = $this->timeFrom;
+        }
+
+        if ($this->timeUntil) {
+            $data['time_until'] = $this->timeUntil;
+        }
+
+        if ($this->weekday) {
+            $data['weekday'] = $this->weekday;
+        }
+
+        if ($this->isHotline) {
+            $data['is_hotline'] = $this->isHotline;
+        }
 
         return $data;
     }
