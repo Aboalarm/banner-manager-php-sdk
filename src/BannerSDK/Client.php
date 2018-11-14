@@ -103,7 +103,7 @@ class Client
      */
     public function postBanner(Banner $banner)
     {
-        $data = $this->doPostRequest('/api/banners', $banner);
+        $data = $this->doPostRequest('/api/banners', $banner->toArray());
 
         return new Banner($data);
     }
@@ -133,6 +133,41 @@ class Client
     public function deleteBanner(string $identifier)
     {
         $uri = '/api/banners/'.$identifier;
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
+     * Post multiple campaigns to be assigned to a banner
+     *
+     * @param string $identifier          Banner identifier
+     * @param array  $campaignIdentifiers Array with campaign identifiers to add
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postBannerCampaigns(string $identifier, array $campaignIdentifiers)
+    {
+        $uri = '/api/banners/'.$identifier.'/campaigns';
+        $formParams = ['campaigns' => $campaignIdentifiers];
+
+        return $this->doPostRequest($uri, $formParams);
+    }
+
+    /**
+     * Remove a campaign from banner
+     *
+     * @param string $bannerIdentifier
+     * @param string $campaignIdentifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function removeCampaignFromBanner(string $bannerIdentifier, string $campaignIdentifier)
+    {
+        $uri = '/api/banners/'.$bannerIdentifier.'/campaigns/'.$campaignIdentifier;
 
         return $this->doDeleteRequest($uri);
     }
@@ -186,7 +221,7 @@ class Client
      */
     public function postCampaign(Campaign $campaign)
     {
-        $data = $this->doPostRequest('/api/campaigns', $campaign);
+        $data = $this->doPostRequest('/api/campaigns', $campaign->toArray());
 
         return new Campaign($data);
     }
@@ -216,6 +251,41 @@ class Client
     public function deleteCampaign(string $identifier)
     {
         $uri = '/api/campaigns/'.$identifier;
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
+     * Post multiple banners to be assigned to a campaign
+     *
+     * @param string $identifier        Campaign identifier
+     * @param array  $bannerIdentifiers Array with banner identifiers to add
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postCampaignBanners(string $identifier, array $bannerIdentifiers)
+    {
+        $uri = '/api/campaigns/'.$identifier.'/banners';
+        $formParams = ['banners' => $bannerIdentifiers];
+
+        return $this->doPostRequest($uri, $formParams);
+    }
+
+    /**
+     * Remove a banner from campaign
+     *
+     * @param string $campaignIdentifier
+     * @param string $bannerIdentifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function removeBannerFromCampaign(string $campaignIdentifier, string $bannerIdentifier)
+    {
+        $uri = '/api/campaigns/'.$campaignIdentifier.'/banners/'.$bannerIdentifier;
 
         return $this->doDeleteRequest($uri);
     }
@@ -269,7 +339,7 @@ class Client
      */
     public function postBannerPosition(BannerPosition $bannerPosition)
     {
-        $data = $this->doPostRequest('/api/banner-positions', $bannerPosition);
+        $data = $this->doPostRequest('/api/banner-positions', $bannerPosition->toArray());
 
         return new BannerPosition($data);
     }
@@ -352,7 +422,7 @@ class Client
      */
     public function postABTest(ABTest $abtest)
     {
-        $data = $this->doPostRequest('/api/ab-tests', $abtest);
+        $data = $this->doPostRequest('/api/ab-tests', $abtest->toArray());
 
         return new ABTest($data);
     }
@@ -515,19 +585,17 @@ class Client
      * Helper method to send POST requests
      *
      * @param string $uri
-     * @param Base   $entity
+     * @param array  $formParams
      *
      * @return array
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    private function doPostRequest(string $uri, Base $entity)
+    private function doPostRequest(string $uri, array $formParams)
     {
-        $formParams = $entity->toArray();
-
         $response = $this->doRequest('POST', $uri, null, $formParams);
 
-        if ($response->getStatusCode() !== 201) {
+        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 200) {
             throw new BannerManagerException(
                 $response->getReasonPhrase(),
                 $response->getStatusCode()
