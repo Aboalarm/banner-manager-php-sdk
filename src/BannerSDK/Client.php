@@ -103,7 +103,7 @@ class Client
      */
     public function postBanner(Banner $banner)
     {
-        $data = $this->doPostRequest('/api/banners', $banner);
+        $data = $this->doPostRequest('/api/banners', $banner->toArray());
 
         return new Banner($data);
     }
@@ -186,7 +186,7 @@ class Client
      */
     public function postCampaign(Campaign $campaign)
     {
-        $data = $this->doPostRequest('/api/campaigns', $campaign);
+        $data = $this->doPostRequest('/api/campaigns', $campaign->toArray());
 
         return new Campaign($data);
     }
@@ -269,7 +269,7 @@ class Client
      */
     public function postBannerPosition(BannerPosition $bannerPosition)
     {
-        $data = $this->doPostRequest('/api/banner-positions', $bannerPosition);
+        $data = $this->doPostRequest('/api/banner-positions', $bannerPosition->toArray());
 
         return new BannerPosition($data);
     }
@@ -352,7 +352,7 @@ class Client
      */
     public function postABTest(ABTest $abtest)
     {
-        $data = $this->doPostRequest('/api/ab-tests', $abtest);
+        $data = $this->doPostRequest('/api/ab-tests', $abtest->toArray());
 
         return new ABTest($data);
     }
@@ -515,17 +515,14 @@ class Client
      * Helper method to send POST requests
      *
      * @param string $uri
-     * @param Base   $entity
+     * @param array  $formParams
      *
      * @return array
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    private function doPostRequest(string $uri, Base $entity)
-    {
-        $formParams = $entity->toArray();
-
-        $response = $this->doRequest('POST', $uri, null, $formParams);
+    private function doPostRequest(string $uri, array $formParams)
+    {        $response = $this->doRequest('POST', $uri, null, $formParams);
 
         if ($response->getStatusCode() !== 201) {
             throw new BannerManagerException(
