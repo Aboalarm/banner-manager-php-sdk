@@ -10,12 +10,12 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class Conversion extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $type;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $externalIdentifier;
 
@@ -33,9 +33,9 @@ class Conversion extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType(): string
+    public function getType()
     {
         return $this->type;
     }
@@ -53,9 +53,9 @@ class Conversion extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getExternalIdentifier(): string
+    public function getExternalIdentifier()
     {
         return $this->externalIdentifier;
     }

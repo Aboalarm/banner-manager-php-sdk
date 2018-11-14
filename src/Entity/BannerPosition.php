@@ -10,32 +10,32 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class BannerPosition extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $device;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $viewPort;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $description;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $width;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $height;
 
@@ -70,9 +70,9 @@ class BannerPosition extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -90,9 +90,9 @@ class BannerPosition extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDevice(): string
+    public function getDevice()
     {
         return $this->device;
     }
@@ -110,9 +110,9 @@ class BannerPosition extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getViewPort(): string
+    public function getViewPort()
     {
         return $this->viewPort;
     }
@@ -130,9 +130,9 @@ class BannerPosition extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description;
     }
@@ -150,9 +150,9 @@ class BannerPosition extends Base
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWidth(): int
+    public function getWidth()
     {
         return $this->width;
     }
@@ -170,9 +170,9 @@ class BannerPosition extends Base
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getHeight(): int
+    public function getHeight()
     {
         return $this->height;
     }
@@ -192,7 +192,7 @@ class BannerPosition extends Base
     /**
      * @return BannerPosition|null
      */
-    public function getParent(): BannerPosition
+    public function getParent()
     {
         return $this->parent;
     }

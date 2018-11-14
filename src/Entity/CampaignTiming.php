@@ -10,37 +10,37 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class CampaignTiming extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $type;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $dateFrom;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $dateUntil;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $timeFrom;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $timeUntil;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $weekday;
 
     /**
-     * @var bool
+     * @var bool|null
      */
     private $isHotline;
 
@@ -63,9 +63,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType(): string
+    public function getType()
     {
         return $this->type;
     }
@@ -83,9 +83,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateFrom(): string
+    public function getDateFrom()
     {
         return $this->dateFrom;
     }
@@ -103,9 +103,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateUntil(): string
+    public function getDateUntil()
     {
         return $this->dateUntil;
     }
@@ -123,9 +123,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTimeFrom(): string
+    public function getTimeFrom()
     {
         return $this->timeFrom;
     }
@@ -143,9 +143,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTimeUntil(): string
+    public function getTimeUntil()
     {
         return $this->timeUntil;
     }
@@ -163,9 +163,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getWeekday(): string
+    public function getWeekday()
     {
         return $this->weekday;
     }
@@ -183,9 +183,9 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isHotline(): bool
+    public function isHotline()
     {
         return $this->isHotline;
     }

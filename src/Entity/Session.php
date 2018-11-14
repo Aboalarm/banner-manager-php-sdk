@@ -10,12 +10,12 @@ namespace aboalarm\BannerManagerSdk\Entity;
 class Session extends Base
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $session;
 
     /**
-     * @var bool
+     * @var bool|null
      */
     private $external;
 
@@ -58,9 +58,9 @@ class Session extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSession(): string
+    public function getSession()
     {
         return $this->session;
     }
@@ -78,9 +78,9 @@ class Session extends Base
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isExternal(): bool
+    public function isExternal()
     {
         return $this->external;
     }
@@ -100,7 +100,7 @@ class Session extends Base
     /**
      * @return Campaign|null
      */
-    public function getCampaign(): Campaign
+    public function getCampaign()
     {
         return $this->campaign;
     }
@@ -120,7 +120,7 @@ class Session extends Base
     /**
      * @return Conversion[]|null
      */
-    public function getConversions(): Conversion
+    public function getConversions()
     {
         return $this->conversions;
     }
