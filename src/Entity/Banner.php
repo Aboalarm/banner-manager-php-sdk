@@ -35,6 +35,11 @@ class Banner extends Base
     private $phoneNumber;
 
     /**
+     * @var string
+     */
+    private $previewUrl;
+
+    /**
      * @var BannerPosition[]|null
      */
     private $bannerPositions;
@@ -54,6 +59,7 @@ class Banner extends Base
             $this->text = $data['text'];
             $this->link = $data['link'];
             $this->phoneNumber = $data['phone_number'];
+            $this->previewUrl = $data['preview_url'];
 
             if ($data['banner_positions']) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -161,6 +167,30 @@ class Banner extends Base
     public function setPhoneNumber(string $phoneNumber): Banner
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get PreviewUrl
+     *
+     * @return string
+     */
+    public function getPreviewUrl(): string
+    {
+        return $this->previewUrl;
+    }
+
+    /**
+     * Set PreviewUrl
+     *
+     * @param string $previewUrl
+     *
+     * @return $this
+     */
+    public function setPreviewUrl(string $previewUrl)
+    {
+        $this->previewUrl = $previewUrl;
 
         return $this;
     }
