@@ -40,9 +40,14 @@ class Banner extends Base
     private $previewUrl;
 
     /**
-     * @var BannerPosition[]|null
+     * @var BannerPosition[]
      */
     private $bannerPositions;
+
+    /**
+     * @var Campaign[]
+     */
+    private $campaigns;
 
     /**
      * Banner constructor.
@@ -61,12 +66,20 @@ class Banner extends Base
             $this->phoneNumber = $data['phone_number'];
             $this->previewUrl = $data['preview_url'];
 
-            if ($data['banner_positions']) {
+            if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
                     $this->bannerPositions[] = new BannerPosition($bannerPosition);
                 }
             } else {
-                $this->bannerPositions = null;
+                $this->bannerPositions = [];
+            }
+
+            if (isset($data['campaigns']) && is_array($data['campaigns'])) {
+                foreach ($data['campaigns'] as $campaign) {
+                    $this->campaigns[] = new Campaign($campaign);
+                }
+            } else {
+                $this->campaigns = [];
             }
         }
     }
@@ -216,6 +229,30 @@ class Banner extends Base
     }
 
     /**
+     * Get Campaigns
+     *
+     * @return Campaign[]
+     */
+    public function getCampaigns(): array
+    {
+        return $this->campaigns;
+    }
+
+    /**
+     * Set Campaigns
+     *
+     * @param Campaign[] $campaigns
+     *
+     * @return $this
+     */
+    public function setCampaigns(array $campaigns)
+    {
+        $this->campaigns = $campaigns;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -240,13 +277,6 @@ class Banner extends Base
 
         if($this->phoneNumber) {
             $data['phone_number'] = $this->phoneNumber;
-        }
-
-        if ($this->bannerPositions) {
-            $data['banner_positions'] = [];
-            foreach ($this->bannerPositions as $bannerPosition) {
-                $data['banner_positions'][] = $bannerPosition->toArray();
-            }
         }
 
         return $data;
