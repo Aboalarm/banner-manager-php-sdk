@@ -80,6 +80,11 @@ class ClientBannersTest extends TestCase
             [$storedCampaign->getId()]
         );
 
+        // Check campaign sub object
+        $getBanner = BannerSDK::getBanner($storedBanner->getId());
+        $getCampaigns = $getBanner->getCampaigns();
+        $this->assertEquals($storedCampaign->getId(), $getCampaigns[0]->getId());
+
         $this->assertCount(1, $response);
         $this->assertEquals($storedCampaign->getId(), $response[0]['campaign']);
         $this->assertEquals('ok', $response[0]['status']);
