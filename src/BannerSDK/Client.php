@@ -203,6 +203,41 @@ class Client
     }
 
     /**
+     * Post multiple banner positions to be assigned to a banner
+     *
+     * @param string $identifier          Banner identifier
+     * @param array  $positionIdentifiers Array with position identifiers to add
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postBannerBannerPositions(string $identifier, array $positionIdentifiers)
+    {
+        $uri = '/api/banners/'.$identifier.'/banner-positions';
+        $formParams = ['positions' => $positionIdentifiers];
+
+        return $this->doPostRequest($uri, $formParams);
+    }
+
+    /**
+     * Remove a banner position from banner
+     *
+     * @param string $bannerIdentifier
+     * @param string $positionIdentifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function removeBannerPositionFromBanner(string $bannerIdentifier, string $positionIdentifier)
+    {
+        $uri = '/api/banners/'.$bannerIdentifier.'/banner-positions/'.$positionIdentifier;
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
      * Get all campaigns.
      *
      * @return PaginatedCollection Campaign collection.
@@ -399,6 +434,41 @@ class Client
     public function deleteBannerPosition(string $identifier)
     {
         $uri = '/api/banner-positions/'.$identifier;
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
+     * Post multiple banners to be assigned to a position
+     *
+     * @param string $identifier        BannerPosition identifier
+     * @param array  $bannerIdentifiers Array with banner identifiers to add
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postBannerPositionBanners(string $identifier, array $bannerIdentifiers)
+    {
+        $uri = '/api/banner-positions/'.$identifier.'/banners';
+        $formParams = ['banners' => $bannerIdentifiers];
+
+        return $this->doPostRequest($uri, $formParams);
+    }
+
+    /**
+     * Remove a banner from banner position
+     *
+     * @param string $positionIdentifier
+     * @param string $bannerIdentifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function removeBannerFromBannerPosition(string $positionIdentifier, string $bannerIdentifier)
+    {
+        $uri = '/api/banner-positions/'.$positionIdentifier.'/banners/'.$bannerIdentifier;
 
         return $this->doDeleteRequest($uri);
     }
