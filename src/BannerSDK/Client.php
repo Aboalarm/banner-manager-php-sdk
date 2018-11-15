@@ -11,6 +11,7 @@ use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Class Client
@@ -107,6 +108,35 @@ class Client
 
         return new Banner($data);
     }
+
+    /**
+     * Upload banner
+     *
+     * @param Banner $banner
+     * @param UploadedFile $file
+     *
+     * @return Banner
+     *
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function uploadBanner(Banner $banner, UploadedFile $file)
+    {
+        $multipart = [
+            'name' => 'image',
+            'contents' => fopen($file->getRealPath(), 'r'),
+            'filename' => $file->getClientOriginalName()
+        ];
+
+        $data = $this->doMultipartRequest('/api/banners/' . $banner->getId() . '/upload', [
+            $multipart
+        ]);
+
+        if(isset($data[0]) && $data[0] === 'OK') {
+            return $this->getBanner($banner->getId());
+        }
+    }
+
 
     /**
      * @param Banner $banner
@@ -655,12 +685,47 @@ class Client
     }
 
     /**
+     * Do Multipart request
+     *
+     * Note:
+     * multipart cannot be used with the form_params option. You will need to use one or the other.
+     * Use form_params for application/x-www-form-urlencoded requests, and multipart for multipart/form-data requests.
+     * This option cannot be used with body, form_params, or json
+     *
+     * See: http://docs.guzzlephp.org/en/stable/request-options.html#multipart
+     *
+     * @param string $uri
+     * @param array $multipart
+     *
+     * @return array
+     *
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    private function doMultipartRequest(string $uri, array $multipart)
+    {
+        $response = $this->doRequest('POST', $uri, null, null, $multipart);
+
+        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
      * Send a request to the API.
      *
-     * @param  string    $method      The HTTP method.
-     * @param  string    $endpoint    The endpoint.
-     * @param  array     $queryParams The query params to send with the request.
-     * @param array|null $formParams  The form params to send in POST requests.
+     * @param  string $method The HTTP method.
+     * @param  string $endpoint The endpoint.
+     * @param  array $queryParams The query params to send with the request.
+     * @param array|null $formParams The form params to send in POST requests.
+     * @param array|null $multipart The multiform params to send in POST request
+     *
+     * See: http://docs.guzzlephp.org/en/stable/request-options.html#multipart
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws GuzzleException
@@ -669,7 +734,8 @@ class Client
         $method,
         $endpoint,
         array $queryParams = null,
-        array $formParams = null
+        array $formParams = null,
+        array $multipart = null
     ) {
         $options = [];
         if (!empty($queryParams)) {
@@ -678,6 +744,10 @@ class Client
 
         if (!empty($formParams)) {
             $options['form_params'] = $formParams;
+        }
+
+        if (!empty($multipart)) {
+            $options['multipart'] = $multipart;
         }
 
         return $this->http->request($method, $endpoint, $options);
