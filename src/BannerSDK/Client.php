@@ -605,6 +605,41 @@ class Client
     }
 
     /**
+     * Post multiple campaigns to be assigned to an ab-test
+     *
+     * @param string $identifier          ABtest identifier
+     * @param array  $campaignIdentifiers Array with campaign identifiers to add
+     *
+     * @return array
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postABtestCampaigns(string $identifier, array $campaignIdentifiers)
+    {
+        $uri = '/api/ab-tests/'.$identifier.'/campaigns';
+        $formParams = ['campaigns' => $campaignIdentifiers];
+
+        return $this->doPostRequest($uri, $formParams);
+    }
+
+    /**
+     * Remove a campaign from ab-test
+     *
+     * @param string $abtestIdentifier
+     * @param string $campaignIdentifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function removeCampaignFromABTest(string $abtestIdentifier, string $campaignIdentifier)
+    {
+        $uri = '/api/ab-tests/'.$abtestIdentifier.'/campaigns/'.$campaignIdentifier;
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
      * Get rotation data for a given banner position name and returns the html to render.
      *
      * @param string $position Position name
