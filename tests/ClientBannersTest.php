@@ -36,6 +36,14 @@ class ClientBannersTest extends TestCase
         $storedBanner = BannerSDK::postBanner($banner);
         $this->assertInstanceOf(Banner::class, $storedBanner);
 
+        // Read Banner
+        $getBanner = BannerSDK::getBanner($storedBanner->getId());
+        $this->assertEquals($storedBanner->getId(), $getBanner->getId());
+        $this->assertEquals(
+            BannerSDK::getBaseUri() . '/preview/' . $storedBanner->getId() . '.jpg',
+            $getBanner->getPreviewUrl()
+        );
+
         $storedBanner->setName('EDITED BY PUT');
 
         /** @var Banner $updatedBanner */

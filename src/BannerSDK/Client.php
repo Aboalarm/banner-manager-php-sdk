@@ -57,6 +57,18 @@ class Client
     }
 
     /**
+     * Get base URI
+     *
+     * @return string
+     */
+    public function getBaseUri()
+    {
+        $config = $this->http->getConfig();
+
+        return isset($config['base_uri']) ? $config['base_uri'] : null;
+    }
+
+    /**
      * Get all banners.
      *
      * @return PaginatedCollection Banner collection.
