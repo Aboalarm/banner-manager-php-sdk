@@ -65,21 +65,19 @@ class Banner extends Base
             $this->link = $data['link'];
             $this->phoneNumber = $data['phone_number'];
             $this->previewUrl = $data['preview_url'];
+            $this->bannerPositions = [];
+            $this->campaigns = [];
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
                     $this->bannerPositions[] = new BannerPosition($bannerPosition);
                 }
-            } else {
-                $this->bannerPositions = [];
             }
 
             if (isset($data['campaigns']) && is_array($data['campaigns'])) {
                 foreach ($data['campaigns'] as $campaign) {
                     $this->campaigns[] = new Campaign($campaign);
                 }
-            } else {
-                $this->campaigns = [];
             }
         }
     }
