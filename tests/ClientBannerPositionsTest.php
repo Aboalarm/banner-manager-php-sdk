@@ -2,6 +2,7 @@
 
 namespace aboalarm\BannerManagerSdk\Test;
 
+use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 
@@ -65,5 +66,59 @@ class ClientBannerPositionsTest extends TestCase
         $this->assertEquals('EDITED BY PUT', $updatedPosition->getName());
 
         $this->assertTrue(BannerSDK::deleteBannerPosition($updatedPosition->getId()));
+    }
+
+    public function testPostDeleteBannersBannerPositions()
+    {
+        $banner = new Banner();
+
+        $banner->setName('test')
+            ->setPath('test.jpg')
+            ->setLink('http://www.example.com')
+            ->setPhoneNumber('0944532')
+            ->setText('Test Text');
+
+        /** @var Banner $storedBanner */
+        $storedBanner = BannerSDK::postBanner($banner);
+
+        $bannerPosition = new BannerPosition();
+
+        $bannerPosition->setDescription('test')
+            ->setName('test')
+            ->setDevice('mobile')
+            ->setViewPort('lg')
+            ->setWidth(320)
+            ->setHeight(1360);
+
+        /** @var BannerPosition $storedPosition */
+        $storedPosition = BannerSDK::postBannerPosition($bannerPosition);
+
+        $response = BannerSDK::postBannerPositionBanners(
+            $storedPosition->getId(),
+            [$storedBanner->getId()]
+        );
+
+        $this->assertCount(1, $response);
+        $this->assertEquals($storedBanner->getId(), $response[0]['banner']);
+        $this->assertEquals('ok', $response[0]['status']);
+        $this->assertEmpty($response[0]['message']);
+
+        // remove banner from banner position
+        $this->assertTrue(
+            BannerSDK::removeBannerFromBannerPosition(
+                $storedPosition->getId(),
+                $storedBanner->getId()
+            )
+        );
+
+        // fetch banner from API and assert the removal
+        /** @var Banner $storedBanner */
+        $storedBanner = BannerSDK::getBanner($storedBanner->getId());
+
+        $this->assertNull($storedBanner->getBannerPositions());
+
+        // Delete banner and bannerPosition after tests
+        BannerSDK::deleteBanner($storedBanner->getId());
+        BannerSDK::deleteBannerPosition($storedPosition->getId());
     }
 }
