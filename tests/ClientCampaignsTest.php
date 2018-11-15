@@ -4,7 +4,7 @@ namespace aboalarm\BannerManagerSdk\Test;
 
 use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
-use aboalarm\BannerManagerSdk\Entity\CampaignTiming;
+use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 
 use BannerSDK;
@@ -91,7 +91,7 @@ class ClientCampaignsTest extends TestCase
         BannerSDK::deleteCampaign($storedCampaign->getId());
     }
 
-    public function testCampaignTimingCRUD()
+    public function testTimingCRUD()
     {
         $campaign = new Campaign();
 
@@ -102,24 +102,24 @@ class ClientCampaignsTest extends TestCase
         /** @var Campaign $campaign */
         $campaign = BannerSDK::postCampaign($campaign);
 
-        $campaignTiming = new CampaignTiming();
-        $campaignTiming->setType('workdays')
+        $timing = new Timing();
+        $timing->setType(Timing::TYPE_WORKDAYS)
             ->setTimeFrom('10:00')
             ->setTimeUntil('16:00');
 
-        /** @var CampaignTiming $storedTiming */
-        $storedTiming = BannerSDK::postCampaignTiming($campaign->getId(), $campaignTiming);
+        /** @var Timing $storedTiming */
+        $storedTiming = BannerSDK::postCampaignTiming($campaign->getId(), $timing);
 
-        $this->assertInstanceOf(CampaignTiming::class, $storedTiming);
+        $this->assertInstanceOf(Timing::class, $storedTiming);
 
         $storedTiming->setTimeFrom('09:00');
 
-        /** @var CampaignTiming $updatedTiming */
+        /** @var Timing $updatedTiming */
         $updatedTiming = BannerSDK::putCampaignTiming($campaign->getId(), $storedTiming);
         $this->assertEquals('09:00', $updatedTiming->getTimeFrom());
 
         $this->assertTrue(
-            BannerSDK::deleteCampaignTiming($campaign->getId(), $updatedTiming->getId())
+            BannerSDK::deleteCampaignTiming($campaign->getId(), $updatedTiming)
         );
 
         //Remove campaign

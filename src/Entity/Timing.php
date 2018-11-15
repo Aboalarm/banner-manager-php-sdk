@@ -4,11 +4,24 @@ namespace aboalarm\BannerManagerSdk\Entity;
 
 
 /**
- * Class CampaignTiming
+ * Class Timing
  * @package aboalarm\BannerManagerSdk\Entity
  */
-class CampaignTiming extends Base
+class Timing extends Base
 {
+    /**
+     * Possible type values
+     */
+    const TYPE_WORKDAYS = 'workdays';
+    const TYPE_WEEKENDS = 'weekends';
+    const TYPE_MONDAY  = 'Mon';
+    const TYPE_TUESDAY  = 'Tue';
+    const TYPE_WEDNESDAY  = 'Wed';
+    const TYPE_THURSDAY  = 'Thu';
+    const TYPE_FRIDAY  = 'Fri';
+    const TYPE_SATURDAY  = 'Sat';
+    const TYPE_SUNDAY  = 'Sun';
+
     /**
      * @var string|null
      */
@@ -35,14 +48,19 @@ class CampaignTiming extends Base
     private $timeUntil;
 
     /**
-     * @var string|null
-     */
-    private $weekday;
-
-    /**
      * @var bool|null
      */
     private $isHotline;
+
+    /**
+     * @var Campaign|null
+     */
+    private $campaign;
+
+    /**
+     * @var ABTest|null
+     */
+    private $abTest;
 
     /**
      * Banner constructor.
@@ -59,8 +77,9 @@ class CampaignTiming extends Base
             $this->dateUntil = $data['date_until'];
             $this->timeFrom = $data['time_from'];
             $this->timeUntil = $data['time_until'];
-            $this->weekday = $data['weekday'];
             $this->isHotline = boolval($data['is_hotline']);
+            $this->campaign = $data['campaign'] ? new Campaign($data['campaign']) : null;
+            $this->abTest = $data['ab_test'] ? new ABTest($data['ab_test']) : null;
         }
     }
 
@@ -73,11 +92,11 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @param string $type
+     * @param string|null $type
      *
-     * @return CampaignTiming
+     * @return Timing
      */
-    public function setType(string $type): CampaignTiming
+    public function setType(string $type = null): Timing
     {
         $this->type = $type;
 
@@ -93,11 +112,11 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @param string $dateFrom
+     * @param string|null $dateFrom
      *
-     * @return CampaignTiming
+     * @return Timing
      */
-    public function setDateFrom(string $dateFrom): CampaignTiming
+    public function setDateFrom(string $dateFrom = null): Timing
     {
         $this->dateFrom = $dateFrom;
 
@@ -113,11 +132,11 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @param string $dateUntil
+     * @param string|null $dateUntil
      *
-     * @return CampaignTiming
+     * @return Timing
      */
-    public function setDateUntil(string $dateUntil): CampaignTiming
+    public function setDateUntil(string $dateUntil = null): Timing
     {
         $this->dateUntil = $dateUntil;
 
@@ -133,11 +152,11 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @param string $timeFrom
+     * @param string|null $timeFrom
      *
-     * @return CampaignTiming
+     * @return Timing
      */
-    public function setTimeFrom(string $timeFrom): CampaignTiming
+    public function setTimeFrom(string $timeFrom = null): Timing
     {
         $this->timeFrom = $timeFrom;
 
@@ -153,33 +172,13 @@ class CampaignTiming extends Base
     }
 
     /**
-     * @param string $timeUntil
+     * @param string|null $timeUntil
      *
-     * @return CampaignTiming
+     * @return Timing
      */
-    public function setTimeUntil(string $timeUntil): CampaignTiming
+    public function setTimeUntil(string $timeUntil = null): Timing
     {
         $this->timeUntil = $timeUntil;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getWeekday()
-    {
-        return $this->weekday;
-    }
-
-    /**
-     * @param string $weekday
-     *
-     * @return CampaignTiming
-     */
-    public function setWeekday(string $weekday): CampaignTiming
-    {
-        $this->weekday = $weekday;
 
         return $this;
     }
@@ -195,12 +194,58 @@ class CampaignTiming extends Base
     /**
      * @param bool $isHotline
      *
-     * @return CampaignTiming
+     * @return Timing
      */
-    public function setIsHotline(bool $isHotline): CampaignTiming
+    public function setIsHotline(bool $isHotline = false): Timing
     {
         $this->isHotline = $isHotline;
 
+        return $this;
+    }
+
+    /**
+     * Get Campaign
+     *
+     * @return Campaign|null
+     */
+    public function getCampaign()
+    {
+        return $this->campaign;
+    }
+
+    /**
+     * Set Campaign
+     *
+     * @param Campaign|null $campaign
+     *
+     * @return $this
+     */
+    public function setCampaign(Campaign $campaign = null)
+    {
+        $this->campaign = $campaign;
+        return $this;
+    }
+
+    /**
+     * Get AbTest
+     *
+     * @return ABTest|null
+     */
+    public function getAbTest()
+    {
+        return $this->abTest;
+    }
+
+    /**
+     * Set AbTest
+     *
+     * @param ABTest|null $abTest
+     *
+     * @return $this
+     */
+    public function setAbTest(ABTest $abTest = null)
+    {
+        $this->abTest = $abTest;
         return $this;
     }
 
@@ -229,10 +274,6 @@ class CampaignTiming extends Base
 
         if ($this->timeUntil) {
             $data['time_until'] = $this->timeUntil;
-        }
-
-        if ($this->weekday) {
-            $data['weekday'] = $this->weekday;
         }
 
         if ($this->isHotline) {

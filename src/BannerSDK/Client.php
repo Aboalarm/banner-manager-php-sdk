@@ -7,7 +7,7 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Base;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
-use aboalarm\BannerManagerSdk\Entity\CampaignTiming;
+use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 use GuzzleHttp\Client as Http;
@@ -369,48 +369,48 @@ class Client
     }
 
     /**
-     * @param string         $campaignIdentifier
-     * @param CampaignTiming $timing
+     * @param string $campaignIdentifier
+     * @param Timing $timing
      *
-     * @return CampaignTiming
+     * @return Timing
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function postCampaignTiming(string $campaignIdentifier, CampaignTiming $timing)
+    public function postCampaignTiming(string $campaignIdentifier, Timing $timing)
     {
         $uri = '/api/campaigns/'.$campaignIdentifier.'/timings';
         $data = $this->doPostRequest($uri, $timing->toArray());
 
-        return new CampaignTiming($data);
+        return new Timing($data);
     }
 
     /**
-     * @param string         $campaignIdentifier
-     * @param CampaignTiming $timing
+     * @param string $campaignIdentifier
+     * @param Timing $timing
      *
-     * @return CampaignTiming
+     * @return Timing
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function putCampaignTiming(string $campaignIdentifier, CampaignTiming $timing)
+    public function putCampaignTiming(string $campaignIdentifier, Timing $timing)
     {
         $uri = '/api/campaigns/'.$campaignIdentifier.'/timings/'.$timing->getId();
         $data = $this->doPutRequest($uri, $timing);
 
-        return new CampaignTiming($data);
+        return new Timing($data);
     }
 
     /**
-     * @param string         $campaignIdentifier
-     * @param CampaignTiming $timing
+     * @param string $campaignIdentifier
+     * @param Timing $timing
      *
      * @return bool
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function deleteCampaignTiming(string $campaignIdentifier, $timingIdentifier)
+    public function deleteCampaignTiming(string $campaignIdentifier, Timing $timing)
     {
-        $uri = '/api/campaigns/'.$campaignIdentifier.'/timings/'.$timingIdentifier;
+        $uri = '/api/campaigns/'.$campaignIdentifier.'/timings/'.$timing->getId();
 
         return $this->doDeleteRequest($uri);
     }
