@@ -95,7 +95,7 @@ class ClientCampaignsTest extends TestCase
         // fetch campaign from API and assert the removal
         $storedCampaign = BannerSDK::getCampaign($storedCampaign->getId());
 
-        $this->assertNull($storedCampaign->getBanners());
+        $this->assertEmpty($storedCampaign->getBanners());
 
         // Delete banner and campaign after tests
         BannerSDK::deleteBanner($storedBanner->getId());

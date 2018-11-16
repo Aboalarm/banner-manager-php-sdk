@@ -31,6 +31,8 @@ class ABTest extends Base
      */
     public function __construct(array $data = null)
     {
+        $this->campaigns = [];
+
         if ($data) {
             parent::__construct($data);
 
@@ -41,8 +43,6 @@ class ABTest extends Base
                 foreach ($data['campaigns'] as $campaign) {
                     $this->campaigns[] = new Campaign($campaign);
                 }
-            } else {
-                $this->campaigns = null;
             }
         }
     }
@@ -88,9 +88,9 @@ class ABTest extends Base
     }
 
     /**
-     * @return Campaign[]|null
+     * @return Campaign[]
      */
-    public function getCampaigns()
+    public function getCampaigns(): array
     {
         return $this->campaigns;
     }
@@ -120,13 +120,6 @@ class ABTest extends Base
 
         if($this->description) {
             $data['description'] = $this->description;
-        }
-
-        if ($this->campaigns) {
-            $data['campaigns'] = [];
-            foreach ($this->campaigns as $campaign) {
-                $data['campaigns'][] = $campaign->toArray();
-            }
         }
 
         return $data;

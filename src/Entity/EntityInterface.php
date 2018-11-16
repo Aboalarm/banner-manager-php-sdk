@@ -32,6 +32,13 @@ interface EntityInterface
     public function getUpdatedAt();
 
     /**
+     * True if new (not persisted/no ID)
+     *
+     * @return boolean
+     */
+    public function isNew();
+
+    /**
      * Hydrate model to array
      *
      * @return array
