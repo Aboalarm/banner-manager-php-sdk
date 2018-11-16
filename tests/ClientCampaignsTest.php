@@ -6,7 +6,6 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
-
 use BannerSDK;
 
 class ClientCampaignsTest extends TestCase
@@ -16,13 +15,13 @@ class ClientCampaignsTest extends TestCase
         $filter = [
             'search' => 'polar',
             'fields' => [
-                'weight' => 1
-            ]
+                'weight' => 1,
+            ],
         ];
 
         $sort = [
             'name' => 'createdAt',
-            'dir' => 'DESC'
+            'dir' => 'DESC',
         ];
 
         /** @var PaginatedCollection $campaigns */

@@ -36,7 +36,7 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri The API base uri
+     * @param string $baseUri  The API base uri
      * @param string $username The API user username.
      * @param string $password The API user password.
      */
@@ -147,7 +147,7 @@ class Client
     /**
      * Upload banner
      *
-     * @param Banner $banner
+     * @param Banner       $banner
      * @param UploadedFile $file
      *
      * @return Banner
@@ -208,8 +208,8 @@ class Client
     /**
      * Post multiple campaigns to be assigned to a banner
      *
-     * @param string $identifier Banner identifier
-     * @param array $campaignIdentifiers Array with campaign identifiers to add
+     * @param string $identifier          Banner identifier
+     * @param array  $campaignIdentifiers Array with campaign identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -243,8 +243,8 @@ class Client
     /**
      * Post multiple banner positions to be assigned to a banner
      *
-     * @param string $identifier Banner identifier
-     * @param array $positionIdentifiers Array with position identifiers to add
+     * @param string $identifier          Banner identifier
+     * @param array  $positionIdentifiers Array with position identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -385,8 +385,8 @@ class Client
     /**
      * Post multiple banners to be assigned to a campaign
      *
-     * @param string $identifier Campaign identifier
-     * @param array $bannerIdentifiers Array with banner identifiers to add
+     * @param string $identifier        Campaign identifier
+     * @param array  $bannerIdentifiers Array with banner identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -550,8 +550,8 @@ class Client
     /**
      * Post multiple banners to be assigned to a position
      *
-     * @param string $identifier BannerPosition identifier
-     * @param array $bannerIdentifiers Array with banner identifiers to add
+     * @param string $identifier        BannerPosition identifier
+     * @param array  $bannerIdentifiers Array with banner identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -670,8 +670,8 @@ class Client
     /**
      * Post multiple campaigns to be assigned to an ab-test
      *
-     * @param string $identifier ABtest identifier
-     * @param array $campaignIdentifiers Array with campaign identifiers to add
+     * @param string $identifier          ABtest identifier
+     * @param array  $campaignIdentifiers Array with campaign identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -706,7 +706,7 @@ class Client
      * Get rotation data for a given banner position name and returns the html to render.
      *
      * @param string $position Position name
-     * @param string $session Session identifier
+     * @param string $session  Session identifier
      *
      * @return string HTML to render
      */
@@ -725,7 +725,7 @@ class Client
      * Get rotation data for a given banner position name and returns the raw data.
      *
      * @param string $position Position name
-     * @param string $session Session identifier
+     * @param string $session  Session identifier
      *
      * @return array Raw Data
      */
@@ -754,7 +754,7 @@ class Client
     /**
      * Get rotation data for a list of banner position names and returns the html to render.
      *
-     * @param array $positions
+     * @param array  $positions
      * @param string $session Session identifier
      *
      * @return string HTML to render
@@ -773,7 +773,7 @@ class Client
     /**
      * Get rotation data for a list of banner position names and return the raw data.
      *
-     * @param array $positions
+     * @param array  $positions
      * @param string $session Session identifier
      *
      * @return array Raw Data
@@ -807,7 +807,7 @@ class Client
     /**
      * Helper method to send GET requests
      *
-     * @param $url
+     * @param      $url
      *
      * @param null $queryParams
      *
@@ -833,7 +833,7 @@ class Client
      * Helper method to send POST requests
      *
      * @param string $uri
-     * @param array $formParams
+     * @param array  $formParams
      *
      * @return array
      * @throws BannerManagerException
@@ -857,7 +857,7 @@ class Client
      * Helper method to send PUT requests
      *
      * @param string $uri
-     * @param Base $entity
+     * @param Base   $entity
      *
      * @return array
      * @throws BannerManagerException
@@ -913,7 +913,7 @@ class Client
      * See: http://docs.guzzlephp.org/en/stable/request-options.html#multipart
      *
      * @param string $uri
-     * @param array $multipart
+     * @param array  $multipart
      *
      * @return array
      *
@@ -937,11 +937,11 @@ class Client
     /**
      * Send a request to the API.
      *
-     * @param  string $method The HTTP method.
-     * @param  string $endpoint The endpoint.
-     * @param  array $queryParams The query params to send with the request.
-     * @param array|null $formParams The form params to send in POST requests.
-     * @param array|null $multipart The multiform params to send in POST request
+     * @param  string    $method      The HTTP method.
+     * @param  string    $endpoint    The endpoint.
+     * @param  array     $queryParams The query params to send with the request.
+     * @param array|null $formParams  The form params to send in POST requests.
+     * @param array|null $multipart   The multiform params to send in POST request
      *
      * See: http://docs.guzzlephp.org/en/stable/request-options.html#multipart
      *
