@@ -47,7 +47,7 @@ abstract class Base implements EntityInterface
      */
     public function isNew()
     {
-        return $this->getId() ? true : false;
+        return $this->getId() ? false: true;
     }
 
     /**
