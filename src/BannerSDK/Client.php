@@ -36,7 +36,7 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri  The API base uri
+     * @param string $baseUri The API base uri
      * @param string $username The API user username.
      * @param string $password The API user password.
      */
@@ -82,11 +82,11 @@ class Client
     {
         $queryParams = [];
 
-        if($filter){
+        if ($filter) {
             $queryParams['filter'] = $filter;
         }
 
-        if($sort){
+        if ($sort) {
             $queryParams['sort'] = $sort;
         }
 
@@ -94,13 +94,20 @@ class Client
 
         $banners = [];
 
-        if($data['items']) {
+        if ($data['items']) {
             foreach ($data['items'] as $datum) {
                 $banners[] = new Banner($datum);
             }
         }
 
-        return new PaginatedCollection($banners, $data['count'], $data['total'], $data['page'], $data['total_pages'], $data['pages']);
+        return new PaginatedCollection(
+            $banners,
+            $data['count'],
+            $data['total'],
+            $data['page'],
+            $data['total_pages'],
+            $data['pages']
+        );
     }
 
     /**
@@ -153,14 +160,17 @@ class Client
         $multipart = [
             'name' => 'image',
             'contents' => fopen($file->getRealPath(), 'r'),
-            'filename' => $file->getClientOriginalName()
+            'filename' => $file->getClientOriginalName(),
         ];
 
-        $data = $this->doMultipartRequest('/api/banners/' . $banner->getId() . '/upload', [
-            $multipart
-        ]);
+        $data = $this->doMultipartRequest(
+            '/api/banners/'.$banner->getId().'/upload',
+            [
+                $multipart,
+            ]
+        );
 
-        if(isset($data[0]) && $data[0] === 'OK') {
+        if (isset($data[0]) && $data[0] === 'OK') {
             return $this->getBanner($banner->getId());
         }
     }
@@ -198,8 +208,8 @@ class Client
     /**
      * Post multiple campaigns to be assigned to a banner
      *
-     * @param string $identifier          Banner identifier
-     * @param array  $campaignIdentifiers Array with campaign identifiers to add
+     * @param string $identifier Banner identifier
+     * @param array $campaignIdentifiers Array with campaign identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -233,8 +243,8 @@ class Client
     /**
      * Post multiple banner positions to be assigned to a banner
      *
-     * @param string $identifier          Banner identifier
-     * @param array  $positionIdentifiers Array with position identifiers to add
+     * @param string $identifier Banner identifier
+     * @param array $positionIdentifiers Array with position identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -258,8 +268,10 @@ class Client
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function removeBannerPositionFromBanner(string $bannerIdentifier, string $positionIdentifier)
-    {
+    public function removeBannerPositionFromBanner(
+        string $bannerIdentifier,
+        string $positionIdentifier
+    ) {
         $uri = '/api/banners/'.$bannerIdentifier.'/banner-positions/'.$positionIdentifier;
 
         return $this->doDeleteRequest($uri);
@@ -268,21 +280,43 @@ class Client
     /**
      * Get all campaigns.
      *
+     * @param array|null $filter
+     * @param array|null $sort
+     *
      * @return PaginatedCollection Campaign collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getCampaigns()
+    public function getCampaigns($filter = null, $sort = null)
     {
-        $data = $this->doGetRequest('/api/campaigns');
+        $queryParams = [];
 
-        $campaigns = [];
-
-        foreach ($data as $datum) {
-            $campaigns[] = new Campaign($datum);
+        if ($filter) {
+            $queryParams['filter'] = $filter;
         }
 
-        return new PaginatedCollection($campaigns, count($campaigns), 1, 1);
+        if ($sort) {
+            $queryParams['sort'] = $sort;
+        }
+
+        $data = $this->doGetRequest('/api/campaigns', $queryParams);
+
+        $banners = [];
+
+        if ($data['items']) {
+            foreach ($data['items'] as $datum) {
+                $banners[] = new Campaign($datum);
+            }
+        }
+
+        return new PaginatedCollection(
+            $banners,
+            $data['count'],
+            $data['total'],
+            $data['page'],
+            $data['total_pages'],
+            $data['pages']
+        );
     }
 
     /**
@@ -351,8 +385,8 @@ class Client
     /**
      * Post multiple banners to be assigned to a campaign
      *
-     * @param string $identifier        Campaign identifier
-     * @param array  $bannerIdentifiers Array with banner identifiers to add
+     * @param string $identifier Campaign identifier
+     * @param array $bannerIdentifiers Array with banner identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -516,8 +550,8 @@ class Client
     /**
      * Post multiple banners to be assigned to a position
      *
-     * @param string $identifier        BannerPosition identifier
-     * @param array  $bannerIdentifiers Array with banner identifiers to add
+     * @param string $identifier BannerPosition identifier
+     * @param array $bannerIdentifiers Array with banner identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -541,8 +575,10 @@ class Client
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function removeBannerFromBannerPosition(string $positionIdentifier, string $bannerIdentifier)
-    {
+    public function removeBannerFromBannerPosition(
+        string $positionIdentifier,
+        string $bannerIdentifier
+    ) {
         $uri = '/api/banner-positions/'.$positionIdentifier.'/banners/'.$bannerIdentifier;
 
         return $this->doDeleteRequest($uri);
@@ -634,8 +670,8 @@ class Client
     /**
      * Post multiple campaigns to be assigned to an ab-test
      *
-     * @param string $identifier          ABtest identifier
-     * @param array  $campaignIdentifiers Array with campaign identifiers to add
+     * @param string $identifier ABtest identifier
+     * @param array $campaignIdentifiers Array with campaign identifiers to add
      *
      * @return array
      * @throws BannerManagerException
@@ -670,7 +706,7 @@ class Client
      * Get rotation data for a given banner position name and returns the html to render.
      *
      * @param string $position Position name
-     * @param string $session  Session identifier
+     * @param string $session Session identifier
      *
      * @return string HTML to render
      */
@@ -689,7 +725,7 @@ class Client
      * Get rotation data for a given banner position name and returns the raw data.
      *
      * @param string $position Position name
-     * @param string $session  Session identifier
+     * @param string $session Session identifier
      *
      * @return array Raw Data
      */
@@ -718,7 +754,7 @@ class Client
     /**
      * Get rotation data for a list of banner position names and returns the html to render.
      *
-     * @param array  $positions
+     * @param array $positions
      * @param string $session Session identifier
      *
      * @return string HTML to render
@@ -737,7 +773,7 @@ class Client
     /**
      * Get rotation data for a list of banner position names and return the raw data.
      *
-     * @param array  $positions
+     * @param array $positions
      * @param string $session Session identifier
      *
      * @return array Raw Data
@@ -797,7 +833,7 @@ class Client
      * Helper method to send POST requests
      *
      * @param string $uri
-     * @param array  $formParams
+     * @param array $formParams
      *
      * @return array
      * @throws BannerManagerException
@@ -821,7 +857,7 @@ class Client
      * Helper method to send PUT requests
      *
      * @param string $uri
-     * @param Base   $entity
+     * @param Base $entity
      *
      * @return array
      * @throws BannerManagerException
@@ -871,8 +907,8 @@ class Client
      *
      * Note:
      * multipart cannot be used with the form_params option. You will need to use one or the other.
-     * Use form_params for application/x-www-form-urlencoded requests, and multipart for multipart/form-data requests.
-     * This option cannot be used with body, form_params, or json
+     * Use form_params for application/x-www-form-urlencoded requests, and multipart for
+     * multipart/form-data requests. This option cannot be used with body, form_params, or json
      *
      * See: http://docs.guzzlephp.org/en/stable/request-options.html#multipart
      *
