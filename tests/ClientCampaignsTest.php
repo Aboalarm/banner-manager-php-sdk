@@ -6,20 +6,31 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
-
 use BannerSDK;
 
 class ClientCampaignsTest extends TestCase
 {
     public function testGetCampaigns()
     {
-        /** @var PaginatedCollection $campaignsCollection */
-        $campaignsCollection = BannerSDK::getCampaigns();
+        $filter = [
+            'search' => 'polar',
+            'fields' => [
+                'weight' => 1,
+            ],
+        ];
 
-        $this->assertInstanceOf(PaginatedCollection::class, $campaignsCollection);
+        $sort = [
+            'name' => 'createdAt',
+            'dir' => 'DESC',
+        ];
 
-        foreach ($campaignsCollection->getItems() as $campaign) {
-            $this->assertInstanceOf(Campaign::class, $campaign);
+        /** @var PaginatedCollection $campaigns */
+        $campaigns = BannerSDK::getCampaigns($filter, $sort);
+
+        $this->assertInstanceOf(PaginatedCollection::class, $campaigns);
+
+        foreach ($campaigns->getItems() as $banner) {
+            $this->assertInstanceOf(Campaign::class, $banner);
         }
     }
 
