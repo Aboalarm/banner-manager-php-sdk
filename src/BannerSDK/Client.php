@@ -71,21 +71,36 @@ class Client
     /**
      * Get all banners.
      *
+     * @param array|null $filter
+     * @param array|null $sort
+     *
      * @return PaginatedCollection Banner collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getBanners()
+    public function getBanners($filter = null, $sort = null)
     {
-        $data = $this->doGetRequest('/api/banners');
+        $queryParams = [];
+
+        if($filter){
+            $queryParams['filter'] = $filter;
+        }
+
+        if($sort){
+            $queryParams['sort'] = $sort;
+        }
+
+        $data = $this->doGetRequest('/api/banners', $queryParams);
 
         $banners = [];
 
-        foreach ($data as $datum) {
-            $banners[] = new Banner($datum);
+        if($data['items']) {
+            foreach ($data['items'] as $datum) {
+                $banners[] = new Banner($datum);
+            }
         }
 
-        return new PaginatedCollection($banners, count($banners), 1, 1);
+        return new PaginatedCollection($banners, $data['count'], $data['total'], $data['page'], $data['total_pages'], $data['pages']);
     }
 
     /**
@@ -758,13 +773,15 @@ class Client
      *
      * @param $url
      *
+     * @param null $queryParams
+     *
      * @return array
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    private function doGetRequest($url)
+    private function doGetRequest($url, $queryParams = null)
     {
-        $response = $this->doRequest('GET', $url);
+        $response = $this->doRequest('GET', $url, $queryParams);
 
         if ($response->getStatusCode() !== 200) {
             throw new BannerManagerException(
