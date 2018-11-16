@@ -301,16 +301,16 @@ class Client
 
         $data = $this->doGetRequest('/api/campaigns', $queryParams);
 
-        $banners = [];
+        $campaigns = [];
 
         if ($data['items']) {
             foreach ($data['items'] as $datum) {
-                $banners[] = new Campaign($datum);
+                $campaigns[] = new Campaign($datum);
             }
         }
 
         return new PaginatedCollection(
-            $banners,
+            $campaigns,
             $data['count'],
             $data['total'],
             $data['page'],
@@ -467,21 +467,43 @@ class Client
     /**
      * Get all banner positions.
      *
+     * @param array|null $filter
+     * @param array|null $sort
+     *
      * @return PaginatedCollection BannerPosition collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getBannerPositions()
+    public function getBannerPositions($filter = null, $sort = null)
     {
-        $data = $this->doGetRequest('/api/banner-positions');
+        $queryParams = [];
 
-        $positions = [];
-
-        foreach ($data as $datum) {
-            $positions[] = new BannerPosition($datum);
+        if ($filter) {
+            $queryParams['filter'] = $filter;
         }
 
-        return new PaginatedCollection($positions, count($positions), 1, 1);
+        if ($sort) {
+            $queryParams['sort'] = $sort;
+        }
+
+        $data = $this->doGetRequest('/api/banner-positions', $queryParams);
+
+        $bannerPositions = [];
+
+        if ($data['items']) {
+            foreach ($data['items'] as $datum) {
+                $bannerPositions[] = new BannerPosition($datum);
+            }
+        }
+
+        return new PaginatedCollection(
+            $bannerPositions,
+            $data['count'],
+            $data['total'],
+            $data['page'],
+            $data['total_pages'],
+            $data['pages']
+        );
     }
 
     /**

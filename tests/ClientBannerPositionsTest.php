@@ -12,13 +12,26 @@ class ClientBannerPositionsTest extends TestCase
 {
     public function testGetBannerPositions()
     {
-        /** @var PaginatedCollection $positionsCollection */
-        $positionsCollection = BannerSDK::getBannerPositions();
+        $filter = [
+            'search' => 'vertical',
+            'fields' => [
+                'device' => 'web',
+                'viewPort' => 'lg'
+            ]
+        ];
 
-        $this->assertInstanceOf(PaginatedCollection::class, $positionsCollection);
+        $sort = [
+            'name' => 'createdAt',
+            'dir' => 'DESC'
+        ];
 
-        foreach ($positionsCollection->getItems() as $position) {
-            $this->assertInstanceOf(BannerPosition::class, $position);
+        /** @var PaginatedCollection $banners */
+        $banners = BannerSDK::getBannerPositions($filter, $sort);
+
+        $this->assertInstanceOf(PaginatedCollection::class, $banners);
+
+        foreach ($banners->getItems() as $banner) {
+            $this->assertInstanceOf(BannerPosition::class, $banner);
         }
     }
 
