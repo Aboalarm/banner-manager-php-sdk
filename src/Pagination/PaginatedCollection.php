@@ -25,28 +25,42 @@ class PaginatedCollection
     /**
      * @var int
      */
-    private $currentPage;
+    private $page;
 
     /**
      * @var int
      */
-    private $totPages;
+    private $totalPages;
+
+    /**
+     * @var array
+     */
+    private $pages;
 
     /**
      * PaginatedCollection constructor.
      *
      * @param array $items
-     * @param int   $total
-     * @param int   $currentPage
-     * @param int   $totPages
+     * @param int $count
+     * @param int $total
+     * @param int $currentPage
+     * @param int $totPages
+     * @param array $pages
      */
-    public function __construct(array $items, int $total, int $currentPage, int $totPages)
-    {
+    public function __construct(
+        array $items,
+        int $count,
+        int $total,
+        int $currentPage,
+        int $totPages,
+        array $pages
+    ) {
         $this->items = $items;
         $this->total = $total;
-        $this->count = count($items);
-        $this->currentPage = $currentPage;
-        $this->totPages = $totPages;
+        $this->count = $count;
+        $this->page = $currentPage;
+        $this->totalPages = $totPages;
+        $this->pages = $pages;
     }
 
     /**
@@ -76,16 +90,24 @@ class PaginatedCollection
     /**
      * @return int
      */
-    public function getCurrentPage(): int
+    public function getPage(): int
     {
-        return $this->currentPage;
+        return $this->page;
     }
 
     /**
      * @return int
      */
-    public function getTotPages(): int
+    public function getTotalPages(): int
     {
-        return $this->totPages;
+        return $this->totalPages;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPages(): array
+    {
+        return $this->pages;
     }
 }

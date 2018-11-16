@@ -12,8 +12,21 @@ class ClientBannersTest extends TestCase
 {
     public function testGetBanners()
     {
+        $filter = [
+            'search' => 'polar',
+            'fields' => [
+                'status' => 'new',
+                'approved' => 0
+            ]
+        ];
+
+        $sort = [
+            'name' => 'createdAt',
+            'dir' => 'DESC'
+        ];
+
         /** @var PaginatedCollection $banners */
-        $banners = BannerSDK::getBanners();
+        $banners = BannerSDK::getBanners($filter, $sort);
 
         $this->assertInstanceOf(PaginatedCollection::class, $banners);
 
