@@ -56,6 +56,9 @@ class Banner extends Base
      */
     public function __construct(array $data = null)
     {
+        $this->bannerPositions = [];
+        $this->campaigns = [];
+
         if($data) {
             parent::__construct($data);
 
@@ -65,8 +68,6 @@ class Banner extends Base
             $this->link = $data['link'];
             $this->phoneNumber = $data['phone_number'];
             $this->previewUrl = $data['preview_url'];
-            $this->bannerPositions = [];
-            $this->campaigns = [];
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {

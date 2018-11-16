@@ -240,11 +240,6 @@ class BannerPosition extends Base
             $data['height'] = $this->height;
         }
 
-        if ($this->parent) {
-            $data['parent'] = [];
-            $data['parent'] = $this->parent->toArray();
-        }
-
         return $data;
     }
 }

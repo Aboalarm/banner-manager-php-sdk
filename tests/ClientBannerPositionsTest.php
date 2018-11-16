@@ -115,7 +115,7 @@ class ClientBannerPositionsTest extends TestCase
         /** @var Banner $storedBanner */
         $storedBanner = BannerSDK::getBanner($storedBanner->getId());
 
-        $this->assertNull($storedBanner->getBannerPositions());
+        $this->assertEmpty($storedBanner->getBannerPositions());
 
         // Delete banner and bannerPosition after tests
         BannerSDK::deleteBanner($storedBanner->getId());

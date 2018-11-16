@@ -48,6 +48,9 @@ class Campaign extends Base
      */
     public function __construct(array $data = null)
     {
+        $this->banners = [];
+        $this->timings = [];
+
         if ($data) {
             parent::__construct($data);
 
@@ -59,16 +62,12 @@ class Campaign extends Base
                 foreach ($data['banners'] as $banner) {
                     $this->banners[] = new Banner($banner);
                 }
-            } else {
-                $this->banners = null;
             }
 
             if ($data['campaign_timings']) {
                 foreach ($data['campaign_timings'] as $timing) {
                     $this->timings[] = new Timing($timing);
                 }
-            } else {
-                $this->timings = null;
             }
 
             if ($data['ab_test']) {
@@ -140,9 +139,9 @@ class Campaign extends Base
     }
 
     /**
-     * @return Banner[]|null
+     * @return Banner[]
      */
-    public function getBanners()
+    public function getBanners(): array
     {
         return $this->banners;
     }
@@ -160,9 +159,9 @@ class Campaign extends Base
     }
 
     /**
-     * @return Timing[]|null
+     * @return Timing[]
      */
-    public function getTimings()
+    public function getTimings(): array
     {
         return $this->timings;
     }
@@ -216,25 +215,6 @@ class Campaign extends Base
 
         if ($this->weight) {
             $data['weight'] = $this->weight;
-        }
-
-        if ($this->banners) {
-            $data['banners'] = [];
-            foreach ($this->banners as $banner) {
-                $data['banners'][] = $banner->toArray();
-            }
-        }
-
-        if ($this->timings) {
-            $data['campaign_timings'] = [];
-            foreach ($this->timings as $timing) {
-                $data['campaign_timings'][] = $timing->toArray();
-            }
-        }
-
-        if ($this->abTest) {
-            $data['ab_test'] = [];
-            $data['ab_test'] = $this->abTest->toArray();
         }
 
         return $data;

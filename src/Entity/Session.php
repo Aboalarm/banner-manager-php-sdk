@@ -26,7 +26,7 @@ class Session extends Base
 
 
     /**
-     * @var Conversion[]|null
+     * @var Conversion[]
      */
     private $conversions;
 
@@ -37,6 +37,8 @@ class Session extends Base
      */
     public function __construct(array $data = null)
     {
+        $this->conversions = [];
+
         if ($data) {
             parent::__construct($data);
 
@@ -53,8 +55,6 @@ class Session extends Base
                 foreach ($data['conversions'] as $conversion) {
                     $this->conversions[] = new Conversion($conversion);
                 }
-            } else {
-                $this->conversions = null;
             }
         }
     }
@@ -120,9 +120,9 @@ class Session extends Base
     }
 
     /**
-     * @return Conversion[]|null
+     * @return Conversion[]
      */
-    public function getConversions()
+    public function getConversions(): array
     {
         return $this->conversions;
     }
@@ -149,18 +149,6 @@ class Session extends Base
 
         if ($this->external) {
             $data['external'] = $this->external;
-        }
-
-        if ($this->campaign) {
-            $data['campaign'] = [];
-            $data['campaign'] = $this->campaign->toArray();
-        }
-
-        if ($this->conversions) {
-            $data['conversions'] = [];
-            foreach ($this->conversions as $conversion) {
-                $data['conversions'][] = $conversion->toArray();
-            }
         }
     }
 }

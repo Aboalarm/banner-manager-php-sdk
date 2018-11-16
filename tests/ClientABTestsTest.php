@@ -79,7 +79,7 @@ class ClientABTestsTest extends TestCase
         // fetch abtest from API and assert the removal
         $storedABTest = BannerSDK::getABTest($storedABTest->getId());
 
-        $this->assertNull($storedABTest->getCampaigns());
+        $this->assertEmpty($storedABTest->getCampaigns());
 
         // Delete banner and campaign after tests
         BannerSDK::deleteABTest($storedABTest->getId());
