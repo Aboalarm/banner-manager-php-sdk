@@ -12,13 +12,23 @@ class ClientABTestsTest extends TestCase
 {
     public function testGetABTests()
     {
-        /** @var PaginatedCollection $abtestCollection */
-        $abtestCollection = BannerSDK::getABTests();
+        $filter = [
+            'search' => 'polar',
+            'fields' => [],
+        ];
 
-        $this->assertInstanceOf(PaginatedCollection::class, $abtestCollection);
+        $sort = [
+            'name' => 'createdAt',
+            'dir' => 'DESC',
+        ];
 
-        foreach ($abtestCollection->getItems() as $abtest) {
-            $this->assertInstanceOf(ABTest::class, $abtest);
+        /** @var PaginatedCollection $campaigns */
+        $campaigns = BannerSDK::getABTests($filter, $sort);
+
+        $this->assertInstanceOf(PaginatedCollection::class, $campaigns);
+
+        foreach ($campaigns->getItems() as $banner) {
+            $this->assertInstanceOf(ABTest::class, $banner);
         }
     }
 
