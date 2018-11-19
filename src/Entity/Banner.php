@@ -186,9 +186,9 @@ class Banner extends Base
     /**
      * Get PreviewUrl
      *
-     * @return string
+     * @return string|null
      */
-    public function getPreviewUrl(): string
+    public function getPreviewUrl()
     {
         return $this->previewUrl;
     }
