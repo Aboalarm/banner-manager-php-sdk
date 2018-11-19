@@ -609,21 +609,43 @@ class Client
     /**
      * Get all ABtests.
      *
-     * @return PaginatedCollection ABTest collection.
+     * @param array|null $filter
+     * @param array|null $sort
+     *
+     * @return PaginatedCollection ABtests collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getABTests()
+    public function getABTests($filter = null, $sort = null)
     {
-        $data = $this->doGetRequest('/api/ab-tests');
+        $queryParams = [];
 
-        $abtests = [];
-
-        foreach ($data as $datum) {
-            $abtests[] = new ABTest($datum);
+        if ($filter) {
+            $queryParams['filter'] = $filter;
         }
 
-        return new PaginatedCollection($abtests, count($abtests), 1, 1);
+        if ($sort) {
+            $queryParams['sort'] = $sort;
+        }
+
+        $data = $this->doGetRequest('/api/ab-tests', $queryParams);
+
+        $bannerPositions = [];
+
+        if ($data['items']) {
+            foreach ($data['items'] as $datum) {
+                $bannerPositions[] = new ABTest($datum);
+            }
+        }
+
+        return new PaginatedCollection(
+            $bannerPositions,
+            $data['count'],
+            $data['total'],
+            $data['page'],
+            $data['total_pages'],
+            $data['pages']
+        );
     }
 
     /**
