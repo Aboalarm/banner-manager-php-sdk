@@ -40,6 +40,16 @@ class BannerPosition extends Base
     private $height;
 
     /**
+     * @var string|null
+     */
+    private $gaType;
+
+    /**
+     * @var string|null
+     */
+    private $gaKeyword;
+
+    /**
      * @var BannerPosition|null
      */
     private $parent;
@@ -60,6 +70,8 @@ class BannerPosition extends Base
             $this->description = $data['description'];
             $this->width = $data['width'];
             $this->height = $data['height'];
+            $this->gaType = $data['ga_type'];
+            $this->gaKeyword = $data['ga_keyword'];
 
             if ($data['parent']) {
                 $this->parent = new BannerPosition($data['parent']);
@@ -190,6 +202,54 @@ class BannerPosition extends Base
     }
 
     /**
+     * Get GaType
+     *
+     * @return null|string
+     */
+    public function getGaType()
+    {
+        return $this->gaType;
+    }
+
+    /**
+     * Set GaType
+     *
+     * @param null|string $gaType
+     *
+     * @return $this
+     */
+    public function setGaType(string $gaType = null)
+    {
+        $this->gaType = $gaType;
+
+        return $this;
+    }
+
+    /**
+     * Get GaKeyword
+     *
+     * @return null|string
+     */
+    public function getGaKeyword()
+    {
+        return $this->gaKeyword;
+    }
+
+    /**
+     * Set GaKeyword
+     *
+     * @param null|string $gaKeyword
+     *
+     * @return $this
+     */
+    public function setGaKeyword(string $gaKeyword = null)
+    {
+        $this->gaKeyword = $gaKeyword;
+
+        return $this;
+    }
+
+    /**
      * @return BannerPosition|null
      */
     public function getParent()
@@ -238,6 +298,14 @@ class BannerPosition extends Base
 
         if ($this->height) {
             $data['height'] = $this->height;
+        }
+
+        if ($this->gaType) {
+            $data['ga_type'] = $this->gaType;
+        }
+
+        if ($this->gaKeyword) {
+            $data['ga_keyword'] = $this->gaKeyword;
         }
 
         return $data;

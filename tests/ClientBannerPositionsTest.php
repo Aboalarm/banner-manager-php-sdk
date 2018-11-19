@@ -44,13 +44,19 @@ class ClientBannerPositionsTest extends TestCase
             ->setDevice('mobile')
             ->setViewPort('lg')
             ->setWidth(320)
-            ->setHeight(1360);
+            ->setHeight(1360)
+            ->setGaType('ga_type')
+            ->setGaKeyword('ga_keyword');
+
 
         /** @var BannerPosition $storedPosition */
         $storedPosition = BannerSDK::postBannerPosition($position);
         $this->assertInstanceOf(BannerPosition::class, $storedPosition);
 
         $storedPosition->setName('EDITED BY PUT');
+
+        $this->assertEquals('ga_type', $storedPosition->getGaType());
+        $this->assertEquals('ga_keyword', $storedPosition->getGaKeyword());
 
         /** @var BannerPosition $updatedPosition */
         $updatedPosition = BannerSDK::putBannerPosition($storedPosition);
