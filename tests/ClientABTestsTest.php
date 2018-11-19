@@ -5,6 +5,7 @@ namespace aboalarm\BannerManagerSdk\Test;
 
 use aboalarm\BannerManagerSdk\Entity\ABTest;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
+use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 use BannerSDK;
 
@@ -94,5 +95,39 @@ class ClientABTestsTest extends TestCase
         // Delete banner and campaign after tests
         BannerSDK::deleteABTest($storedABTest->getId());
         BannerSDK::deleteCampaign($storedCampaign->getId());
+    }
+
+    public function testTimingCRUD()
+    {
+        $abtest = new ABTest();
+
+        $abtest->setDescription('test')
+            ->setName('test');
+
+        /** @var ABtest $abtest */
+        $abtest = BannerSDK::postABTest($abtest);
+
+        $timing = new Timing();
+        $timing->setType(Timing::TYPE_WORKDAYS)
+            ->setTimeFrom('10:00')
+            ->setTimeUntil('16:00');
+
+        /** @var Timing $storedTiming */
+        $storedTiming = BannerSDK::postABTestTiming($abtest->getId(), $timing);
+
+        $this->assertInstanceOf(Timing::class, $storedTiming);
+
+        $storedTiming->setTimeFrom('09:00');
+
+        /** @var Timing $updatedTiming */
+        $updatedTiming = BannerSDK::putABTestTiming($abtest->getId(), $storedTiming);
+        $this->assertEquals('09:00', $updatedTiming->getTimeFrom());
+
+        $this->assertTrue(
+            BannerSDK::deleteABTestTiming($abtest->getId(), $updatedTiming)
+        );
+
+        //Remove abtest
+        BannerSDK::deleteABTest($abtest->getId());
     }
 }

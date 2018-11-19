@@ -747,6 +747,53 @@ class Client
     }
 
     /**
+     * @param string $abtestIdentifier
+     * @param Timing $timing
+     *
+     * @return Timing
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function postABTestTiming(string $abtestIdentifier, Timing $timing)
+    {
+        $uri = '/api/ab-tests/'.$abtestIdentifier.'/timings';
+        $data = $this->doPostRequest($uri, $timing->toArray());
+
+        return new Timing($data);
+    }
+
+    /**
+     * @param string $abtestIdentifier
+     * @param Timing $timing
+     *
+     * @return Timing
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function putABtestTiming(string $abtestIdentifier, Timing $timing)
+    {
+        $uri = '/api/ab-tests/'.$abtestIdentifier.'/timings/'.$timing->getId();
+        $data = $this->doPutRequest($uri, $timing);
+
+        return new Timing($data);
+    }
+
+    /**
+     * @param string $abtestIdenitfier
+     * @param Timing $timing
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function deleteABTestTiming(string $abtestIdenitfier, Timing $timing)
+    {
+        $uri = '/api/ab-tests/'.$abtestIdenitfier.'/timings/'.$timing->getId();
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
      * Get rotation data for a given banner position name and returns the html to render.
      *
      * @param string $position Position name
