@@ -71,6 +71,7 @@ class Client
     /**
      * Get all banners.
      *
+     * @param int        $page
      * @param array|null $filter
      * @param array|null $sort
      *
@@ -78,9 +79,13 @@ class Client
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getBanners($filter = null, $sort = null)
+    public function getBanners(int $page = 1, $filter = null, $sort = null)
     {
         $queryParams = [];
+
+        if ($page) {
+            $queryParams['page'] = $page;
+        }
 
         if ($filter) {
             $queryParams['filter'] = $filter;
@@ -280,6 +285,7 @@ class Client
     /**
      * Get all campaigns.
      *
+     * @param int        $page
      * @param array|null $filter
      * @param array|null $sort
      *
@@ -287,9 +293,13 @@ class Client
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getCampaigns($filter = null, $sort = null)
+    public function getCampaigns(int $page = 1, $filter = null, $sort = null)
     {
         $queryParams = [];
+
+        if ($page) {
+            $queryParams['page'] = $page;
+        }
 
         if ($filter) {
             $queryParams['filter'] = $filter;
@@ -467,6 +477,7 @@ class Client
     /**
      * Get all banner positions.
      *
+     * @param int        $page
      * @param array|null $filter
      * @param array|null $sort
      *
@@ -474,9 +485,13 @@ class Client
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getBannerPositions($filter = null, $sort = null)
+    public function getBannerPositions(int $page = 1, $filter = null, $sort = null)
     {
         $queryParams = [];
+
+        if ($page) {
+            $queryParams['page'] = $page;
+        }
 
         if ($filter) {
             $queryParams['filter'] = $filter;
@@ -609,6 +624,7 @@ class Client
     /**
      * Get all ABtests.
      *
+     * @param int        $page
      * @param array|null $filter
      * @param array|null $sort
      *
@@ -616,7 +632,7 @@ class Client
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getABTests($filter = null, $sort = null)
+    public function getABTests(int $page = 1, $filter = null, $sort = null)
     {
         $queryParams = [];
 
@@ -626,6 +642,10 @@ class Client
 
         if ($sort) {
             $queryParams['sort'] = $sort;
+        }
+
+        if ($page) {
+            $queryParams['page'] = $page;
         }
 
         $data = $this->doGetRequest('/api/ab-tests', $queryParams);
