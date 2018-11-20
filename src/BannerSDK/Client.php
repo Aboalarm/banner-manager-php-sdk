@@ -912,7 +912,15 @@ class Client
             $data = json_decode($json, true);
 
             if (!empty($data)) {
-                return new Rotation($data);
+                $rotation = new Rotation($data);
+
+                if($this->getProxyUri()) {
+                    $rotation->setBannerUrl(
+                        str_replace($this->getBaseUri(), $this->getProxyUri(), $rotation->getBannerUrl())
+                    );
+                }
+
+                return $rotation;
             }
 
         } catch(Exception $e) {

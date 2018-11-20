@@ -140,6 +140,20 @@ class Rotation
     }
 
     /**
+     * Set BannerUrl
+     *
+     * @param null|string $bannerUrl
+     *
+     * @return $this
+     */
+    public function setBannerUrl(string $bannerUrl)
+    {
+        $this->bannerUrl = $bannerUrl;
+
+        return $this;
+    }
+
+    /**
      * Get BannerLink
      *
      * @return null|string
