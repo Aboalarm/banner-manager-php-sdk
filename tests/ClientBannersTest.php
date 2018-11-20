@@ -6,27 +6,34 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
+use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use BannerSDK;
 
 class ClientBannersTest extends TestCase
 {
     public function testGetBanners()
     {
-        $filter = [
-            'search' => 'polar',
-            'fields' => [
-                'status' => 'new',
-                'approved' => 0
-            ]
-        ];
+        $options = new PaginationOptions();
 
-        $sort = [
-            'name' => 'createdAt',
-            'dir' => 'DESC'
-        ];
+        $options->setFilter(
+            [
+                'search' => 'polar',
+                'fields' => [
+                    'status' => 'new',
+                    'approved' => 0,
+                ],
+            ]
+        );
+
+        $options->setSort(
+            [
+                'name' => 'createdAt',
+                'dir' => 'DESC',
+            ]
+        );
 
         /** @var PaginatedCollection $banners */
-        $banners = BannerSDK::getBanners($filter, $sort);
+        $banners = BannerSDK::getBanners($options);
 
         $this->assertInstanceOf(PaginatedCollection::class, $banners);
 
@@ -53,7 +60,7 @@ class ClientBannersTest extends TestCase
         $getBanner = BannerSDK::getBanner($storedBanner->getId());
         $this->assertEquals($storedBanner->getId(), $getBanner->getId());
         $this->assertEquals(
-            BannerSDK::getBaseUri() . '/preview/' . $storedBanner->getId() . '.jpg',
+            BannerSDK::getBaseUri().'/preview/'.$storedBanner->getId().'.jpg',
             $getBanner->getPreviewUrl()
         );
 

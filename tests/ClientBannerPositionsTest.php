@@ -6,27 +6,34 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 
+use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use BannerSDK;
 
 class ClientBannerPositionsTest extends TestCase
 {
     public function testGetBannerPositions()
     {
-        $filter = [
-            'search' => 'vertical',
-            'fields' => [
-                'device' => 'web',
-                'viewPort' => 'lg'
-            ]
-        ];
+        $options = new PaginationOptions();
 
-        $sort = [
-            'name' => 'createdAt',
-            'dir' => 'DESC'
-        ];
+        $options->setFilter(
+            [
+                'search' => 'vertical',
+                'fields' => [
+                    'device' => 'web',
+                    'viewPort' => 'lg',
+                ],
+            ]
+        );
+
+        $options->setSort(
+            [
+                'name' => 'createdAt',
+                'dir' => 'DESC',
+            ]
+        );
 
         /** @var PaginatedCollection $banners */
-        $banners = BannerSDK::getBannerPositions($filter, $sort);
+        $banners = BannerSDK::getBannerPositions($options);
 
         $this->assertInstanceOf(PaginatedCollection::class, $banners);
 

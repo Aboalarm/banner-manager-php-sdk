@@ -12,6 +12,7 @@ use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 use Exception;
+use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
@@ -88,23 +89,25 @@ class Client
     /**
      * Get all banners.
      *
-     * @param array|null $filter
-     * @param array|null $sort
+     * @param PaginationOptions $options
      *
      * @return PaginatedCollection Banner collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getBanners($filter = null, $sort = null)
+    public function getBanners(PaginationOptions $options)
     {
         $queryParams = [];
 
-        if ($filter) {
-            $queryParams['filter'] = $filter;
+        $queryParams['page'] = $options->getPage();
+        $queryParams['limit'] = $options->getLimit();
+
+        if ($options->getFilter()) {
+            $queryParams['filter'] = $options->getFilter();
         }
 
-        if ($sort) {
-            $queryParams['sort'] = $sort;
+        if ($options->getSort()) {
+            $queryParams['sort'] = $options->getSort();
         }
 
         $data = $this->doGetRequest('/api/banners', $queryParams);
@@ -305,23 +308,25 @@ class Client
     /**
      * Get all campaigns.
      *
-     * @param array|null $filter
-     * @param array|null $sort
+     * @param PaginationOptions $options
      *
      * @return PaginatedCollection Campaign collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getCampaigns($filter = null, $sort = null)
+    public function getCampaigns(PaginationOptions $options)
     {
         $queryParams = [];
 
-        if ($filter) {
-            $queryParams['filter'] = $filter;
+        $queryParams['page'] = $options->getPage();
+        $queryParams['limit'] = $options->getLimit();
+
+        if ($options->getFilter()) {
+            $queryParams['filter'] = $options->getFilter();
         }
 
-        if ($sort) {
-            $queryParams['sort'] = $sort;
+        if ($options->getSort()) {
+            $queryParams['sort'] = $options->getSort();
         }
 
         $data = $this->doGetRequest('/api/campaigns', $queryParams);
@@ -492,23 +497,25 @@ class Client
     /**
      * Get all banner positions.
      *
-     * @param array|null $filter
-     * @param array|null $sort
+     * @param PaginationOptions $options
      *
      * @return PaginatedCollection BannerPosition collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getBannerPositions($filter = null, $sort = null)
+    public function getBannerPositions(PaginationOptions $options)
     {
         $queryParams = [];
 
-        if ($filter) {
-            $queryParams['filter'] = $filter;
+        $queryParams['page'] = $options->getPage();
+        $queryParams['limit'] = $options->getLimit();
+
+        if ($options->getFilter()) {
+            $queryParams['filter'] = $options->getFilter();
         }
 
-        if ($sort) {
-            $queryParams['sort'] = $sort;
+        if ($options->getSort()) {
+            $queryParams['sort'] = $options->getSort();
         }
 
         $data = $this->doGetRequest('/api/banner-positions', $queryParams);
@@ -634,23 +641,25 @@ class Client
     /**
      * Get all ABtests.
      *
-     * @param array|null $filter
-     * @param array|null $sort
+     * @param PaginationOptions $options
      *
      * @return PaginatedCollection ABtests collection.
      * @throws BannerManagerException
      * @throws GuzzleException
      */
-    public function getABTests($filter = null, $sort = null)
+    public function getABTests(PaginationOptions $options)
     {
         $queryParams = [];
 
-        if ($filter) {
-            $queryParams['filter'] = $filter;
+        $queryParams['page'] = $options->getPage();
+        $queryParams['limit'] = $options->getLimit();
+
+        if ($options->getFilter()) {
+            $queryParams['filter'] = $options->getFilter();
         }
 
-        if ($sort) {
-            $queryParams['sort'] = $sort;
+        if ($options->getSort()) {
+            $queryParams['sort'] = $options->getSort();
         }
 
         $data = $this->doGetRequest('/api/ab-tests', $queryParams);
