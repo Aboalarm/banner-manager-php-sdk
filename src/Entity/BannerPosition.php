@@ -55,12 +55,19 @@ class BannerPosition extends Base
     private $parent;
 
     /**
+     * @var Banner[]
+     */
+    private $banners;
+
+    /**
      * BannerPosition constructor.
      *
      * @param array $data Data from json response
      */
     public function __construct(array $data = null)
     {
+        $this->banners = [];
+
         if ($data) {
             parent::__construct($data);
 
@@ -77,6 +84,12 @@ class BannerPosition extends Base
                 $this->parent = new BannerPosition($data['parent']);
             } else {
                 $this->parent = null;
+            }
+
+            if ($data['banners']) {
+                foreach ($data['banners'] as $banner) {
+                    $this->banners[] = new Banner($banner);
+                }
             }
         }
     }
@@ -265,6 +278,30 @@ class BannerPosition extends Base
     public function setParent(BannerPosition $parent): BannerPosition
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get Banners
+     *
+     * @return Banner[]
+     */
+    public function getBanners()
+    {
+        return $this->banners;
+    }
+
+    /**
+     * Set Banners
+     *
+     * @param Banner[] $banners
+     *
+     * @return $this
+     */
+    public function setBanners(array $banners)
+    {
+        $this->banners = $banners;
 
         return $this;
     }
