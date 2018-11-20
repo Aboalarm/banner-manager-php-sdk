@@ -7,24 +7,31 @@ use aboalarm\BannerManagerSdk\Entity\ABTest;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
+use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use BannerSDK;
 
 class ClientABTestsTest extends TestCase
 {
     public function testGetABTests()
     {
-        $filter = [
-            'search' => 'polar',
-            'fields' => [],
-        ];
+        $options = new PaginationOptions();
 
-        $sort = [
-            'name' => 'createdAt',
-            'dir' => 'DESC',
-        ];
+        $options->setFilter(
+            [
+                'search' => 'polar',
+                'fields' => [],
+            ]
+        );
+
+        $options->setSort(
+            [
+                'name' => 'createdAt',
+                'dir' => 'DESC',
+            ]
+        );
 
         /** @var PaginatedCollection $campaigns */
-        $campaigns = BannerSDK::getABTests($filter, $sort);
+        $campaigns = BannerSDK::getABTests($options);
 
         $this->assertInstanceOf(PaginatedCollection::class, $campaigns);
 

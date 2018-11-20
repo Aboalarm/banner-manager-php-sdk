@@ -8,21 +8,6 @@ use BannerSDK;
 
 class BannerPackageFunctionTest extends TestCase
 {
-    /**
-     * Check that the multiply method returns correct result
-     * @return void
-     */
-    public function testGetBanners()
-    {
-        /** @var PaginatedCollection $bannersCollection */
-        $bannersCollection = BannerSDK::getBanners();
-        $this->assertInstanceOf(PaginatedCollection::class, $bannersCollection);
-
-        foreach ($bannersCollection->getItems() as $banner) {
-            $this->assertInstanceOf(Banner::class, $banner);
-        }
-    }
-
     public function testRenderBanner()
     {
         $this->assertNotEmpty(
