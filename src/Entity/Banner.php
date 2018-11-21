@@ -35,6 +35,11 @@ class Banner extends Base
     private $phoneNumber;
 
     /**
+     * @var bool
+     */
+    private $approved = false;
+
+    /**
      * @var string
      */
     private $previewUrl;
@@ -80,6 +85,10 @@ class Banner extends Base
             $this->previewUrl = isset($data['preview_url']) ? $data['preview_url'] : null;
             $this->views = isset($data['views']) ? $data['views'] : null;
             $this->clicks = isset($data['clicks']) ? $data['clicks'] : null;
+
+            if(isset($data['approved'])){
+                $this->approved = boolval($data['approved']);
+            }
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -191,6 +200,26 @@ class Banner extends Base
     public function setPhoneNumber(string $phoneNumber): Banner
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getApproved(): bool
+    {
+        return $this->approved;
+    }
+
+    /**
+     * @param bool $approved
+     *
+     * @return Banner
+     */
+    public function setApproved(bool $approved): Banner
+    {
+        $this->approved = $approved;
 
         return $this;
     }
@@ -309,6 +338,8 @@ class Banner extends Base
         if($this->phoneNumber) {
             $data['phone_number'] = $this->phoneNumber;
         }
+
+        $data['approved'] = $this->approved;
 
         return $data;
     }

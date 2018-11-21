@@ -50,7 +50,8 @@ class ClientBannersTest extends TestCase
             ->setPath('test.jpg')
             ->setLink('http://www.example.com')
             ->setPhoneNumber('0944532')
-            ->setText('Test Text');
+            ->setText('Test Text')
+            ->setApproved(true);
 
         /** @var Banner $storedBanner */
         $storedBanner = BannerSDK::postBanner($banner);
