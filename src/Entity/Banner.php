@@ -50,6 +50,16 @@ class Banner extends Base
     private $campaigns;
 
     /**
+     * @var int|null
+     */
+    private $views;
+
+    /**
+     * @var int|null
+     */
+    private $clicks;
+
+    /**
      * Banner constructor.
      *
      * @param array $data Data from json response
@@ -62,12 +72,14 @@ class Banner extends Base
         if($data) {
             parent::__construct($data);
 
-            $this->name = $data['name'];
-            $this->path = $data['path'];
-            $this->text = $data['text'];
-            $this->link = $data['link'];
-            $this->phoneNumber = $data['phone_number'];
-            $this->previewUrl = $data['preview_url'];
+            $this->name = isset($data['name']) ? $data['name'] : null;
+            $this->path = isset($data['path']) ? $data['path'] : null;
+            $this->text = isset($data['text']) ? $data['text'] : null;
+            $this->link = isset($data['link']) ? $data['link'] : null;
+            $this->phoneNumber = isset($data['phone_number']) ? $data['phone_number'] : null;
+            $this->previewUrl = isset($data['preview_url']) ? $data['preview_url'] : null;
+            $this->views = isset($data['views']) ? $data['views'] : null;
+            $this->clicks = isset($data['clicks']) ? $data['clicks'] : null;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -249,6 +261,26 @@ class Banner extends Base
         $this->campaigns = $campaigns;
 
         return $this;
+    }
+
+    /**
+     * Get Views
+     *
+     * @return int|null
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * Get Clicks
+     *
+     * @return int|null
+     */
+    public function getClicks()
+    {
+        return $this->clicks;
     }
 
     /**
