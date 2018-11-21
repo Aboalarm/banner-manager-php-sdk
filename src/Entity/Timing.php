@@ -282,4 +282,25 @@ class Timing extends Base
 
         return $data;
     }
+
+    /**
+     * Type map
+     *
+     * @return array
+     */
+    static public function getTypeMapping()
+    {
+        return [
+            '' => 'Immer',
+            static::TYPE_WORKDAYS => 'Werktags (Mo - Fr)',
+            static::TYPE_WEEKENDS => 'Wochende (Sa & So',
+            static::TYPE_MONDAY => 'Montags',
+            static::TYPE_TUESDAY => 'Dienstags',
+            static::TYPE_WEDNESDAY => 'Mittwochs',
+            static::TYPE_THURSDAY => 'Donnerstags',
+            static::TYPE_FRIDAY => 'Freitags',
+            static::TYPE_SATURDAY => 'Samstags',
+            static::TYPE_SUNDAY => 'Sonntags',
+        ];
+    }
 }

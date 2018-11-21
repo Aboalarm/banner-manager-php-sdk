@@ -54,23 +54,23 @@ class Campaign extends Base
         if ($data) {
             parent::__construct($data);
 
-            $this->name = $data['name'];
-            $this->description = $data['description'];
-            $this->weight = $data['weight'];
+            $this->name = isset($data['name']) ? $data['name'] : null;
+            $this->description = isset($data['description']) ? $data['description'] : null;
+            $this->weight = isset($data['weight']) ? $data['weight'] : null;
 
-            if ($data['banners']) {
+            if (isset($data['banners']) && $data['banners']) {
                 foreach ($data['banners'] as $banner) {
                     $this->banners[] = new Banner($banner);
                 }
             }
 
-            if ($data['campaign_timings']) {
+            if (isset($data['campaign_timings']) && $data['campaign_timings']) {
                 foreach ($data['campaign_timings'] as $timing) {
                     $this->timings[] = new Timing($timing);
                 }
             }
 
-            if ($data['ab_test']) {
+            if (isset($data['ab_test']) && $data['ab_test']) {
                 $this->abTest = new ABTest($data['ab_test']);
             } else {
                 $this->abTest = null;

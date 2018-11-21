@@ -25,6 +25,11 @@ class ABTest extends Base
     private $campaigns;
 
     /**
+     * @var Timing[]|null
+     */
+    private $timings;
+
+    /**
      * ABTest constructor.
      *
      * @param array $data Data from json response
@@ -32,6 +37,7 @@ class ABTest extends Base
     public function __construct(array $data = null)
     {
         $this->campaigns = [];
+        $this->timings = [];
 
         if ($data) {
             parent::__construct($data);
@@ -42,6 +48,12 @@ class ABTest extends Base
             if (isset($data['campaigns']) && $data['campaigns']) {
                 foreach ($data['campaigns'] as $campaign) {
                     $this->campaigns[] = new Campaign($campaign);
+                }
+            }
+
+            if (isset($data['timings']) && $data['timings']) {
+                foreach ($data['timings'] as $timing) {
+                    $this->timings[] = new Timing($timing);
                 }
             }
         }
@@ -103,6 +115,30 @@ class ABTest extends Base
     public function setCampaigns(array $campaigns): ABTest
     {
         $this->campaigns = $campaigns;
+
+        return $this;
+    }
+
+    /**
+     * Get Timings
+     *
+     * @return Timing[]|null
+     */
+    public function getTimings(): array
+    {
+        return $this->timings;
+    }
+
+    /**
+     * Set Timings
+     *
+     * @param Timing[]|null $timings
+     *
+     * @return $this
+     */
+    public function setTimings(array $timings)
+    {
+        $this->timings = $timings;
 
         return $this;
     }
