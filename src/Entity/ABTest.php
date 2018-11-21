@@ -39,7 +39,7 @@ class ABTest extends Base
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->description = isset($data['description']) ? $data['description'] : null;
 
-            if ($data['campaigns']) {
+            if (isset($data['campaigns']) && $data['campaigns']) {
                 foreach ($data['campaigns'] as $campaign) {
                     $this->campaigns[] = new Campaign($campaign);
                 }
