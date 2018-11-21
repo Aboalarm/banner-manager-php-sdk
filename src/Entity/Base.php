@@ -35,8 +35,8 @@ abstract class Base implements EntityInterface
     {
         if($data) {
             $this->id = $data['id'];
-            $this->createdAt = new DateTime($data['created_at']);
-            $this->updatedAt = new DateTime($data['updated_at']);
+            $this->createdAt = isset($data['created_at']) ? new DateTime($data['created_at']) : null;
+            $this->updatedAt = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;
         }
     }
 

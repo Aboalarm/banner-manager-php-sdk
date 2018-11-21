@@ -164,6 +164,19 @@ class Rotation
     }
 
     /**
+     * Set BannerLink
+     *
+     * @param null|string $bannerLink
+     *
+     * @return $this
+     */
+    public function setBannerLink(string $bannerLink)
+    {
+        $this->bannerLink = $bannerLink;
+        return $this;
+    }
+
+    /**
      * Get PhoneNumber
      *
      * @return null|string

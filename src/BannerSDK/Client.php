@@ -927,6 +927,9 @@ class Client
                     $rotation->setBannerUrl(
                         str_replace($this->getBaseUri(), $this->getProxyUri(), $rotation->getBannerUrl())
                     );
+                    $rotation->setBannerLink(
+                        str_replace($this->getBaseUri(), $this->getProxyUri(), $rotation->getBannerLink())
+                    );
                 }
 
                 return $rotation;

@@ -191,7 +191,7 @@ class Campaign extends Base
      *
      * @return Campaign
      */
-    public function setAbTest(ABTest $abTest): Campaign
+    public function setAbTest(ABTest $abTest = null): Campaign
     {
         $this->abTest = $abTest;
 
@@ -215,6 +215,10 @@ class Campaign extends Base
 
         if ($this->weight) {
             $data['weight'] = $this->weight;
+        }
+
+        if ($this->abTest instanceof ABTest) {
+            $data['ab_test'] = $this->abTest->getId();
         }
 
         return $data;
