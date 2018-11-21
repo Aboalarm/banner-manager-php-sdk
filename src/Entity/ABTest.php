@@ -36,8 +36,8 @@ class ABTest extends Base
         if ($data) {
             parent::__construct($data);
 
-            $this->name = $data['name'];
-            $this->description = $data['description'];
+            $this->name = isset($data['name']) ? $data['name'] : null;
+            $this->description = isset($data['description']) ? $data['description'] : null;
 
             if ($data['campaigns']) {
                 foreach ($data['campaigns'] as $campaign) {
