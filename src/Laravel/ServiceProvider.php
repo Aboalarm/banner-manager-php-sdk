@@ -37,7 +37,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 return new Client(
                     config()->get('banner.base_uri'),
                     config()->get('banner.username'),
-                    config()->get('banner.password')
+                    config()->get('banner.password'),
+                    config()->get('banner.proxy_uri')
                 );
             }
         );

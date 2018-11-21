@@ -7,9 +7,11 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Base;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
+use aboalarm\BannerManagerSdk\Entity\Rotation;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
+use Exception;
 use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
@@ -37,11 +39,12 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri  The API base uri
+     * @param string $baseUri The API base uri
      * @param string $username The API user username.
      * @param string $password The API user password.
+     * @param string|null $proxyUri The Proxy URI if API is behind a proxy
      */
-    public function __construct($baseUri, $username, $password)
+    public function __construct($baseUri, $username, $password, $proxyUri = null)
     {
         $this->http = new Http(
             [
@@ -53,8 +56,10 @@ class Client
                     $username,
                     $password,
                 ],
+                'proxy_uri' => $proxyUri
             ]
         );
+
     }
 
     /**
@@ -67,6 +72,18 @@ class Client
         $config = $this->http->getConfig();
 
         return isset($config['base_uri']) ? $config['base_uri'] : null;
+    }
+
+    /**
+     * Get proxy URI
+     *
+     * @return string|null
+     */
+    public function getProxyUri()
+    {
+        $config = $this->http->getConfig();
+
+        return (isset($config['proxy_uri']) && $config['proxy_uri']) ? $config['proxy_uri'] : null;
     }
 
     /**
@@ -127,7 +144,15 @@ class Client
         $data = $this->doGetRequest('/api/banners/'.$identifier);
 
         if (!empty($data)) {
-            return new Banner($data);
+            $banner = new Banner($data);
+
+            if($this->getProxyUri()) {
+                $banner->setPreviewUrl(
+                    str_replace($this->getBaseUri(), $this->getProxyUri(), $banner->getPreviewUrl())
+                );
+            }
+
+            return $banner;
         }
 
         throw new BannerManagerException("Error reading banner data");
@@ -873,16 +898,17 @@ class Client
     /**
      * Get rotation data for a list of banner position names and return the raw data.
      *
-     * @param array  $positions
+     * @param array $positions
      * @param string $session Session identifier
      *
-     * @return array Raw Data
+     * @return Rotation|null
+     * @throws GuzzleException
      */
-    public function getMultiplePositionsBanner(array $positions, $session = null): array
+    public function getMultiplePositionsBanner(array $positions, $session = null)
     {
-        $uri = '/api/rotation';
-
         try {
+            $uri = '/api/rotation';
+
             $params = [];
             if ($session) {
                 $params['session'] = $session;
@@ -891,17 +917,31 @@ class Client
             $params['positions'] = $positions;
 
             $response = $this->doRequest('GET', $uri, $params);
+            $json = $response->getBody()->getContents();
+            $data = json_decode($json, true);
 
-            if ($response->getStatusCode() === 200) {
-                return json_decode($response->getBody(), true);
+            if (!empty($data)) {
+                $rotation = new Rotation($data);
+
+                if($this->getProxyUri()) {
+                    $rotation->setBannerUrl(
+                        str_replace($this->getBaseUri(), $this->getProxyUri(), $rotation->getBannerUrl())
+                    );
+                }
+
+                return $rotation;
             }
-        } catch (GuzzleException $e) {
-            return [
-                'error' => 'Could not load banner for positions '.implode(', ', $positions),
-            ];
+
+        } catch(Exception $e) {
+            $rotation = new Rotation();
+            $rotation->setErrors([
+                $e->getMessage()
+            ]);
+
+            return $rotation;
         }
 
-        return [];
+        return null;
     }
 
     /**
