@@ -59,9 +59,11 @@ abstract class Base implements EntityInterface
     }
 
     /**
+     * Need to allow null to be able to copy objects
+     *
      * @param string $id
      */
-    public function setId(string $id)
+    public function setId(string $id = null)
     {
         $this->id = $id;
     }
