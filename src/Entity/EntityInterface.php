@@ -41,6 +41,9 @@ interface EntityInterface
     /**
      * Hydrate model to array
      *
+     * Note: For sub object just send the ID instead of the whole object.
+     * For sub object lists just send an array of IDs
+     *
      * @return array
      */
     public function toArray();

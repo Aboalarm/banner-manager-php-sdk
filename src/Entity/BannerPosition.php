@@ -55,6 +55,11 @@ class BannerPosition extends Base
     private $parent;
 
     /**
+     * @var BannerPosition[]
+     */
+    private $children;
+
+    /**
      * @var Banner[]
      */
     private $banners;
@@ -67,26 +72,32 @@ class BannerPosition extends Base
     public function __construct(array $data = null)
     {
         $this->banners = [];
+        $this->children = [];
+        $this->parent = null;
 
         if ($data) {
             parent::__construct($data);
 
-            $this->name = $data['name'];
-            $this->device = $data['device'];
-            $this->viewPort = $data['view_port'];
-            $this->description = $data['description'];
-            $this->width = $data['width'];
-            $this->height = $data['height'];
-            $this->gaType = $data['ga_type'];
-            $this->gaKeyword = $data['ga_keyword'];
+            $this->name = isset($data['name']) ? $data['name'] : null;
+            $this->device = isset($data['device']) ? $data['device'] : null;
+            $this->viewPort = isset($data['view_port']) ? $data['view_port'] : null;
+            $this->description = isset($data['description']) ? $data['description'] : null;
+            $this->width = isset($data['width']) ? $data['width'] : null;
+            $this->height = isset($data['height']) ? $data['height'] : null;
+            $this->gaType = isset($data['ga_type']) ? $data['ga_type'] : null;
+            $this->gaKeyword = isset($data['ga_keyword']) ? $data['ga_keyword'] : null;
 
-            if ($data['parent']) {
+            if (isset($data['parent']) && $data['parent']) {
                 $this->parent = new BannerPosition($data['parent']);
-            } else {
-                $this->parent = null;
             }
 
-            if ($data['banners']) {
+            if (isset($data['children']) && $data['children']) {
+                foreach($data['children'] as $child) {
+                    $this->children[] = new BannerPosition($child);
+                }
+            }
+
+            if (isset($data['banners']) && $data['banners']) {
                 foreach ($data['banners'] as $banner) {
                     $this->banners[] = new Banner($banner);
                 }
@@ -307,6 +318,30 @@ class BannerPosition extends Base
     }
 
     /**
+     * Get Children
+     *
+     * @return BannerPosition[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set Children
+     *
+     * @param BannerPosition[] $children
+     *
+     * @return $this
+     */
+    public function setChildren(array $children)
+    {
+        $this->children = $children;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -343,6 +378,17 @@ class BannerPosition extends Base
 
         if ($this->gaKeyword) {
             $data['ga_keyword'] = $this->gaKeyword;
+        }
+
+        if ($this->parent instanceof BannerPosition) {
+            $data['parent'] = $this->parent->getId();
+        }
+
+        if (is_array($this->children)) {
+            $data['children'] = [];
+            foreach($data['children'] as $child) {
+                $data['children'][] = $child->getId();
+            }
         }
 
         return $data;
