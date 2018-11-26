@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUndefinedClassInspection */
 
 namespace aboalarm\BannerManagerSdk\Test;
 
@@ -44,20 +45,14 @@ class ClientBannersTest extends TestCase
 
     public function testBannerCRUD()
     {
-        $banner = new Banner();
-
-        $banner->setName('test')
-            ->setPath('test.jpg')
-            ->setLink('http://www.example.com')
-            ->setPhoneNumber('0944532')
-            ->setText('Test Text')
-            ->setApproved(true);
+        $banner = $this->createBanner();
 
         /** @var Banner $storedBanner */
         $storedBanner = BannerSDK::postBanner($banner);
         $this->assertInstanceOf(Banner::class, $storedBanner);
 
         // Read Banner
+        /** @var Banner $getBanner */
         $getBanner = BannerSDK::getBanner($storedBanner->getId());
         $this->assertEquals($storedBanner->getId(), $getBanner->getId());
         $this->assertEquals(
@@ -65,33 +60,23 @@ class ClientBannersTest extends TestCase
             $getBanner->getPreviewUrl()
         );
 
-        $storedBanner->setName('EDITED BY PUT');
+        $storedBanner->setName(TestConstants::BANNER_NAME_UPDATED);
 
         /** @var Banner $updatedBanner */
         $updatedBanner = BannerSDK::putBanner($storedBanner);
-        $this->assertEquals('EDITED BY PUT', $updatedBanner->getName());
+        $this->assertEquals(TestConstants::BANNER_NAME_UPDATED, $updatedBanner->getName());
 
         $this->assertTrue(BannerSDK::deleteBanner($updatedBanner->getId()));
     }
 
     public function testPostDeleteCampaignBanners()
     {
-        $campaign = new Campaign();
-
-        $campaign->setWeight(1)
-            ->setDescription('test')
-            ->setName('test');
+        $campaign = $this->createCampaign();
 
         /** @var Campaign $storedCampaign */
         $storedCampaign = BannerSDK::postCampaign($campaign);
 
-        $banner = new Banner();
-
-        $banner->setName('test')
-            ->setPath('test.jpg')
-            ->setLink('http://www.example.com')
-            ->setPhoneNumber('0944532')
-            ->setText('Test Text');
+        $banner = $this->createBanner();
 
         /** @var Banner $storedBanner */
         $storedBanner = BannerSDK::postBanner($banner);
@@ -102,6 +87,7 @@ class ClientBannersTest extends TestCase
         );
 
         // Check campaign sub object
+        /** @var Banner $getBanner */
         $getBanner = BannerSDK::getBanner($storedBanner->getId());
         $getCampaigns = $getBanner->getCampaigns();
         $this->assertEquals($storedCampaign->getId(), $getCampaigns[0]->getId());
@@ -128,25 +114,12 @@ class ClientBannersTest extends TestCase
 
     public function testPostDeleteBannerPositionsBanners()
     {
-        $bannerPosition = new BannerPosition();
-
-        $bannerPosition->setDescription('test')
-            ->setName('test')
-            ->setDevice('mobile')
-            ->setViewPort('lg')
-            ->setWidth(320)
-            ->setHeight(1360);
+        $bannerPosition = $this->createBannerPosition();
 
         /** @var BannerPosition $storedPosition */
         $storedPosition = BannerSDK::postBannerPosition($bannerPosition);
 
-        $banner = new Banner();
-
-        $banner->setName('test')
-            ->setPath('test.jpg')
-            ->setLink('http://www.example.com')
-            ->setPhoneNumber('0944532')
-            ->setText('Test Text');
+        $banner = $this->createBanner();
 
         /** @var Banner $storedBanner */
         $storedBanner = BannerSDK::postBanner($banner);
@@ -173,7 +146,7 @@ class ClientBannersTest extends TestCase
         /** @var Banner $storedBanner */
         $storedBanner = BannerSDK::getBanner($storedBanner->getId());
 
-        $this->assertNull($storedBanner->getBannerPositions());
+        $this->assertEmpty($storedBanner->getBannerPositions());
 
         // Delete banner and bannerPosition after tests
         BannerSDK::deleteBanner($storedBanner->getId());

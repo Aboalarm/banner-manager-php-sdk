@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUndefinedClassInspection */
 
 namespace aboalarm\BannerManagerSdk\Test;
 
@@ -42,39 +43,29 @@ class ClientABTestsTest extends TestCase
 
     public function testABTestCRUD()
     {
-        $abtest = new ABTest();
-
-        $abtest->setDescription('test')
-            ->setName('test');
+        $abtest = $this->createABTest();
 
         /** @var ABTest $storedABTest */
         $storedABTest = BannerSDK::postABTest($abtest);
         $this->assertInstanceOf(ABTest::class, $storedABTest);
 
-        $storedABTest->setName('EDITED BY PUT');
+        $storedABTest->setName(TestConstants::BANNER_AB_GROUP_UPDATED);
 
         /** @var ABTest $updatedABTest */
         $updatedABTest = BannerSDK::putABTest($storedABTest);
-        $this->assertEquals('EDITED BY PUT', $updatedABTest->getName());
+        $this->assertEquals(TestConstants::BANNER_AB_GROUP_UPDATED, $updatedABTest->getName());
 
         $this->assertTrue(BannerSDK::deleteABTest($updatedABTest->getId()));
     }
 
     public function testPostDeleteCampaignABTests()
     {
-        $campaign = new Campaign();
-
-        $campaign->setWeight(1)
-            ->setDescription('test')
-            ->setName('test');
+        $campaign = $this->createCampaign();
 
         /** @var Campaign $storedCampaign */
         $storedCampaign = BannerSDK::postCampaign($campaign);
 
-        $abTest = new ABTest();
-
-        $abTest->setName('test')
-            ->setDescription('test');
+        $abTest = $this->createABTest();
 
         /** @var ABTest $storedABTest */
         $storedABTest = BannerSDK::postABTest($abTest);
@@ -106,29 +97,26 @@ class ClientABTestsTest extends TestCase
 
     public function testTimingCRUD()
     {
-        $abtest = new ABTest();
-
-        $abtest->setDescription('test')
-            ->setName('test');
+        $abtest = $this->createABTest();
 
         /** @var ABtest $abtest */
         $abtest = BannerSDK::postABTest($abtest);
 
-        $timing = new Timing();
-        $timing->setType(Timing::TYPE_WORKDAYS)
-            ->setTimeFrom('10:00')
-            ->setTimeUntil('16:00');
+        $timing = $this->createTiming();
 
         /** @var Timing $storedTiming */
         $storedTiming = BannerSDK::postABTestTiming($abtest->getId(), $timing);
 
         $this->assertInstanceOf(Timing::class, $storedTiming);
 
-        $storedTiming->setTimeFrom('09:00');
+        $storedTiming->setTimeFrom(TestConstants::CAMPAIGN_TIMING_TIME_FROM_UPDATED);
 
         /** @var Timing $updatedTiming */
         $updatedTiming = BannerSDK::putABTestTiming($abtest->getId(), $storedTiming);
-        $this->assertEquals('09:00', $updatedTiming->getTimeFrom());
+        $this->assertEquals(
+            TestConstants::CAMPAIGN_TIMING_TIME_FROM_UPDATED,
+            $updatedTiming->getTimeFrom()
+        );
 
         $this->assertTrue(
             BannerSDK::deleteABTestTiming($abtest->getId(), $updatedTiming)

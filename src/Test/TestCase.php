@@ -6,6 +6,7 @@ use aboalarm\BannerManagerSdk\Entity\ABTest;
 use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
+use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Laravel\Facade;
 use aboalarm\BannerManagerSdk\Laravel\ServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -86,7 +87,9 @@ class TestCase extends OrchestraTestCase
             ->setDevice(TestConstants::BANNER_POSITION_DEVICE)
             ->setViewPort(TestConstants::BANNER_POSITION_VIEW_PORT)
             ->setWidth(TestConstants::BANNER_POSITION_WIDTH)
-            ->setHeight(TestConstants::BANNER_POSITION_HEIGHT);
+            ->setHeight(TestConstants::BANNER_POSITION_HEIGHT)
+            ->setGaKeyword(TestConstants::BANNER_POSITION_GA_KEYWORD)
+            ->setGaType(TestConstants::BANNER_POSITION_GA_TYPE);
 
         return $bannerPosition;
     }
@@ -104,5 +107,20 @@ class TestCase extends OrchestraTestCase
             ->setName('test');
 
         return $abtest;
+    }
+
+    /**
+     * Create new Timing
+     *
+     * @return Timing
+     */
+    public function createTiming()
+    {
+        $timing = new Timing();
+        $timing->setType(Timing::TYPE_WORKDAYS)
+            ->setTimeFrom(TestConstants::CAMPAIGN_TIMING_TIME_FROM)
+            ->setTimeUntil(TestConstants::CAMPAIGN_TIMING_TIME_UNTIL);
+
+        return $timing;
     }
 }
