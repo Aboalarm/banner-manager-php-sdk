@@ -984,7 +984,7 @@ class Client
         // Get file from API and sink to temporary file
         $response = $this->http->get(
             $url,
-            ['query' => ['startDate' => $startDate, 'endDate' => $endDate]]
+            ['query' => ['start_date' => $startDate, 'end_date' => $endDate]]
         );
 
         if (!$response->getStatusCode() === 200) {
