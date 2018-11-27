@@ -15,7 +15,9 @@ use Exception;
 use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Client
@@ -32,6 +34,11 @@ class Client
     private $http;
 
     /**
+     * @var string
+     */
+    private $reportsPath;
+
+    /**
      * Crate a new client instance.
      *
      * The API uses basic authentication. The username and password are passed
@@ -39,12 +46,13 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri The API base uri
-     * @param string $username The API user username.
-     * @param string $password The API user password.
+     * @param string      $baseUri  The API base uri
+     * @param string      $username The API user username.
+     * @param string      $password The API user password.
+     * @param string      $reportsPath
      * @param string|null $proxyUri The Proxy URI if API is behind a proxy
      */
-    public function __construct($baseUri, $username, $password, $proxyUri = null)
+    public function __construct($baseUri, $username, $password, $reportsPath, $proxyUri = null)
     {
         $this->http = new Http(
             [
@@ -56,10 +64,11 @@ class Client
                     $username,
                     $password,
                 ],
-                'proxy_uri' => $proxyUri
+                'proxy_uri' => $proxyUri,
             ]
         );
 
+        $this->reportsPath = $reportsPath;
     }
 
     /**
@@ -146,7 +155,7 @@ class Client
         if (!empty($data)) {
             $banner = new Banner($data);
 
-            if($this->getProxyUri()) {
+            if ($this->getProxyUri()) {
                 $banner->setPreviewUrl(
                     str_replace($this->getBaseUri(), $this->getProxyUri(), $banner->getPreviewUrl())
                 );
@@ -898,7 +907,7 @@ class Client
     /**
      * Get rotation data for a list of banner position names and return the raw data.
      *
-     * @param array $positions
+     * @param array  $positions
      * @param string $session Session identifier
      *
      * @return Rotation|null
@@ -923,28 +932,69 @@ class Client
             if (!empty($data)) {
                 $rotation = new Rotation($data);
 
-                if($this->getProxyUri()) {
+                if ($this->getProxyUri()) {
                     $rotation->setBannerUrl(
-                        str_replace($this->getBaseUri(), $this->getProxyUri(), $rotation->getBannerUrl())
+                        str_replace(
+                            $this->getBaseUri(),
+                            $this->getProxyUri(),
+                            $rotation->getBannerUrl()
+                        )
                     );
                     $rotation->setBannerLink(
-                        str_replace($this->getBaseUri(), $this->getProxyUri(), $rotation->getBannerLink())
+                        str_replace(
+                            $this->getBaseUri(),
+                            $this->getProxyUri(),
+                            $rotation->getBannerLink()
+                        )
                     );
                 }
 
                 return $rotation;
             }
 
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $rotation = new Rotation();
-            $rotation->setErrors([
-                $e->getMessage()
-            ]);
+            $rotation->setErrors(
+                [
+                    $e->getMessage(),
+                ]
+            );
 
             return $rotation;
         }
 
         return null;
+    }
+
+    public function getReportByCampaignAndTimespan($campaignId, $startDate, $endDate)
+    {
+        // Create a php temp file
+        $putStream = tmpfile();
+
+        // Get file from API and sink to temporary file
+        $this->http->get('/stream/20', ['sink' => $putStream]);
+
+        rewind($putStream);
+
+        $fileName = $campaignId.'_'.$startDate.'_'.$endDate.'.csv';
+        $storePath = $this->reportsPath.'/'.$fileName;
+
+        // Store to reports directory using Laravel Storage
+        Storage::disk('local')->put($storePath, $putStream);
+
+        // Release tempfile
+        fclose($putStream);
+
+        return response()->stream(
+            function () use ($fileName) {
+                echo Storage::disk('local')->get($fileName);
+            },
+            200,
+            [
+                'Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
+            ]
+        );
     }
 
     /**
