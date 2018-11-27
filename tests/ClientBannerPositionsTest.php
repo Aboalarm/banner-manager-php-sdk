@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUndefinedClassInspection */
 
 namespace aboalarm\BannerManagerSdk\Test;
 
@@ -44,77 +45,52 @@ class ClientBannerPositionsTest extends TestCase
 
     public function testBannerPositionCRUD()
     {
-        $position = new BannerPosition();
-
-        $position->setDescription('test')
-            ->setName('test')
-            ->setDevice('mobile')
-            ->setViewPort('lg')
-            ->setWidth(320)
-            ->setHeight(1360)
-            ->setGaType('ga_type')
-            ->setGaKeyword('ga_keyword');
-
+        $position = $this->createBannerPosition();
 
         /** @var BannerPosition $storedPosition */
         $storedPosition = BannerSDK::postBannerPosition($position);
         $this->assertInstanceOf(BannerPosition::class, $storedPosition);
 
-        $storedPosition->setName('EDITED BY PUT');
+        $storedPosition->setName(TestConstants::BANNER_POSITION_UPDATED);
 
-        $this->assertEquals('ga_type', $storedPosition->getGaType());
-        $this->assertEquals('ga_keyword', $storedPosition->getGaKeyword());
+        $this->assertEquals(TestConstants::BANNER_POSITION_GA_TYPE, $storedPosition->getGaType());
+        $this->assertEquals(
+            TestConstants::BANNER_POSITION_GA_KEYWORD,
+            $storedPosition->getGaKeyword()
+        );
 
         /** @var BannerPosition $updatedPosition */
         $updatedPosition = BannerSDK::putBannerPosition($storedPosition);
-        $this->assertEquals('EDITED BY PUT', $updatedPosition->getName());
+        $this->assertEquals(TestConstants::BANNER_POSITION_UPDATED, $updatedPosition->getName());
 
         $this->assertTrue(BannerSDK::deleteBannerPosition($updatedPosition->getId()));
     }
 
     public function testBannerPositionCRUDWithoutDeviceAndViewPort()
     {
-        $position = new BannerPosition();
-
-        $position->setDescription('test')
-            ->setName('test')
-            ->setWidth(320)
-            ->setHeight(1360);
+        $position = $this->createBannerPosition();
 
         /** @var BannerPosition $storedPosition */
         $storedPosition = BannerSDK::postBannerPosition($position);
         $this->assertInstanceOf(BannerPosition::class, $storedPosition);
 
-        $storedPosition->setName('EDITED BY PUT');
+        $storedPosition->setName(TestConstants::BANNER_POSITION_UPDATED);
 
         /** @var BannerPosition $updatedPosition */
         $updatedPosition = BannerSDK::putBannerPosition($storedPosition);
-        $this->assertEquals('EDITED BY PUT', $updatedPosition->getName());
+        $this->assertEquals(TestConstants::BANNER_POSITION_UPDATED, $updatedPosition->getName());
 
         $this->assertTrue(BannerSDK::deleteBannerPosition($updatedPosition->getId()));
     }
 
     public function testPostDeleteBannersBannerPositions()
     {
-        $banner = new Banner();
-
-        $banner->setName('test')
-            ->setPath('test.jpg')
-            ->setLink('http://www.example.com')
-            ->setPhoneNumber('0944532')
-            ->setText('Test Text');
+        $banner = $this->createBanner();
 
         /** @var Banner $storedBanner */
         $storedBanner = BannerSDK::postBanner($banner);
 
-        $bannerPosition = new BannerPosition();
-
-        $bannerPosition->setDescription('test')
-            ->setName('test')
-            ->setDevice('mobile')
-            ->setViewPort('lg')
-            ->setWidth(320)
-            ->setHeight(1360);
+        $bannerPosition = $this->createBannerPosition();
 
         /** @var BannerPosition $storedPosition */
         $storedPosition = BannerSDK::postBannerPosition($bannerPosition);

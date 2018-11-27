@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUndefinedClassInspection */
 
 namespace aboalarm\BannerManagerSdk\Test;
 
@@ -43,43 +44,29 @@ class ClientCampaignsTest extends TestCase
 
     public function testCampaignCRUD()
     {
-        $campaign = new Campaign();
-
-        $campaign->setWeight(1)
-            ->setDescription('test')
-            ->setName('test');
+        $campaign = $this->createCampaign();
 
         /** @var Campaign $storedCampaign */
         $storedCampaign = BannerSDK::postCampaign($campaign);
         $this->assertInstanceOf(Campaign::class, $storedCampaign);
 
-        $storedCampaign->setName('EDITED BY PUT');
+        $storedCampaign->setName(TestConstants::CAMPAIGN_NAME_UPDATED);
 
         /** @var Campaign $updatedCampaign */
         $updatedCampaign = BannerSDK::putCampaign($storedCampaign);
-        $this->assertEquals('EDITED BY PUT', $updatedCampaign->getName());
+        $this->assertEquals(TestConstants::CAMPAIGN_NAME_UPDATED, $updatedCampaign->getName());
 
         $this->assertTrue(BannerSDK::deleteCampaign($updatedCampaign->getId()));
     }
 
     public function testPostCampaignBanners()
     {
-        $campaign = new Campaign();
-
-        $campaign->setWeight(1)
-            ->setDescription('test')
-            ->setName('test');
+        $campaign = $this->createCampaign();
 
         /** @var Campaign $storedCampaign */
         $storedCampaign = BannerSDK::postCampaign($campaign);
 
-        $banner = new Banner();
-
-        $banner->setName('test')
-            ->setPath('test.jpg')
-            ->setLink('http://www.example.com')
-            ->setPhoneNumber('0944532')
-            ->setText('Test Text');
+        $banner = $this->createBanner();
 
         /** @var Banner $storedBanner */
         $storedBanner = BannerSDK::postBanner($banner);
@@ -111,30 +98,26 @@ class ClientCampaignsTest extends TestCase
 
     public function testTimingCRUD()
     {
-        $campaign = new Campaign();
-
-        $campaign->setWeight(1)
-            ->setDescription('test')
-            ->setName('test');
+        $campaign = $this->createCampaign();
 
         /** @var Campaign $campaign */
         $campaign = BannerSDK::postCampaign($campaign);
 
-        $timing = new Timing();
-        $timing->setType(Timing::TYPE_WORKDAYS)
-            ->setTimeFrom('10:00')
-            ->setTimeUntil('16:00');
+        $timing = $this->createTiming();
 
         /** @var Timing $storedTiming */
         $storedTiming = BannerSDK::postCampaignTiming($campaign->getId(), $timing);
 
         $this->assertInstanceOf(Timing::class, $storedTiming);
 
-        $storedTiming->setTimeFrom('09:00');
+        $storedTiming->setTimeFrom(TestConstants::CAMPAIGN_TIMING_TIME_FROM_UPDATED);
 
         /** @var Timing $updatedTiming */
         $updatedTiming = BannerSDK::putCampaignTiming($campaign->getId(), $storedTiming);
-        $this->assertEquals('09:00', $updatedTiming->getTimeFrom());
+        $this->assertEquals(
+            TestConstants::CAMPAIGN_TIMING_TIME_FROM_UPDATED,
+            $updatedTiming->getTimeFrom()
+        );
 
         $this->assertTrue(
             BannerSDK::deleteCampaignTiming($campaign->getId(), $updatedTiming)
