@@ -23,6 +23,5 @@
         <env name="BANNER_SDK_API_BASE_URI" value="http://localhost:8000" />
         <env name="BANNER_SDK_API_USERNAME" value="123456789" />
         <env name="BANNER_SDK_API_PASSWORD" value="" />
-        <env name="BANNER_SDK_REPORTS_PATH" value="reports" />
     </php>
 </phpunit>

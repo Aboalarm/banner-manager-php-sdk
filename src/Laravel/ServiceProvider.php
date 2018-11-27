@@ -38,7 +38,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                     config()->get('banner.base_uri'),
                     config()->get('banner.username'),
                     config()->get('banner.password'),
-                    config()->get('banner.reports_path'),
                     config()->get('banner.proxy_uri')
                 );
             }

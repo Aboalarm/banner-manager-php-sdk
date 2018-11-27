@@ -15,9 +15,7 @@ use Exception;
 use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Client
@@ -34,11 +32,6 @@ class Client
     private $http;
 
     /**
-     * @var string
-     */
-    private $reportsPath;
-
-    /**
      * Crate a new client instance.
      *
      * The API uses basic authentication. The username and password are passed
@@ -49,10 +42,9 @@ class Client
      * @param string      $baseUri  The API base uri
      * @param string      $username The API user username.
      * @param string      $password The API user password.
-     * @param string      $reportsPath
      * @param string|null $proxyUri The Proxy URI if API is behind a proxy
      */
-    public function __construct($baseUri, $username, $password, $reportsPath, $proxyUri = null)
+    public function __construct($baseUri, $username, $password, $proxyUri = null)
     {
         $this->http = new Http(
             [
@@ -67,8 +59,6 @@ class Client
                 'proxy_uri' => $proxyUri,
             ]
         );
-
-        $this->reportsPath = $reportsPath;
     }
 
     /**
