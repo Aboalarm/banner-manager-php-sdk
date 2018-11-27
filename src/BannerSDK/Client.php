@@ -966,28 +966,36 @@ class Client
         return null;
     }
 
+    /**
+     * Get the report file from API and serve as file download
+     *
+     * @param $campaignId
+     * @param $startDate
+     * @param $endDate
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @throws BannerManagerException
+     */
     public function getReportByCampaignAndTimespan($campaignId, $startDate, $endDate)
     {
-        // Create a php temp file
-        $putStream = tmpfile();
+        $url = '/api/report/campaign/'.$campaignId.'';
+        $fileName = $campaignId.'_'.$startDate.'_'.$endDate.'.csv';
 
         // Get file from API and sink to temporary file
-        $this->http->get('/stream/20', ['sink' => $putStream]);
+        $response = $this->http->get(
+            $url,
+            ['query' => ['startDate' => $startDate, 'endDate' => $endDate]]
+        );
 
-        rewind($putStream);
-
-        $fileName = $campaignId.'_'.$startDate.'_'.$endDate.'.csv';
-        $storePath = $this->reportsPath.'/'.$fileName;
-
-        // Store to reports directory using Laravel Storage
-        Storage::disk('local')->put($storePath, $putStream);
-
-        // Release tempfile
-        fclose($putStream);
+        if (!$response->getStatusCode() === 200) {
+            throw new BannerManagerException(
+                'Error retreiving report.', $response->getStatusCode()
+            );
+        }
 
         return response()->stream(
-            function () use ($fileName) {
-                echo Storage::disk('local')->get($fileName);
+            function () use ($response, $fileName) {
+                echo $response->getBody()->getContents();
             },
             200,
             [
