@@ -11,8 +11,8 @@ use aboalarm\BannerManagerSdk\Entity\Rotation;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
-use Exception;
 use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
+use Exception;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
@@ -39,9 +39,9 @@ class Client
      * be stored inside the class, neither be manually passed to all API
      * requests.
      *
-     * @param string $baseUri The API base uri
-     * @param string $username The API user username.
-     * @param string $password The API user password.
+     * @param string      $baseUri  The API base uri
+     * @param string      $username The API user username.
+     * @param string      $password The API user password.
      * @param string|null $proxyUri The Proxy URI if API is behind a proxy
      */
     public function __construct($baseUri, $username, $password, $proxyUri = null)
@@ -56,10 +56,9 @@ class Client
                     $username,
                     $password,
                 ],
-                'proxy_uri' => $proxyUri
+                'proxy_uri' => $proxyUri,
             ]
         );
-
     }
 
     /**
@@ -146,7 +145,7 @@ class Client
         if (!empty($data)) {
             $banner = new Banner($data);
 
-            if($this->getProxyUri()) {
+            if ($this->getProxyUri()) {
                 $banner->setPreviewUrl(
                     str_replace($this->getBaseUri(), $this->getProxyUri(), $banner->getPreviewUrl())
                 );
@@ -898,7 +897,7 @@ class Client
     /**
      * Get rotation data for a list of banner position names and return the raw data.
      *
-     * @param array $positions
+     * @param array  $positions
      * @param string $session Session identifier
      *
      * @return Rotation|null
@@ -923,28 +922,77 @@ class Client
             if (!empty($data)) {
                 $rotation = new Rotation($data);
 
-                if($this->getProxyUri()) {
+                if ($this->getProxyUri()) {
                     $rotation->setBannerUrl(
-                        str_replace($this->getBaseUri(), $this->getProxyUri(), $rotation->getBannerUrl())
+                        str_replace(
+                            $this->getBaseUri(),
+                            $this->getProxyUri(),
+                            $rotation->getBannerUrl()
+                        )
                     );
                     $rotation->setBannerLink(
-                        str_replace($this->getBaseUri(), $this->getProxyUri(), $rotation->getBannerLink())
+                        str_replace(
+                            $this->getBaseUri(),
+                            $this->getProxyUri(),
+                            $rotation->getBannerLink()
+                        )
                     );
                 }
 
                 return $rotation;
             }
 
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $rotation = new Rotation();
-            $rotation->setErrors([
-                $e->getMessage()
-            ]);
+            $rotation->setErrors(
+                [
+                    $e->getMessage(),
+                ]
+            );
 
             return $rotation;
         }
 
         return null;
+    }
+
+    /**
+     * Get the report file from API and serve as file download
+     *
+     * @param string $campaignId Campaign Identifier
+     * @param string $startDate  Start Date in YYYY-MM-DD format
+     * @param string $endDate    End Date in YYYY-MM-DD format
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @throws BannerManagerException
+     */
+    public function getReportByCampaignAndTimespan($campaignId, $startDate, $endDate)
+    {
+        $url = '/api/report/campaign/'.$campaignId.'';
+        $fileName = $campaignId.'_'.$startDate.'_'.$endDate.'.csv';
+
+        // Get file from API and sink to temporary file
+        $response = $this->http->get(
+            $url,
+            ['query' => ['start_date' => $startDate, 'end_date' => $endDate]]
+        );
+
+        if (!$response->getStatusCode() === 200) {
+            throw new BannerManagerException(
+                'Error retreiving report.', $response->getStatusCode()
+            );
+        }
+
+        return response()->stream(
+            function () use ($response, $fileName) {
+                echo $response->getBody()->getContents();
+            },
+            200,
+            [
+                'Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
+            ]
+        );
     }
 
     /**
