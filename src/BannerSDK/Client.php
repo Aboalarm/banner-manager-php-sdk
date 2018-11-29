@@ -11,8 +11,8 @@ use aboalarm\BannerManagerSdk\Entity\Rotation;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
-use Exception;
 use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
+use Exception;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
@@ -959,9 +959,9 @@ class Client
     /**
      * Get the report file from API and serve as file download
      *
-     * @param $campaignId
-     * @param $startDate
-     * @param $endDate
+     * @param string $campaignId Campaign Identifier
+     * @param string $startDate  Start Date in YYYY-MM-DD format
+     * @param string $endDate    End Date in YYYY-MM-DD format
      *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      * @throws BannerManagerException
