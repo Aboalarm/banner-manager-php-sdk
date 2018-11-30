@@ -14,6 +14,7 @@ use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use Exception;
 use GuzzleHttp\Client as Http;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
 
@@ -92,7 +93,6 @@ class Client
      *
      * @return PaginatedCollection Banner collection.
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function getBanners(PaginationOptions $options)
     {
@@ -136,7 +136,6 @@ class Client
      *
      * @return Banner
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function getBanner(string $identifier)
     {
@@ -162,7 +161,6 @@ class Client
      *
      * @return Banner
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postBanner(Banner $banner)
     {
@@ -202,13 +200,11 @@ class Client
         }
     }
 
-
     /**
      * @param Banner $banner
      *
      * @return Banner
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function putBanner(Banner $banner)
     {
@@ -240,7 +236,6 @@ class Client
      *
      * @return array
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postBannerCampaigns(string $identifier, array $campaignIdentifiers)
     {
@@ -275,7 +270,6 @@ class Client
      *
      * @return array
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postBannerBannerPositions(string $identifier, array $positionIdentifiers)
     {
@@ -311,7 +305,6 @@ class Client
      *
      * @return PaginatedCollection Campaign collection.
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function getCampaigns(PaginationOptions $options)
     {
@@ -355,7 +348,6 @@ class Client
      *
      * @return Campaign
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function getCampaign(string $identifier)
     {
@@ -373,7 +365,6 @@ class Client
      *
      * @return Campaign
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postCampaign(Campaign $campaign)
     {
@@ -387,7 +378,6 @@ class Client
      *
      * @return Campaign
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function putCampaign(Campaign $campaign)
     {
@@ -419,7 +409,6 @@ class Client
      *
      * @return array
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postCampaignBanners(string $identifier, array $bannerIdentifiers)
     {
@@ -452,7 +441,6 @@ class Client
      *
      * @return Timing
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postCampaignTiming(string $campaignIdentifier, Timing $timing)
     {
@@ -468,7 +456,6 @@ class Client
      *
      * @return Timing
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function putCampaignTiming(string $campaignIdentifier, Timing $timing)
     {
@@ -500,7 +487,6 @@ class Client
      *
      * @return PaginatedCollection BannerPosition collection.
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function getBannerPositions(PaginationOptions $options)
     {
@@ -544,7 +530,6 @@ class Client
      *
      * @return BannerPosition
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function getBannerPosition(string $identifier)
     {
@@ -562,7 +547,6 @@ class Client
      *
      * @return BannerPosition
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postBannerPosition(BannerPosition $bannerPosition)
     {
@@ -576,7 +560,6 @@ class Client
      *
      * @return BannerPosition
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function putBannerPosition(BannerPosition $bannerPosition)
     {
@@ -608,7 +591,6 @@ class Client
      *
      * @return array
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postBannerPositionBanners(string $identifier, array $bannerIdentifiers)
     {
@@ -644,7 +626,6 @@ class Client
      *
      * @return PaginatedCollection ABtests collection.
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function getABTests(PaginationOptions $options)
     {
@@ -688,7 +669,6 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function getABTest(string $identifier)
     {
@@ -706,7 +686,6 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postABTest(ABTest $abtest)
     {
@@ -720,7 +699,6 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function putABTest(ABTest $abtest)
     {
@@ -752,7 +730,6 @@ class Client
      *
      * @return array
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postABtestCampaigns(string $identifier, array $campaignIdentifiers)
     {
@@ -785,7 +762,6 @@ class Client
      *
      * @return Timing
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function postABTestTiming(string $abtestIdentifier, Timing $timing)
     {
@@ -801,7 +777,6 @@ class Client
      *
      * @return Timing
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function putABtestTiming(string $abtestIdentifier, Timing $timing)
     {
@@ -882,13 +857,14 @@ class Client
      * @param string $session Session identifier
      *
      * @return string HTML to render
+     * @throws GuzzleException
      */
     public function renderMultiplePositions(array $positions, $session = null): string
     {
-        $data = $this->getMultiplePositionsBanner($positions, $session);
+        $rotationData = $this->getMultiplePositionsBanner($positions, $session);
 
-        if (!empty($data) && array_key_exists('html', $data)) {
-            return $data['html'];
+        if (!$rotationData->hasErrors() && $rotationData->getHtml()) {
+            return $rotationData->getHtml();
         }
 
         return '<!-- Could not load banner for positions '.implode(', ', $positions).' -->';
@@ -1004,20 +980,10 @@ class Client
      *
      * @return array
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     private function doGetRequest($url, $queryParams = null)
     {
-        $response = $this->doRequest('GET', $url, $queryParams);
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        return json_decode($response->getBody(), true);
+        return $this->doRequestWithErrorParsing('GET', $url, $queryParams);
     }
 
     /**
@@ -1028,20 +994,10 @@ class Client
      *
      * @return array
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     private function doPostRequest(string $uri, array $formParams)
     {
-        $response = $this->doRequest('POST', $uri, null, $formParams);
-
-        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        return json_decode($response->getBody(), true);
+        return $this->doRequestWithErrorParsing('POST', $uri, null, $formParams);
     }
 
     /**
@@ -1052,22 +1008,12 @@ class Client
      *
      * @return array
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     private function doPutRequest(string $uri, Base $entity)
     {
         $formParams = $entity->toArray();
 
-        $response = $this->doRequest('PUT', $uri, null, $formParams);
-
-        if ($response->getStatusCode() !== 200) {
-            throw new BannerManagerException(
-                $response->getReasonPhrase(),
-                $response->getStatusCode()
-            );
-        }
-
-        return json_decode($response->getBody(), true);
+        return $this->doRequestWithErrorParsing('PUT', $uri, null, $formParams);
     }
 
     /**
@@ -1114,6 +1060,45 @@ class Client
     private function doMultipartRequest(string $uri, array $multipart)
     {
         $response = $this->doRequest('POST', $uri, null, null, $multipart);
+
+        if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 200) {
+            throw new BannerManagerException(
+                $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * @param string     $method
+     * @param string     $endpoint
+     * @param array|null $queryParams
+     * @param array|null $formParams
+     *
+     * @return array|mixed
+     * @throws BannerManagerException
+     */
+    private function doRequestWithErrorParsing(
+        $method,
+        $endpoint,
+        array $queryParams = null,
+        array $formParams = null
+    ) {
+        try {
+            $response = $this->doRequest($method, $endpoint, $queryParams, $formParams);
+        } catch (GuzzleException $e) {
+            /** @var ClientException $e */
+            // Try to convert error response to array
+            $errors = json_decode($e->getResponse()->getBody(), true);
+
+            if(!$errors) {
+                $errors = ['error' => $e->getMessage()];
+            }
+
+            return $errors;
+        }
 
         if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 200) {
             throw new BannerManagerException(
