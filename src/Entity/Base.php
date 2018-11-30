@@ -42,7 +42,6 @@ abstract class Base implements EntityInterface
             $this->updatedAt = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;
         }
 
-
         if (isset($data['error'])) {
             $this->setErrors([$data['error']]);
             if(isset($data['fields'])) {
