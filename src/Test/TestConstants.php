@@ -16,7 +16,8 @@ class TestConstants
     const BANNER_TEXT = 'Mein text v3';
     const BANNER_TEXT_UPDATED = 'Mein text v3 Updated';
     const BANNER_PHONE = '09389374';
-    const BANNER_LINK = 'www.bing.com';
+    const BANNER_LINK = 'http://www.bing.com';
+    const BANNER_INVALID_LINK = 'invalid-com';
     const CAMPAIGN_NAME = 'Test Campaign Name';
     const CAMPAIGN_DESCRIPTION = 'Test Campaign Description';
     const CAMPAIGN_WEIGHT = 2;

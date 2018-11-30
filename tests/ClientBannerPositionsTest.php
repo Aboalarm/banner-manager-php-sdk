@@ -123,4 +123,23 @@ class ClientBannerPositionsTest extends TestCase
         BannerSDK::deleteBanner($storedBanner->getId());
         BannerSDK::deleteBannerPosition($storedPosition->getId());
     }
+
+    public function testInvalidBannerPositionData()
+    {
+        $missingBannerPositionId = 'cpos_12345';
+
+        /** @var BannerPosition $bannerPosition */
+        $bannerPosition = BannerSDK::getBannerPosition($missingBannerPositionId);
+
+        $this->assertCount(1, $bannerPosition->getErrors());
+        $this->assertTrue($bannerPosition->hasErrors());
+
+        /** @var BannerPosition $invalidBannerPosition */
+        $invalidBannerPosition = BannerSDK::postBannerPosition(new BannerPosition());
+
+        $this->assertCount(1, $invalidBannerPosition->getErrors());
+        $this->assertTrue($invalidBannerPosition->hasErrors());
+        $this->assertNotEmpty( $invalidBannerPosition->getFieldErrors());
+        $this->assertCount(1, $invalidBannerPosition->getFieldErrors());
+    }
 }

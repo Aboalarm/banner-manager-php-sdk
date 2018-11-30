@@ -59,6 +59,19 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
+     * Create a banner that will cause validation errors
+     *
+     * @return Banner
+     */
+    public function createInvalidBanner() {
+        $banner = new Banner();
+
+        $banner->setLink(TestConstants::BANNER_INVALID_LINK);
+
+        return $banner;
+    }
+
+    /**
      * Create a new Campaign
      *
      * @return Campaign

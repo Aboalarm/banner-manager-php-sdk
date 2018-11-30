@@ -126,4 +126,23 @@ class ClientCampaignsTest extends TestCase
         //Remove campaign
         BannerSDK::deleteCampaign($campaign->getId());
     }
+
+    public function testInvalidCampaignData()
+    {
+        $missingCampaignId = 'cmp_12345';
+
+        /** @var Campaign $campaign */
+        $campaign = BannerSDK::getCampaign($missingCampaignId);
+
+        $this->assertCount(1, $campaign->getErrors());
+        $this->assertTrue($campaign->hasErrors());
+
+        /** @var Campaign $invalidCampaign */
+        $invalidCampaign = BannerSDK::postCampaign(new Campaign());
+
+        $this->assertCount(1, $invalidCampaign->getErrors());
+        $this->assertTrue($invalidCampaign->hasErrors());
+        $this->assertNotEmpty( $invalidCampaign->getFieldErrors());
+        $this->assertCount(1, $invalidCampaign->getFieldErrors());
+    }
 }
