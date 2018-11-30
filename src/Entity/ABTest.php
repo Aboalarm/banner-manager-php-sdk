@@ -39,9 +39,9 @@ class ABTest extends Base
         $this->campaigns = [];
         $this->timings = [];
 
-        if ($data) {
-            parent::__construct($data);
+        parent::__construct($data);
 
+        if ($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->description = isset($data['description']) ? $data['description'] : null;
 
@@ -150,11 +150,11 @@ class ABTest extends Base
     {
         $data = [];
 
-        if($this->name) {
+        if ($this->name) {
             $data['name'] = $this->name;
         }
 
-        if($this->description) {
+        if ($this->description) {
             $data['description'] = $this->description;
         }
 

@@ -51,9 +51,9 @@ class Campaign extends Base
         $this->banners = [];
         $this->timings = [];
 
-        if ($data) {
-            parent::__construct($data);
+        parent::__construct($data);
 
+        if($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->description = isset($data['description']) ? $data['description'] : null;
             $this->weight = isset($data['weight']) ? $data['weight'] : null;

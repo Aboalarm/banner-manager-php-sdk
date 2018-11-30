@@ -3,6 +3,7 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
+use aboalarm\BannerManagerSdk\Entity\Traits\ErrorTrait;
 use DateTime;
 
 /**
@@ -11,6 +12,8 @@ use DateTime;
  */
 abstract class Base implements EntityInterface
 {
+    use ErrorTrait;
+
     /**
      * @var string|null
      */
@@ -33,10 +36,18 @@ abstract class Base implements EntityInterface
      */
     public function __construct(array $data = null)
     {
-        if($data) {
+        if($data && !isset($data['error'])) {
             $this->id = $data['id'];
             $this->createdAt = isset($data['created_at']) ? new DateTime($data['created_at']) : null;
             $this->updatedAt = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;
+        }
+
+
+        if (isset($data['error'])) {
+            $this->setErrors([$data['error']]);
+            if(isset($data['fields'])) {
+                $this->setFieldErrors($data['fields']);
+            }
         }
     }
 
