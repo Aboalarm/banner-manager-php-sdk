@@ -46,7 +46,7 @@ class Session extends Base
             $this->external = boolval($data['external']);
 
             if ($data['campaign']) {
-                $this->campaign = new Session($data['campaign']);
+                $this->campaign = new Campaign($data['campaign']);
             } else {
                 $this->campaign = null;
             }

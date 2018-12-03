@@ -125,4 +125,24 @@ class ClientABTestsTest extends TestCase
         //Remove abtest
         BannerSDK::deleteABTest($abtest->getId());
     }
+
+    public function testInvalidABTestData()
+    {
+        $missingABTestId = 'abt_12345';
+
+        /** @var ABTest $abtest */
+        $abtest = BannerSDK::getABTest($missingABTestId);
+
+        $this->assertCount(1, $abtest->getErrors());
+        $this->assertTrue($abtest->hasErrors());
+
+        // Post invalid ABTest
+        /** @var ABTest $invalidABTest */
+        $invalidABTest = BannerSDK::postABTest(new ABTest());
+
+        $this->assertCount(1, $invalidABTest->getErrors());
+        $this->assertTrue($invalidABTest->hasErrors());
+        $this->assertNotEmpty( $invalidABTest->getFieldErrors());
+        $this->assertCount(1, $invalidABTest->getFieldErrors());
+    }
 }

@@ -74,9 +74,9 @@ class Banner extends Base
         $this->bannerPositions = [];
         $this->campaigns = [];
 
-        if($data) {
-            parent::__construct($data);
+        parent::__construct($data);
 
+        if($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->path = isset($data['path']) ? $data['path'] : null;
             $this->text = isset($data['text']) ? $data['text'] : null;

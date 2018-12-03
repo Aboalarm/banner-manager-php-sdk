@@ -152,4 +152,33 @@ class ClientBannersTest extends TestCase
         BannerSDK::deleteBanner($storedBanner->getId());
         BannerSDK::deleteBannerPosition($storedPosition->getId());
     }
+
+    public function testInvalidBannerData()
+    {
+        $missingBannerId = 'ban_12345';
+
+        /** @var Banner $banner */
+        $banner = BannerSDK::getBanner($missingBannerId);
+
+        $this->assertCount(1, $banner->getErrors());
+        $this->assertTrue($banner->hasErrors());
+
+        /** @var Banner $invalidBanner */
+        $invalidBanner = BannerSDK::postBanner($this->createInvalidBanner());
+
+        $this->assertCount(1, $invalidBanner->getErrors());
+        $this->assertTrue($invalidBanner->hasErrors());
+        $this->assertNotEmpty( $invalidBanner->getFieldErrors());
+        $this->assertCount(2, $invalidBanner->getFieldErrors());
+
+        /** @var Banner $banner */
+        $banner = BannerSDK::postBanner($this->createBanner());
+
+        $banner->setLink(TestConstants::BANNER_INVALID_LINK);
+        $invalidBanner = BannerSDK::putBanner($banner);
+
+        $this->assertCount(1, $invalidBanner->getErrors());
+        $this->assertTrue($invalidBanner->hasErrors());
+        $this->assertNotEmpty( $invalidBanner->getFieldErrors());
+    }
 }

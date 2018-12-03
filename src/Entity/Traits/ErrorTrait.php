@@ -15,6 +15,11 @@ trait ErrorTrait
     protected $errors = [];
 
     /**
+     * @var array List of fields with errors from validation
+     */
+    protected $fieldErrors = [];
+
+    /**
      * Get Errors
      *
      * @return array
@@ -44,5 +49,33 @@ trait ErrorTrait
     public function hasErrors()
     {
         return boolval(count($this->errors));
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldErrors()
+    {
+        return $this->fieldErrors;
+    }
+
+    /**
+     * @param array $fieldErrors
+     *
+     * @return ErrorTrait
+     */
+    public function setFieldErrors(array $fieldErrors)
+    {
+        $this->fieldErrors = $fieldErrors;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFields()
+    {
+        return boolval(count($this->fieldErrors));
     }
 }

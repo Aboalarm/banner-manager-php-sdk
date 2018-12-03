@@ -26,9 +26,9 @@ class Conversion extends Base
      */
     public function __construct(array $data = null)
     {
-        if ($data) {
-            parent::__construct($data);
+        parent::__construct($data);
 
+        if($data && !isset($data['error'])) {
             $this->type = $data['type'];
             $this->externalIdentifier = $data['external_identifier'];
         }

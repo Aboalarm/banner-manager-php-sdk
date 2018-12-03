@@ -75,9 +75,9 @@ class BannerPosition extends Base
         $this->children = [];
         $this->parent = null;
 
-        if ($data) {
-            parent::__construct($data);
+        parent::__construct($data);
 
+        if($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->device = isset($data['device']) ? $data['device'] : null;
             $this->viewPort = isset($data['view_port']) ? $data['view_port'] : null;

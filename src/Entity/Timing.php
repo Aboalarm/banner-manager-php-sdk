@@ -69,9 +69,9 @@ class Timing extends Base
      */
     public function __construct(array $data = null)
     {
-        if ($data) {
-            parent::__construct($data);
+        parent::__construct($data);
 
+        if($data && !isset($data['error'])) {
             $this->type = $data['type'];
             $this->dateFrom = $data['date_from'];
             $this->dateUntil = $data['date_until'];
