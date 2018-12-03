@@ -293,7 +293,7 @@ class Timing extends Base
         return [
             '' => 'Immer',
             static::TYPE_WORKDAYS => 'Werktags (Mo - Fr)',
-            static::TYPE_WEEKENDS => 'Wochende (Sa & So',
+            static::TYPE_WEEKENDS => 'Wochende (Sa & So)',
             static::TYPE_MONDAY => 'Montags',
             static::TYPE_TUESDAY => 'Dienstags',
             static::TYPE_WEDNESDAY => 'Mittwochs',
