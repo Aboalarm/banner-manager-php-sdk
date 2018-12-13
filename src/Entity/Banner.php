@@ -65,6 +65,11 @@ class Banner extends Base
     private $clicks;
 
     /**
+     * @var boolean
+     */
+    private $forcePut = false;
+
+    /**
      * Banner constructor.
      *
      * @param array $data Data from json response
@@ -310,6 +315,30 @@ class Banner extends Base
     public function getClicks()
     {
         return $this->clicks;
+    }
+
+    /**
+     * Check if we want to force updating this banner
+     *
+     * @return bool
+     */
+    public function getForcePut(): bool
+    {
+        return $this->forcePut;
+    }
+
+    /**
+     * Set if we want to force update this banner
+     *
+     * @param bool $forcePut
+     *
+     * @return Banner
+     */
+    public function setForcePut(bool $forcePut): Banner
+    {
+        $this->forcePut = $forcePut;
+
+        return $this;
     }
 
     /**
