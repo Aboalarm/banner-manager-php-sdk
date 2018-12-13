@@ -209,7 +209,17 @@ class Client
     public function putBanner(Banner $banner)
     {
         $uri = '/api/banners/'.$banner->getId();
-        $data = $this->doPutRequest($uri, $banner);
+
+        $queryParams = null;
+
+        // Check if we want to force update this banner and set force parameter if so
+        if ($banner->getForcePut()) {
+            $queryParams = [
+                'force' => 1
+            ];
+        }
+
+        $data = $this->doPutRequest($uri, $banner, $queryParams);
 
         return new Banner($data);
     }
@@ -1003,17 +1013,18 @@ class Client
     /**
      * Helper method to send PUT requests
      *
-     * @param string $uri
-     * @param Base   $entity
+     * @param string     $uri
+     * @param Base       $entity
+     * @param array|null $queryParams
      *
      * @return array
      * @throws BannerManagerException
      */
-    private function doPutRequest(string $uri, Base $entity)
+    private function doPutRequest(string $uri, Base $entity, array $queryParams = null)
     {
         $formParams = $entity->toArray();
 
-        return $this->doRequestWithErrorParsing('PUT', $uri, null, $formParams);
+        return $this->doRequestWithErrorParsing('PUT', $uri, $queryParams, $formParams);
     }
 
     /**
