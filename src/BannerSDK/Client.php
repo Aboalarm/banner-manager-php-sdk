@@ -188,15 +188,28 @@ class Client
             'filename' => $file->getClientOriginalName(),
         ];
 
+        $queryParams = null;
+
+        // Check if we want to force update this banner and set force parameter if so
+        if ($banner->getForcePut()) {
+            $queryParams = [
+                'force' => 1
+            ];
+        }
+
         $data = $this->doMultipartRequest(
             '/api/banners/'.$banner->getId().'/upload',
             [
                 $multipart,
-            ]
+            ],
+            $queryParams
         );
 
         if (isset($data[0]) && $data[0] === 'OK') {
             return $this->getBanner($banner->getId());
+        } else {
+            $banner->setErrors($data);
+            return $banner;
         }
     }
 
@@ -1060,17 +1073,29 @@ class Client
      *
      * See: http://docs.guzzlephp.org/en/stable/request-options.html#multipart
      *
-     * @param string $uri
-     * @param array  $multipart
+     * @param string     $uri
+     * @param array      $multipart
+     * @param array|null $queryParams
      *
      * @return array
      *
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
-    private function doMultipartRequest(string $uri, array $multipart)
+    private function doMultipartRequest(string $uri, array $multipart, array $queryParams = null)
     {
-        $response = $this->doRequest('POST', $uri, null, null, $multipart);
+        try {
+            $response = $this->doRequest('POST', $uri, $queryParams, null, $multipart);
+        } catch (GuzzleException $e) {
+            /** @var ClientException $e */
+            // Try to convert error response to array
+            $errors = json_decode($e->getResponse()->getBody(), true);
+
+            if(!$errors) {
+                $errors = ['error' => $e->getMessage()];
+            }
+
+            return $errors;
+        }
 
         if ($response->getStatusCode() !== 201 && $response->getStatusCode() !== 200) {
             throw new BannerManagerException(
