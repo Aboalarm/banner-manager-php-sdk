@@ -7,6 +7,7 @@ class TestConstants
 {
     const BANNER_NAME = 'foobanner';
     const BANNER_NAME_UPDATED = 'foobanner_UPDATED';
+    const BANNER_POSITION_WITH_VALID_ROTATION = 'adr_438820_web_cancellation_vertical_right';
     const BANNER_POSITION = 'adr_1235_top_horizotal';
     const BANNER_POSITION_UPDATED = 'adr_1235_top_horizotal_updated';
     const BANNER_PARENT_POSITION = 'adr_1235_top_parent';
@@ -44,4 +45,6 @@ class TestConstants
     const BANNER_AB_DESCRIPTION_UPDATED = 'Just a test Updated';
     const BANNER_AB_TEST_ONE = 'O2 offer blue';
     const BANNER_AB_TEST_TWO = 'O2 offer red';
+    const CONVERSION_TYPE = 'pdf_download';
+    const CONVERSION_EXTERNAL_IDENTIFIER = 'ADR_12345';
 }

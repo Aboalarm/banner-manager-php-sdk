@@ -7,6 +7,7 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Base;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
+use aboalarm\BannerManagerSdk\Entity\Conversion;
 use aboalarm\BannerManagerSdk\Entity\Rotation;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
@@ -822,6 +823,20 @@ class Client
         $uri = '/api/ab-tests/'.$abtestIdenitfier.'/timings/'.$timing->getId();
 
         return $this->doDeleteRequest($uri);
+    }
+
+    /**
+     * @param Conversion $conversion
+     *
+     * @return Conversion
+     * @throws BannerManagerException
+     */
+    public function postConversion(Conversion $conversion)
+    {
+        $uri = '/api/conversions';
+        $data = $this->doPostRequest($uri, $conversion->toArray());
+
+        return new Conversion($data);
     }
 
     /**

@@ -20,6 +20,11 @@ class Conversion extends Base
     private $externalIdentifier;
 
     /**
+     * @var Session|null
+     */
+    private $session;
+
+    /**
      * Conversion constructor.
      *
      * @param array $data Data from json response
@@ -31,6 +36,7 @@ class Conversion extends Base
         if($data && !isset($data['error'])) {
             $this->type = $data['type'];
             $this->externalIdentifier = $data['external_identifier'];
+            $this->session = $data['session'] ? new Session($data['session']) : null;
         }
     }
 
@@ -75,6 +81,26 @@ class Conversion extends Base
     }
 
     /**
+     * @return Session|null
+     */
+    public function getSession(): Session
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param Session|null $session
+     *
+     * @return Conversion
+     */
+    public function setSession(Session $session): Conversion
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -87,6 +113,10 @@ class Conversion extends Base
 
         if ($this->externalIdentifier) {
             $data['external_identifier'] = $this->externalIdentifier;
+        }
+
+        if ($this->session) {
+            $data['session'] = $this->session->getId();
         }
 
         return $data;
