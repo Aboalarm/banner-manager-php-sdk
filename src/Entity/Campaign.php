@@ -27,6 +27,11 @@ class Campaign extends Base
     private $weight;
 
     /**
+     * @var bool
+     */
+    private $appMobileAlwaysHotline = false;
+
+    /**
      * @var Banner[]|null
      */
     private $banners;
@@ -53,10 +58,13 @@ class Campaign extends Base
 
         parent::__construct($data);
 
-        if($data && !isset($data['error'])) {
+        if ($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->description = isset($data['description']) ? $data['description'] : null;
             $this->weight = isset($data['weight']) ? $data['weight'] : null;
+            $this->appMobileAlwaysHotline = isset($data['app_mobile_always_hotline'])
+                ? boolval($data['app_mobile_always_hotline'])
+                : false;
 
             if (isset($data['banners']) && $data['banners']) {
                 foreach ($data['banners'] as $banner) {
@@ -134,6 +142,26 @@ class Campaign extends Base
     public function setWeight(int $weight): Campaign
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAppMobileAlwaysHotline(): bool
+    {
+        return $this->appMobileAlwaysHotline;
+    }
+
+    /**
+     * @param bool $appMobileAlwaysHotline
+     *
+     * @return Campaign
+     */
+    public function setAppMobileAlwaysHotline(bool $appMobileAlwaysHotline): Campaign
+    {
+        $this->appMobileAlwaysHotline = $appMobileAlwaysHotline;
 
         return $this;
     }
@@ -220,6 +248,8 @@ class Campaign extends Base
         if ($this->abTest instanceof ABTest) {
             $data['ab_test'] = $this->abTest->getId();
         }
+
+        $data['app_mobile_always_hotline'] = $this->appMobileAlwaysHotline;
 
         return $data;
     }
