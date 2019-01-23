@@ -13,14 +13,12 @@ class ClientConversionsTest extends TestCase
     public function testPostConversion()
     {
         //Init session by requesting banner rotation
-        $data = BannerSDK::getPositionBanner(TestConstants::BANNER_POSITION_WITH_VALID_ROTATION);
+        BannerSDK::getPositionBanner(TestConstants::BANNER_POSITION_WITH_VALID_ROTATION);
 
-        $session = new Session(['id' => $data['session']]);
         $conversion = new Conversion();
 
-        $conversion->setType(TestConstants::CONVERSION_TYPE)
-            ->setExternalIdentifier(TestConstants::CONVERSION_EXTERNAL_IDENTIFIER)
-            ->setSession($session);
+        $conversion->setType(Conversion::TYPE_PDF_DOWNLOAD)
+            ->setExternalIdentifier(TestConstants::CONVERSION_EXTERNAL_IDENTIFIER);
 
         /** @var Conversion $storedConversion */
         $storedConversion = BannerSDK::postConversion($conversion);
@@ -28,7 +26,7 @@ class ClientConversionsTest extends TestCase
         $this->assertInstanceOf(Conversion::class, $storedConversion);
         $this->assertInstanceOf(Session::class, $storedConversion->getSession());
 
-        $this->assertEquals(TestConstants::CONVERSION_TYPE, $storedConversion->getType());
+        $this->assertEquals(Conversion::TYPE_PDF_DOWNLOAD, $storedConversion->getType());
         $this->assertEquals(TestConstants::CONVERSION_EXTERNAL_IDENTIFIER, $storedConversion->getExternalIdentifier());
     }
 }

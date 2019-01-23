@@ -9,6 +9,9 @@ namespace aboalarm\BannerManagerSdk\Entity;
  */
 class Conversion extends Base
 {
+    const TYPE_CANCELLATION = 'cancellation';
+    const TYPE_PDF_DOWNLOAD = 'pdf_download';
+
     /**
      * @var string|null
      */
