@@ -7,7 +7,9 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Base;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
+use aboalarm\BannerManagerSdk\Entity\Conversion;
 use aboalarm\BannerManagerSdk\Entity\Rotation;
+use aboalarm\BannerManagerSdk\Entity\Session;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
 use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
@@ -17,6 +19,7 @@ use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Session as SessionFacade;
 
 /**
  * Class Client
@@ -825,10 +828,27 @@ class Client
     }
 
     /**
+     * @param Conversion $conversion
+     *
+     * @return Conversion
+     * @throws BannerManagerException
+     */
+    public function postConversion(Conversion $conversion)
+    {
+        $session = new Session(['id' => SessionFacade::get("banner_session_id")]);
+        $conversion->setSession($session);
+
+        $uri = '/api/conversions';
+        $data = $this->doPostRequest($uri, $conversion->toArray());
+
+        return new Conversion($data);
+    }
+
+    /**
      * Get rotation data for a given banner position name and returns the html to render.
      *
      * @param string $position Position name
-     * @param string $session  Session identifier
+     * @param string $session  Session id
      *
      * @return string HTML to render
      */
@@ -847,7 +867,7 @@ class Client
      * Get rotation data for a given banner position name and returns the raw data.
      *
      * @param string $position Position name
-     * @param string $session  Session identifier
+     * @param string $session  Session id
      *
      * @return array Raw Data
      */
@@ -864,7 +884,12 @@ class Client
             $response = $this->doRequest('GET', $uri, $params);
 
             if ($response->getStatusCode() === 200) {
-                return json_decode($response->getBody(), true);
+                $json = $response->getBody()->getContents();
+                $data = json_decode($json, true);
+
+                SessionFacade::put("banner_session_id", $data['session']);
+
+                return $data;
             }
         } catch (GuzzleException $e) {
             return ['error' => 'Could not load banner for position '.$position];
@@ -877,7 +902,7 @@ class Client
      * Get rotation data for a list of banner position names and returns the html to render.
      *
      * @param array  $positions
-     * @param string $session Session identifier
+     * @param string $session Session id
      *
      * @return string HTML to render
      * @throws GuzzleException
@@ -897,7 +922,7 @@ class Client
      * Get rotation data for a list of banner position names and return the raw data.
      *
      * @param array  $positions
-     * @param string $session Session identifier
+     * @param string $session Session id
      *
      * @return Rotation|null
      * @throws GuzzleException
@@ -937,6 +962,8 @@ class Client
                         )
                     );
                 }
+
+                SessionFacade::put("banner_session_id", $rotation->getSession());
 
                 return $rotation;
             }

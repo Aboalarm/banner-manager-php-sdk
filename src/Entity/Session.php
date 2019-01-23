@@ -42,16 +42,16 @@ class Session extends Base
         if ($data) {
             parent::__construct($data);
 
-            $this->session = $data['session'];
-            $this->external = boolval($data['external']);
+            $this->session = isset($data['session']) ? $data['session'] : null;
+            $this->external = isset($data['external']) ? boolval($data['external']) : null;
 
-            if ($data['campaign']) {
+            if (isset($data['campaign'])) {
                 $this->campaign = new Campaign($data['campaign']);
             } else {
                 $this->campaign = null;
             }
 
-            if ($data['conversions']) {
+            if (isset($data['conversions'])) {
                 foreach ($data['conversions'] as $conversion) {
                     $this->conversions[] = new Conversion($conversion);
                 }
