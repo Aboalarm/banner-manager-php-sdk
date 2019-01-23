@@ -45,6 +45,5 @@ class TestConstants
     const BANNER_AB_DESCRIPTION_UPDATED = 'Just a test Updated';
     const BANNER_AB_TEST_ONE = 'O2 offer blue';
     const BANNER_AB_TEST_TWO = 'O2 offer red';
-    const CONVERSION_TYPE = 'pdf_download';
     const CONVERSION_EXTERNAL_IDENTIFIER = 'ADR_12345';
 }
