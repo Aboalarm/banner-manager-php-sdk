@@ -40,6 +40,11 @@ class Banner extends Base
     private $approved = false;
 
     /**
+     * @var bool
+     */
+    private $isTracking = false;
+
+    /**
      * @var string
      */
     private $previewUrl;
@@ -90,10 +95,8 @@ class Banner extends Base
             $this->previewUrl = isset($data['preview_url']) ? $data['preview_url'] : null;
             $this->views = isset($data['views']) ? $data['views'] : null;
             $this->clicks = isset($data['clicks']) ? $data['clicks'] : null;
-
-            if(isset($data['approved'])){
-                $this->approved = boolval($data['approved']);
-            }
+            $this->approved = isset($data['approved']) ? boolval($data['approved']) : false;
+            $this->isTracking = isset($data['is_tracking']) ? boolval($data['is_tracking']) : false;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -225,6 +228,26 @@ class Banner extends Base
     public function setApproved(bool $approved): Banner
     {
         $this->approved = $approved;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTracking(): bool
+    {
+        return $this->isTracking;
+    }
+
+    /**
+     * @param bool $isTracking
+     *
+     * @return Banner
+     */
+    public function setIsTracking(bool $isTracking): Banner
+    {
+        $this->isTracking = $isTracking;
 
         return $this;
     }
@@ -369,6 +392,8 @@ class Banner extends Base
         }
 
         $data['approved'] = $this->approved;
+
+        $data['is_tracking'] = $this->isTracking;
 
         return $data;
     }
