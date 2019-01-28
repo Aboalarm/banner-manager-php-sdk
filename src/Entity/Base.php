@@ -37,7 +37,7 @@ abstract class Base implements EntityInterface
     public function __construct(array $data = null)
     {
         if($data && !isset($data['error'])) {
-            $this->id = $data['id'];
+            $this->id = isset($data['id']) ? $data['id'] : null;
             $this->createdAt = isset($data['created_at']) ? new DateTime($data['created_at']) : null;
             $this->updatedAt = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;
         }
