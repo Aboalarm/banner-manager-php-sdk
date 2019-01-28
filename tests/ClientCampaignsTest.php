@@ -51,10 +51,12 @@ class ClientCampaignsTest extends TestCase
         $this->assertInstanceOf(Campaign::class, $storedCampaign);
 
         $storedCampaign->setName(TestConstants::CAMPAIGN_NAME_UPDATED);
+        $storedCampaign->setAppMobileAlwaysHotline(true);
 
         /** @var Campaign $updatedCampaign */
         $updatedCampaign = BannerSDK::putCampaign($storedCampaign);
         $this->assertEquals(TestConstants::CAMPAIGN_NAME_UPDATED, $updatedCampaign->getName());
+        $this->assertEquals(true, $updatedCampaign->isAppMobileAlwaysHotline());
 
         $this->assertTrue(BannerSDK::deleteCampaign($updatedCampaign->getId()));
     }
