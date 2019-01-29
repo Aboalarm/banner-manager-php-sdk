@@ -835,8 +835,12 @@ class Client
      */
     public function postConversion(Conversion $conversion)
     {
-        $session = new Session(['id' => SessionFacade::get("banner_session_id")]);
-        $conversion->setSession($session);
+        if (!$conversion->getSession() instanceof Session || !$conversion->getSession()->getId()) {
+            $session = new Session([
+                'id' => session("banner_session_id")
+            ]);
+            $conversion->setSession($session);
+        }
 
         $uri = '/api/conversions';
         $data = $this->doPostRequest($uri, $conversion->toArray());

@@ -86,7 +86,7 @@ class Conversion extends Base
     /**
      * @return Session|null
      */
-    public function getSession(): Session
+    public function getSession()
     {
         return $this->session;
     }
