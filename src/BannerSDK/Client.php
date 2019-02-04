@@ -835,6 +835,10 @@ class Client
      */
     public function postConversion(Conversion $conversion)
     {
+        if (!session("banner_session_id")) {
+            return new Conversion();
+        }
+
         if (!$conversion->getSession() instanceof Session || !$conversion->getSession()->getId()) {
             $session = new Session([
                 'id' => session("banner_session_id")
@@ -891,7 +895,11 @@ class Client
                 $json = $response->getBody()->getContents();
                 $data = json_decode($json, true);
 
-                SessionFacade::put("banner_session_id", $data['session']);
+                if (isset($data['session'])) {
+                    SessionFacade::put("banner_session_id", $data['session']);
+                }
+
+
 
                 return $data;
             }
@@ -950,6 +958,10 @@ class Client
             if (!empty($data)) {
                 $rotation = new Rotation($data);
 
+                if ($rotation->getSession()) {
+                    SessionFacade::put("banner_session_id", $rotation->getSession());
+                }
+
                 if ($this->getProxyUri()) {
                     $rotation->setBannerUrl(
                         str_replace(
@@ -966,8 +978,6 @@ class Client
                         )
                     );
                 }
-
-                SessionFacade::put("banner_session_id", $rotation->getSession());
 
                 return $rotation;
             }

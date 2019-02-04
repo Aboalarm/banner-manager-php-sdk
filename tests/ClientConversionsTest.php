@@ -64,4 +64,20 @@ class ClientConversionsTest extends TestCase
         $this->assertEquals($sessionId, $storedConversion->getSession()->getId());
     }
 
+    public function testPostConversionWithoutSession()
+    {
+        $conversion = new Conversion();
+
+        $conversion
+            ->setType(Conversion::TYPE_PDF_DOWNLOAD)
+            ->setExternalIdentifier(TestConstants::CONVERSION_EXTERNAL_IDENTIFIER);
+
+        /** @var Conversion $storedConversion */
+        $storedConversion = BannerSDK::postConversion($conversion);
+
+        $this->assertInstanceOf(Conversion::class, $storedConversion);
+        $this->assertNull($storedConversion->getId());
+        $this->assertNull($storedConversion->getSession());
+    }
+
 }
