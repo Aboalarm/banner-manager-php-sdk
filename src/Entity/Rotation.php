@@ -22,6 +22,11 @@ class Rotation
     /**
      * @var string|null
      */
+    private $name = null;
+
+    /**
+     * @var string|null
+     */
     private $text = null;
 
     /**
@@ -80,9 +85,25 @@ class Rotation
     private $height;
 
     /**
-     * @var string
+     * @var int
+     */
+    private $size;
+
+    /**
+     * @var string|null
      */
     private $html;
+
+    /**
+     * @var string|null
+     */
+    private $abTest;
+
+    /**
+     * @var bool
+     */
+    private $isTracking;
+
 
     /**
      * Banner constructor.
@@ -93,6 +114,7 @@ class Rotation
     {
         if($data) {
             $this->id = $data['id'];
+            $this->name = $data['name'];
             $this->text = $data['text'];
             $this->bannerUrl = $data['banner_url'];
             $this->bannerLink = $data['banner_link'];
@@ -106,6 +128,9 @@ class Rotation
             $this->width = $data['width'];
             $this->height = $data['height'];
             $this->html = $data['html'];
+            $this->size = $data['size'];
+            $this->abTest = $data['ab_test'];
+            $this->isTracking = boolval($data['is_tracking']);
         }
     }
 
@@ -268,11 +293,43 @@ class Rotation
     /**
      * Get Height
      *
-     * @return string
+     * @return int
      */
     public function getHeight(): int
     {
         return $this->height;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAbTest(): string
+    {
+        return $this->abTest;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTracking(): bool
+    {
+        return $this->isTracking;
     }
 
     /**
