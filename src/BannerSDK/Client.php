@@ -857,12 +857,13 @@ class Client
      *
      * @param string $position Position name
      * @param string $session  Session id
+     * @param string|null $campaign Campaign identifier to force in rotation
      *
      * @return string HTML to render
      */
-    public function render($position, $session = null): string
+    public function render($position, $session = null, $campaign = null): string
     {
-        $data = $this->getPositionBanner($position, $session);
+        $data = $this->getPositionBanner($position, $session, $campaign);
 
         if (!empty($data) && array_key_exists('html', $data)) {
             return $data['html'];
@@ -876,10 +877,11 @@ class Client
      *
      * @param string $position Position name
      * @param string $session  Session id
+     * @param string|null $campaign Campaign identifier to force in rotation
      *
      * @return array Raw Data
      */
-    public function getPositionBanner($position, $session = null): array
+    public function getPositionBanner($position, $session = null, $campaign = null): array
     {
         $uri = sprintf('/api/banner-positions/%s/rotation', $position);
 
@@ -887,6 +889,10 @@ class Client
             $params = [];
             if ($session) {
                 $params['session'] = $session;
+            }
+
+            if ($campaign) {
+                $params['campaign'] = $campaign;
             }
 
             $response = $this->doRequest('GET', $uri, $params);
@@ -913,15 +919,16 @@ class Client
     /**
      * Get rotation data for a list of banner position names and returns the html to render.
      *
-     * @param array  $positions
-     * @param string $session Session id
+     * @param array $positions
+     * @param string|null $session Session id
+     * @param string|null $campaign Campaign identifier to force in rotation
      *
      * @return string HTML to render
      * @throws GuzzleException
      */
-    public function renderMultiplePositions(array $positions, $session = null): string
+    public function renderMultiplePositions(array $positions, $session = null, $campaign = null): string
     {
-        $rotationData = $this->getMultiplePositionsBanner($positions, $session);
+        $rotationData = $this->getMultiplePositionsBanner($positions, $session, $campaign);
 
         if (!$rotationData->hasErrors() && $rotationData->getHtml()) {
             return $rotationData->getHtml();
@@ -934,12 +941,13 @@ class Client
      * Get rotation data for a list of banner position names and return the raw data.
      *
      * @param array  $positions
-     * @param string $session Session id
+     * @param string|null $session Session id
+     * @param string|null $campaign Campaign identifier to force in rotation
      *
      * @return Rotation|null
      * @throws GuzzleException
      */
-    public function getMultiplePositionsBanner(array $positions, $session = null)
+    public function getMultiplePositionsBanner(array $positions, $session = null, $campaign = null)
     {
         try {
             $uri = '/api/rotation';
@@ -947,6 +955,10 @@ class Client
             $params = [];
             if ($session) {
                 $params['session'] = $session;
+            }
+
+            if ($campaign) {
+                $params['campaign'] = $campaign;
             }
 
             $params['positions'] = $positions;
