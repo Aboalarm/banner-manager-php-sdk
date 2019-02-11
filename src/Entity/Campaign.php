@@ -233,15 +233,15 @@ class Campaign extends Base
     {
         $data = [];
 
-        if ($this->name) {
+        if ($this->name !== null) {
             $data['name'] = $this->name;
         }
 
-        if ($this->description) {
+        if ($this->description !== null) {
             $data['description'] = $this->description;
         }
 
-        if ($this->weight) {
+        if ($this->weight !== null) {
             $data['weight'] = $this->weight;
         }
 

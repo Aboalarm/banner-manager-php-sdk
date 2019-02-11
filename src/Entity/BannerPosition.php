@@ -348,35 +348,35 @@ class BannerPosition extends Base
     {
         $data = [];
 
-        if ($this->name) {
+        if ($this->name !== null) {
             $data['name'] = $this->name;
         }
 
-        if ($this->device) {
+        if ($this->device !== null) {
             $data['device'] = $this->device;
         }
 
-        if ($this->viewPort) {
+        if ($this->viewPort !== null) {
             $data['view_port'] = $this->viewPort;
         }
 
-        if ($this->description) {
+        if ($this->description !== null) {
             $data['description'] = $this->description;
         }
 
-        if ($this->width) {
+        if ($this->width !== null) {
             $data['width'] = $this->width;
         }
 
-        if ($this->height) {
+        if ($this->height !== null) {
             $data['height'] = $this->height;
         }
 
-        if ($this->gaType) {
+        if ($this->gaType !== null) {
             $data['ga_type'] = $this->gaType;
         }
 
-        if ($this->gaKeyword) {
+        if ($this->gaKeyword !== null) {
             $data['ga_keyword'] = $this->gaKeyword;
         }
 
