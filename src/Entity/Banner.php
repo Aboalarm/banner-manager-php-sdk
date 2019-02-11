@@ -371,23 +371,23 @@ class Banner extends Base
     {
         $data = [];
 
-        if($this->name) {
+        if($this->name !== null) {
             $data['name'] = $this->name;
         }
 
-        if($this->path) {
+        if($this->path !== null) {
             $data['path'] = $this->path;
         }
 
-        if($this->text) {
+        if($this->text !== null) {
             $data['text'] = $this->text;
         }
 
-        if($this->link) {
+        if($this->link !== null) {
             $data['link'] = $this->link;
         }
 
-        if($this->phoneNumber) {
+        if($this->phoneNumber !== null) {
             $data['phone_number'] = $this->phoneNumber;
         }
 
