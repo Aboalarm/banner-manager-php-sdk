@@ -104,6 +104,11 @@ class Rotation
      */
     private $isTracking;
 
+    /**
+     * @var bool
+     */
+    private $isCommercial;
+
 
     /**
      * Banner constructor.
@@ -131,6 +136,7 @@ class Rotation
             $this->size = $data['size'];
             $this->abTest = $data['ab_test'];
             $this->isTracking = boolval($data['is_tracking']);
+            $this->isCommercial = boolval($data['is_commercial']);
         }
     }
 
@@ -330,6 +336,14 @@ class Rotation
     public function isTracking(): bool
     {
         return $this->isTracking;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCommercial(): bool
+    {
+        return $this->isCommercial;
     }
 
     /**

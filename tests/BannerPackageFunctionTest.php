@@ -40,6 +40,7 @@ class BannerPackageFunctionTest extends TestCase
         $this->assertObjectHasAttribute('campaignName', $data);
         $this->assertObjectHasAttribute('html', $data);
         $this->assertObjectHasAttribute('isTracking', $data);
+        $this->assertObjectHasAttribute('isCommercial', $data);
         $this->assertObjectHasAttribute('size', $data);
         $this->assertObjectHasAttribute('abTest', $data);
     }

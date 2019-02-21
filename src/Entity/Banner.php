@@ -45,6 +45,11 @@ class Banner extends Base
     private $isTracking = false;
 
     /**
+     * @var bool
+     */
+    private $isCommercial = false;
+
+    /**
      * @var string
      */
     private $previewUrl;
@@ -86,7 +91,7 @@ class Banner extends Base
 
         parent::__construct($data);
 
-        if($data && !isset($data['error'])) {
+            if($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->path = isset($data['path']) ? $data['path'] : null;
             $this->text = isset($data['text']) ? $data['text'] : null;
@@ -97,6 +102,7 @@ class Banner extends Base
             $this->clicks = isset($data['clicks']) ? $data['clicks'] : null;
             $this->approved = isset($data['approved']) ? boolval($data['approved']) : false;
             $this->isTracking = isset($data['is_tracking']) ? boolval($data['is_tracking']) : false;
+            $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -253,6 +259,26 @@ class Banner extends Base
     }
 
     /**
+     * @return bool
+     */
+    public function isCommercial(): bool
+    {
+        return $this->isCommercial;
+    }
+
+    /**
+     * @param bool $isCommercial
+     *
+     * @return Banner
+     */
+    public function setIsCommercial(bool $isCommercial): Banner
+    {
+        $this->isCommercial = $isCommercial;
+
+        return $this;
+    }
+
+    /**
      * Get PreviewUrl
      *
      * @return string|null
@@ -394,6 +420,8 @@ class Banner extends Base
         $data['approved'] = $this->approved;
 
         $data['is_tracking'] = $this->isTracking;
+
+        $data['is_commercial'] = $this->isCommercial;
 
         return $data;
     }
