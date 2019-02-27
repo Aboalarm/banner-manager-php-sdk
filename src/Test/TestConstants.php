@@ -7,6 +7,8 @@ class TestConstants
 {
     const BANNER_NAME = 'foobanner';
     const BANNER_NAME_UPDATED = 'foobanner_UPDATED';
+    const BANNER_DESCRIPTION = 'Test banner description';
+    const BANNER_DESCRIPTION_UPDATED = 'Test banner description updated';
     const BANNER_POSITION_WITH_VALID_ROTATION = 'adr_438820_web_cancellation_vertical_right';
     const BANNER_POSITION = 'adr_1235_top_horizotal';
     const BANNER_POSITION_UPDATED = 'adr_1235_top_horizotal_updated';

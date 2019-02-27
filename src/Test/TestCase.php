@@ -49,6 +49,7 @@ class TestCase extends OrchestraTestCase
         $banner = new Banner();
 
         $banner->setName(TestConstants::BANNER_NAME)
+            ->setDescription(TestConstants::BANNER_DESCRIPTION)
             ->setPath(TestConstants::BANNER_IMAGE)
             ->setLink(TestConstants::BANNER_LINK)
             ->setPhoneNumber(TestConstants::BANNER_PHONE)
