@@ -98,7 +98,7 @@ class Banner extends Base
 
             if($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
-            $this->name = isset($data['description']) ? $data['description'] : null;
+            $this->description = isset($data['description']) ? $data['description'] : null;
             $this->path = isset($data['path']) ? $data['path'] : null;
             $this->text = isset($data['text']) ? $data['text'] : null;
             $this->link = isset($data['link']) ? $data['link'] : null;
