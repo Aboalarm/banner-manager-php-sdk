@@ -835,11 +835,11 @@ class Client
      */
     public function postConversion(Conversion $conversion)
     {
-        if (!session("banner_session_id")) {
-            return new Conversion();
-        }
-
         if (!$conversion->getSession() instanceof Session || !$conversion->getSession()->getId()) {
+            if (!session("banner_session_id")) {
+                return new Conversion();
+            }
+            
             $session = new Session([
                 'id' => session("banner_session_id")
             ]);
