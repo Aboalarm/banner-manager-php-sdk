@@ -17,6 +17,11 @@ class Banner extends Base
     /**
      * @var string|null
      */
+    private $description;
+
+    /**
+     * @var string|null
+     */
     private $path;
 
     /**
@@ -93,6 +98,7 @@ class Banner extends Base
 
             if($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
+            $this->description = isset($data['description']) ? $data['description'] : null;
             $this->path = isset($data['path']) ? $data['path'] : null;
             $this->text = isset($data['text']) ? $data['text'] : null;
             $this->link = isset($data['link']) ? $data['link'] : null;
@@ -134,6 +140,26 @@ class Banner extends Base
     public function setName(string $name): Banner
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     *
+     * @return Banner
+     */
+    public function setDescription(string $description): Banner
+    {
+        $this->description = $description;
 
         return $this;
     }
@@ -399,6 +425,10 @@ class Banner extends Base
 
         if($this->name !== null) {
             $data['name'] = $this->name;
+        }
+
+        if($this->description !== null) {
+            $data['description'] = $this->description;
         }
 
         if($this->path !== null) {
