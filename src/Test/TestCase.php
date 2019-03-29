@@ -192,6 +192,10 @@ class TestCase extends OrchestraTestCase
         ];
     }
 
+    /**
+     * @param string $id
+     * @return array
+     */
     public function getCampaignMock($id = 'cm_12345')
     {
         return [
@@ -209,6 +213,10 @@ class TestCase extends OrchestraTestCase
         ];
     }
 
+    /**
+     * @param string $id
+     * @return array
+     */
     public function getTimingMock($id = 'tim_12345')
     {
         return [
@@ -226,6 +234,10 @@ class TestCase extends OrchestraTestCase
         ];
     }
 
+    /**
+     * @param string $id
+     * @return array
+     */
     public function getABTestMock($id = 'abt_12345')
     {
         return [
