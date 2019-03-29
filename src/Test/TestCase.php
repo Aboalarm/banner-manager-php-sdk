@@ -137,4 +137,105 @@ class TestCase extends OrchestraTestCase
 
         return $timing;
     }
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    public function getPositionMock($id = 'pos_123')
+    {
+        return [
+            'id' => $id,
+            'created_at' => '2018-11-11 00:00:00',
+            'updated_at' => '2018-11-11 00:00:00',
+            'name' => 'test name',
+            'description' => 'description',
+            'width' => 100,
+            'height' => 200,
+            'ga_type' => 'ga_type',
+            'ga_keyword' => 'ga_keyword',
+            'device' => 'dumPhone',
+            'view_port' => 'foo',
+            'parent' => null,
+            'banners' => [
+                [
+                    'id' => 'ban_123',
+                    'created_at' => '2018-11-09 00:00:00',
+                    'updated_at' => '2018-11-09 00:00:00',
+                    'name' => 'foo',
+                    'path' => 'path.jpg',
+                    'text' => 'text',
+                    'link' => 'google.de',
+                    'phone_number' => '021343215',
+                    'preview_url' => 'bar.com/foo.jpg'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    public function getBannerMock($id = 'ban_123')
+    {
+        return [
+            'id' => $id,
+            'created_at' => '2018-11-09 00:00:00',
+            'updated_at' => '2018-11-09 00:00:00',
+            'name' => 'foo',
+            'path' => 'path.jpg',
+            'text' => 'text',
+            'link' => 'google.de',
+            'phone_number' => '021343215',
+            'preview_url' => 'bar.com/foo.jpg'
+        ];
+    }
+
+    public function getCampaignMock($id = 'cm_12345')
+    {
+        return [
+            'id' => $id,
+            'created_at' => '2019-03-03 11:21:21',
+            'updated_at' => '2019-03-06 11:11:32',
+            'name' => TestConstants::CAMPAIGN_NAME,
+            'description' => TestConstants::CAMPAIGN_DESCRIPTION,
+            'weight' => TestConstants::CAMPAIGN_WEIGHT,
+            'app_mobile_always_hotline' => false,
+            'tracking_disabled' => false,
+            'banners' => [],
+            'timings' => [],
+            'ab_test' => null,
+        ];
+    }
+
+    public function getTimingMock($id = 'tim_12345')
+    {
+        return [
+            "type" => null,
+            "date_from"=> null,
+            "date_until"=> null,
+            "time_from"=> null,
+            "time_until"=> null,
+            "is_hotline"=> false,
+            "campaign"=> null,
+            "ab_test"=> null,
+            "id"=> $id,
+            "created_at"=> "2019-03-19 11:21:02",
+            "updated_at"=> "2019-03-19 11:21:02"
+        ];
+    }
+
+    public function getABTestMock($id = 'abt_12345')
+    {
+        return [
+            "id" => $id,
+            "name" => "Test Laura",
+            "description" => "Test Laura",
+            "campaigns" => [],
+            "created_at" => "2019-02-20 11:03:39",
+            "updated_at" => "2019-02-20 11:03:39",
+            "timings" => [],
+        ];
+    }
 }
