@@ -32,6 +32,11 @@ class Campaign extends Base
     private $appMobileAlwaysHotline = false;
 
     /**
+     * @var bool
+     */
+    private $trackingDisabled = false;
+
+    /**
      * @var Banner[]|null
      */
     private $banners;
@@ -64,6 +69,9 @@ class Campaign extends Base
             $this->weight = isset($data['weight']) ? $data['weight'] : null;
             $this->appMobileAlwaysHotline = isset($data['app_mobile_always_hotline'])
                 ? boolval($data['app_mobile_always_hotline'])
+                : false;
+            $this->trackingDisabled = isset($data['tracking_disabled'])
+                ? boolval($data['tracking_disabled'])
                 : false;
 
             if (isset($data['banners']) && $data['banners']) {
@@ -167,6 +175,26 @@ class Campaign extends Base
     }
 
     /**
+     * @return bool
+     */
+    public function isTrackingDisabled(): bool
+    {
+        return $this->trackingDisabled;
+    }
+
+    /**
+     * @param bool $trackingDisabled
+     *
+     * @return Campaign
+     */
+    public function setTrackingDisabled(bool $trackingDisabled): Campaign
+    {
+        $this->trackingDisabled = $trackingDisabled;
+
+        return $this;
+    }
+
+    /**
      * @return Banner[]
      */
     public function getBanners(): array
@@ -250,6 +278,8 @@ class Campaign extends Base
         }
 
         $data['app_mobile_always_hotline'] = $this->appMobileAlwaysHotline;
+
+        $data['tracking_disabled'] = $this->trackingDisabled;
 
         return $data;
     }
