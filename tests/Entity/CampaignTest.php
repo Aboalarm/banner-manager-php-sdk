@@ -8,8 +8,11 @@ use aboalarm\BannerManagerSdk\Entity\Banner;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Test\TestCase;
-use aboalarm\BannerManagerSdk\Test\TestConstants;
 
+/**
+ * Class CampaignTest
+ * @package aboalarm\BannerManagerSdk\Test\Entity
+ */
 class CampaignTest extends TestCase
 {
     public function testCreate()
