@@ -93,13 +93,18 @@ class Client
      * Get all banners.
      *
      * @param PaginationOptions $options
+     * @param bool $withStats
      *
      * @return PaginatedCollection Banner collection.
      * @throws BannerManagerException
      */
-    public function getBanners(PaginationOptions $options)
+    public function getBanners(PaginationOptions $options, $withStats = false)
     {
         $queryParams = [];
+
+        if ($withStats) {
+            $queryParams['with_stats'] = 1;
+        }
 
         $queryParams['page'] = $options->getPage();
         $queryParams['limit'] = $options->getLimit();
