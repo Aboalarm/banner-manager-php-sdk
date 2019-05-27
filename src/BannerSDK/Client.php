@@ -858,26 +858,6 @@ class Client
     }
 
     /**
-     * Get rotation data for a given banner position name and returns the html to render.
-     *
-     * @param string $position Position name
-     * @param string $session  Session id
-     * @param string|null $campaign Campaign identifier to force in rotation
-     *
-     * @return string HTML to render
-     */
-    public function render($position, $session = null, $campaign = null): string
-    {
-        $data = $this->getPositionBanner($position, $session, $campaign);
-
-        if (!empty($data) && array_key_exists('html', $data)) {
-            return $data['html'];
-        }
-
-        return '<!-- Could not load banner for position '.$position.' -->';
-    }
-
-    /**
      * Get rotation data for a given banner position name and returns the raw data.
      *
      * @param string $position Position name
@@ -919,27 +899,6 @@ class Client
         }
 
         return [];
-    }
-
-    /**
-     * Get rotation data for a list of banner position names and returns the html to render.
-     *
-     * @param array $positions
-     * @param string|null $session Session id
-     * @param string|null $campaign Campaign identifier to force in rotation
-     *
-     * @return string HTML to render
-     * @throws GuzzleException
-     */
-    public function renderMultiplePositions(array $positions, $session = null, $campaign = null): string
-    {
-        $rotationData = $this->getMultiplePositionsBanner($positions, $session, $campaign);
-
-        if (!$rotationData->hasErrors() && $rotationData->getHtml()) {
-            return $rotationData->getHtml();
-        }
-
-        return '<!-- Could not load banner for positions '.implode(', ', $positions).' -->';
     }
 
     /**
