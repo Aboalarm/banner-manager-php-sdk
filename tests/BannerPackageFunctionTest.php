@@ -9,16 +9,6 @@ use BannerSDK;
 
 class BannerPackageFunctionTest extends TestCase
 {
-    public function testGetPositionBanner()
-    {
-        $data = BannerSDK::getPositionBanner('adr_438820_web_cancellation_vertical_right');
-
-        $this->assertArrayHasKey('banner_url', $data);
-        $this->assertArrayHasKey('text', $data);
-        $this->assertArrayHasKey('phone_number', $data);
-        $this->assertArrayHasKey('html', $data);
-    }
-
     public function testGetMultiplePositionsBanner()
     {
         $data = BannerSDK::getMultiplePositionsBanner(['adr_438820_web_cancellation_vertical_right']);

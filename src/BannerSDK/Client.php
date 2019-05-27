@@ -858,50 +858,6 @@ class Client
     }
 
     /**
-     * Get rotation data for a given banner position name and returns the raw data.
-     *
-     * @param string $position Position name
-     * @param string $session  Session id
-     * @param string|null $campaign Campaign identifier to force in rotation
-     *
-     * @return array Raw Data
-     */
-    public function getPositionBanner($position, $session = null, $campaign = null): array
-    {
-        $uri = sprintf('/api/banner-positions/%s/rotation', $position);
-
-        try {
-            $params = [];
-            if ($session) {
-                $params['session'] = $session;
-            }
-
-            if ($campaign) {
-                $params['campaign'] = $campaign;
-            }
-
-            $response = $this->doRequest('GET', $uri, $params);
-
-            if ($response->getStatusCode() === 200) {
-                $json = $response->getBody()->getContents();
-                $data = json_decode($json, true);
-
-                if (isset($data['session'])) {
-                    SessionFacade::put("banner_session_id", $data['session']);
-                }
-
-
-
-                return $data;
-            }
-        } catch (GuzzleException $e) {
-            return ['error' => 'Could not load banner for position '.$position];
-        }
-
-        return [];
-    }
-
-    /**
      * Get rotation data for a list of banner position names and return the raw data.
      *
      * @param array  $positions
