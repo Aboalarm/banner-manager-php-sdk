@@ -109,6 +109,10 @@ class Rotation
      */
     private $isCommercial;
 
+    /**
+     * @var array Raw response data
+     */
+    private $raw;
 
     /**
      * Banner constructor.
@@ -118,6 +122,7 @@ class Rotation
     public function __construct(array $data = null)
     {
         if($data) {
+            $this->raw = $data;
             $this->id = $data['id'];
             $this->name = $data['name'];
             $this->text = $data['text'];
@@ -352,5 +357,13 @@ class Rotation
     public function toArray(): array
     {
         return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getRaw(): array
+    {
+        return $this->raw;
     }
 }
