@@ -3,6 +3,8 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
+use Exception;
+
 /**
  * Class BannerPosition
  * @package aboalarm\BannerManagerSdk\Entity
@@ -68,6 +70,8 @@ class BannerPosition extends Base
      * BannerPosition constructor.
      *
      * @param array $data Data from json response
+     *
+     * @throws Exception
      */
     public function __construct(array $data = null)
     {
@@ -77,7 +81,7 @@ class BannerPosition extends Base
 
         parent::__construct($data);
 
-        if($data && !isset($data['error'])) {
+        if ($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->device = isset($data['device']) ? $data['device'] : null;
             $this->viewPort = isset($data['view_port']) ? $data['view_port'] : null;
@@ -92,7 +96,7 @@ class BannerPosition extends Base
             }
 
             if (isset($data['children']) && $data['children']) {
-                foreach($data['children'] as $child) {
+                foreach ($data['children'] as $child) {
                     $this->children[] = new BannerPosition($child);
                 }
             }
@@ -346,51 +350,16 @@ class BannerPosition extends Base
      */
     public function toArray()
     {
-        $data = [];
-
-        if ($this->name !== null) {
-            $data['name'] = $this->name;
-        }
-
-        if ($this->device !== null) {
-            $data['device'] = $this->device;
-        }
-
-        if ($this->viewPort !== null) {
-            $data['view_port'] = $this->viewPort;
-        }
-
-        if ($this->description !== null) {
-            $data['description'] = $this->description;
-        }
-
-        if ($this->width !== null) {
-            $data['width'] = $this->width;
-        }
-
-        if ($this->height !== null) {
-            $data['height'] = $this->height;
-        }
-
-        if ($this->gaType !== null) {
-            $data['ga_type'] = $this->gaType;
-        }
-
-        if ($this->gaKeyword !== null) {
-            $data['ga_keyword'] = $this->gaKeyword;
-        }
-
-        if ($this->parent instanceof BannerPosition) {
-            $data['parent'] = $this->parent->getId();
-        }
-
-        if (is_array($this->children)) {
-            $data['children'] = [];
-            foreach($data['children'] as $child) {
-                $data['children'][] = $child->getId();
-            }
-        }
-
-        return $data;
+        return [
+            'name'        => $this->name,
+            'device'      => $this->device,
+            'view_port'   => $this->viewPort,
+            'description' => $this->description,
+            'width'       => $this->width,
+            'height'      => $this->height,
+            'ga_type'     => $this->gaType,
+            'ga_keyword'  => $this->gaKeyword,
+            'parent'      => ($this->parent instanceof BannerPosition) ? $this->parent->getId() : null,
+        ];
     }
 }

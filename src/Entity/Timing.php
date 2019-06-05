@@ -3,6 +3,8 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
+use Exception;
+
 /**
  * Class Timing
  * @package aboalarm\BannerManagerSdk\Entity
@@ -14,13 +16,13 @@ class Timing extends Base
      */
     const TYPE_WORKDAYS = 'workdays';
     const TYPE_WEEKENDS = 'weekends';
-    const TYPE_MONDAY  = 'Mon';
-    const TYPE_TUESDAY  = 'Tue';
-    const TYPE_WEDNESDAY  = 'Wed';
-    const TYPE_THURSDAY  = 'Thu';
-    const TYPE_FRIDAY  = 'Fri';
-    const TYPE_SATURDAY  = 'Sat';
-    const TYPE_SUNDAY  = 'Sun';
+    const TYPE_MONDAY = 'Mon';
+    const TYPE_TUESDAY = 'Tue';
+    const TYPE_WEDNESDAY = 'Wed';
+    const TYPE_THURSDAY = 'Thu';
+    const TYPE_FRIDAY = 'Fri';
+    const TYPE_SATURDAY = 'Sat';
+    const TYPE_SUNDAY = 'Sun';
 
     /**
      * @var string|null
@@ -66,20 +68,22 @@ class Timing extends Base
      * Banner constructor.
      *
      * @param array $data Data from json response
+     *
+     * @throws Exception
      */
     public function __construct(array $data = null)
     {
         parent::__construct($data);
 
-        if($data && !isset($data['error'])) {
-            $this->type = $data['type'];
-            $this->dateFrom = $data['date_from'];
-            $this->dateUntil = $data['date_until'];
-            $this->timeFrom = $data['time_from'];
-            $this->timeUntil = $data['time_until'];
-            $this->isHotline = boolval($data['is_hotline']);
-            $this->campaign = $data['campaign'] ? new Campaign($data['campaign']) : null;
-            $this->abTest = $data['ab_test'] ? new ABTest($data['ab_test']) : null;
+        if ($data && !isset($data['error'])) {
+            $this->type = isset($data['type']) ? $data['type'] : null;
+            $this->dateFrom = isset($data['date_from']) ? $data['date_from'] : null;
+            $this->dateUntil = isset($data['date_until']) ? $data['date_until'] : null;
+            $this->timeFrom = isset($data['time_from']) ? $data['time_from'] : null;
+            $this->timeUntil = isset($data['time_until']) ? $data['time_until'] : null;
+            $this->isHotline = isset($data['is_hotline']) ? $data['is_hotline'] : null;
+            $this->campaign = isset($data['campaign']) ? new Campaign($data['campaign']) : null;
+            $this->abTest = isset($data['ab_test']) ? new ABTest($data['ab_test']) : null;
         }
     }
 
@@ -223,6 +227,7 @@ class Timing extends Base
     public function setCampaign(Campaign $campaign = null)
     {
         $this->campaign = $campaign;
+
         return $this;
     }
 
@@ -246,6 +251,7 @@ class Timing extends Base
     public function setAbTest(ABTest $abTest = null)
     {
         $this->abTest = $abTest;
+
         return $this;
     }
 
@@ -254,33 +260,16 @@ class Timing extends Base
      */
     public function toArray()
     {
-        $data = [];
+        return [
+            'type'       => $this->type,
+            'date_from'  => $this->dateFrom,
+            'date_until' => $this->dateUntil,
+            'time_from'  => $this->timeFrom,
+            'time_until' => $this->timeUntil,
+            'is_hotline' => $this->isHotline,
+        ];
 
-        if ($this->type) {
-            $data['type'] = $this->type;
-        }
 
-        if ($this->dateFrom) {
-            $data['date_from'] = $this->dateFrom;
-        }
-
-        if ($this->dateUntil) {
-            $data['date_until'] = $this->dateUntil;
-        }
-
-        if ($this->timeFrom) {
-            $data['time_from'] = $this->timeFrom;
-        }
-
-        if ($this->timeUntil) {
-            $data['time_until'] = $this->timeUntil;
-        }
-
-        if ($this->isHotline) {
-            $data['is_hotline'] = $this->isHotline;
-        }
-
-        return $data;
     }
 
     /**
@@ -291,16 +280,16 @@ class Timing extends Base
     static public function getTypeMapping()
     {
         return [
-            '' => 'Immer',
-            static::TYPE_WORKDAYS => 'Werktags (Mo - Fr)',
-            static::TYPE_WEEKENDS => 'Wochende (Sa & So)',
-            static::TYPE_MONDAY => 'Montags',
-            static::TYPE_TUESDAY => 'Dienstags',
+            ''                     => 'Immer',
+            static::TYPE_WORKDAYS  => 'Werktags (Mo - Fr)',
+            static::TYPE_WEEKENDS  => 'Wochende (Sa & So)',
+            static::TYPE_MONDAY    => 'Montags',
+            static::TYPE_TUESDAY   => 'Dienstags',
             static::TYPE_WEDNESDAY => 'Mittwochs',
-            static::TYPE_THURSDAY => 'Donnerstags',
-            static::TYPE_FRIDAY => 'Freitags',
-            static::TYPE_SATURDAY => 'Samstags',
-            static::TYPE_SUNDAY => 'Sonntags',
+            static::TYPE_THURSDAY  => 'Donnerstags',
+            static::TYPE_FRIDAY    => 'Freitags',
+            static::TYPE_SATURDAY  => 'Samstags',
+            static::TYPE_SUNDAY    => 'Sonntags',
         ];
     }
 }

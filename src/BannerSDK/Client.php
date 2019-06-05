@@ -20,6 +20,8 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Session as SessionFacade;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class Client
@@ -97,6 +99,7 @@ class Client
      *
      * @return PaginatedCollection Banner collection.
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getBanners(PaginationOptions $options, $withStats = false)
     {
@@ -144,6 +147,7 @@ class Client
      *
      * @return Banner
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getBanner(string $identifier)
     {
@@ -169,6 +173,7 @@ class Client
      *
      * @return Banner
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postBanner(Banner $banner)
     {
@@ -186,7 +191,6 @@ class Client
      * @return Banner
      *
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function uploadBanner(Banner $banner, UploadedFile $file)
     {
@@ -226,6 +230,7 @@ class Client
      *
      * @return Banner
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function putBanner(Banner $banner)
     {
@@ -657,6 +662,7 @@ class Client
      *
      * @return PaginatedCollection ABtests collection.
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getABTests(PaginationOptions $options)
     {
@@ -700,6 +706,7 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getABTest(string $identifier)
     {
@@ -717,6 +724,7 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postABTest(ABTest $abtest)
     {
@@ -730,6 +738,7 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function putABTest(ABTest $abtest)
     {
@@ -935,7 +944,7 @@ class Client
      * @param string $startDate  Start Date in YYYY-MM-DD format
      * @param string $endDate    End Date in YYYY-MM-DD format
      *
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return StreamedResponse
      * @throws BannerManagerException
      */
     public function getReportByCampaignAndTimespan($campaignId, $startDate, $endDate)
@@ -1130,7 +1139,7 @@ class Client
      *
      * See: http://docs.guzzlephp.org/en/stable/request-options.html#multipart
      *
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return mixed|ResponseInterface
      * @throws GuzzleException
      */
     private function doRequest(
