@@ -109,6 +109,20 @@ class Rotation
      */
     private $isCommercial;
 
+    /**
+     * @var bool
+     */
+    private $isThirdParty = false;
+
+    /**
+     * @var bool
+     */
+    private $thirdPartyTrackingEnabled = false;
+
+    /**
+     * @var string|null
+     */
+    private $thirdPartyEmbedCode;
 
     /**
      * Banner constructor.
@@ -137,6 +151,9 @@ class Rotation
             $this->abTest = $data['ab_test'];
             $this->isTracking = boolval($data['is_tracking']);
             $this->isCommercial = boolval($data['is_commercial']);
+            $this->isThirdParty = boolval($data['is_third_party']);
+            $this->thirdPartyTrackingEnabled = boolval($data['third_party_tracking_enabled']);
+            $this->thirdPartyEmbedCode = $data['third_party_embed_code'];
         }
     }
 
@@ -344,6 +361,30 @@ class Rotation
     public function isCommercial(): bool
     {
         return $this->isCommercial;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isThirdParty(): bool
+    {
+        return $this->isThirdParty;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isThirdPartyTrackingEnabled(): bool
+    {
+        return $this->thirdPartyTrackingEnabled;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThirdPartyEmbedCode()
+    {
+        return $this->thirdPartyEmbedCode;
     }
 
     /**

@@ -55,6 +55,21 @@ class Banner extends Base
     private $isCommercial = false;
 
     /**
+     * @var bool
+     */
+    private $isThirdParty = false;
+
+    /**
+     * @var bool
+     */
+    private $thirdPartyTrackingEnabled = false;
+
+    /**
+     * @var string|null
+     */
+    private $thirdPartyEmbedCode;
+
+    /**
      * @var string
      */
     private $previewUrl;
@@ -96,7 +111,7 @@ class Banner extends Base
 
         parent::__construct($data);
 
-            if($data && !isset($data['error'])) {
+        if ($data && !isset($data['error'])) {
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->description = isset($data['description']) ? $data['description'] : null;
             $this->path = isset($data['path']) ? $data['path'] : null;
@@ -109,6 +124,9 @@ class Banner extends Base
             $this->approved = isset($data['approved']) ? boolval($data['approved']) : false;
             $this->isTracking = isset($data['is_tracking']) ? boolval($data['is_tracking']) : false;
             $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
+            $this->isThirdParty = isset($data['is_third_party']) ? boolval($data['is_third_party']) : false;
+            $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : false;
+            $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -305,6 +323,66 @@ class Banner extends Base
     }
 
     /**
+     * @return bool
+     */
+    public function isThirdParty(): bool
+    {
+        return $this->isThirdParty;
+    }
+
+    /**
+     * @param bool $isThirdParty
+     *
+     * @return Banner
+     */
+    public function setIsThirdParty(bool $isThirdParty): Banner
+    {
+        $this->isThirdParty = $isThirdParty;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isThirdPartyTrackingEnabled(): bool
+    {
+        return $this->thirdPartyTrackingEnabled;
+    }
+
+    /**
+     * @param bool $thirdPartyTrackingEnabled
+     *
+     * @return Banner
+     */
+    public function setThirdPartyTrackingEnabled(bool $thirdPartyTrackingEnabled): Banner
+    {
+        $this->thirdPartyTrackingEnabled = $thirdPartyTrackingEnabled;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThirdPartyEmbedCode()
+    {
+        return $this->thirdPartyEmbedCode;
+    }
+
+    /**
+     * @param string|null $thirdPartyEmbedCode
+     *
+     * @return Banner
+     */
+    public function setThirdPartyEmbedCode($thirdPartyEmbedCode): Banner
+    {
+        $this->thirdPartyEmbedCode = $thirdPartyEmbedCode;
+
+        return $this;
+    }
+
+    /**
      * Get PreviewUrl
      *
      * @return string|null
@@ -423,28 +501,40 @@ class Banner extends Base
     {
         $data = [];
 
-        if($this->name !== null) {
+        if ($this->name !== null) {
             $data['name'] = $this->name;
         }
 
-        if($this->description !== null) {
+        if ($this->description !== null) {
             $data['description'] = $this->description;
         }
 
-        if($this->path !== null) {
+        if ($this->path !== null) {
             $data['path'] = $this->path;
         }
 
-        if($this->text !== null) {
+        if ($this->text !== null) {
             $data['text'] = $this->text;
         }
 
-        if($this->link !== null) {
+        if ($this->link !== null) {
             $data['link'] = $this->link;
         }
 
-        if($this->phoneNumber !== null) {
+        if ($this->phoneNumber !== null) {
             $data['phone_number'] = $this->phoneNumber;
+        }
+
+        if ($this->isThirdParty !== null) {
+            $data['is_third_party'] = $this->isThirdParty;
+        }
+
+        if ($this->thirdPartyTrackingEnabled !== null) {
+            $data['third_party_tracking_enabled'] = $this->thirdPartyTrackingEnabled;
+        }
+
+        if ($this->thirdPartyEmbedCode !== null) {
+            $data['third_party_embed_code'] = $this->thirdPartyEmbedCode;
         }
 
         $data['approved'] = $this->approved;
