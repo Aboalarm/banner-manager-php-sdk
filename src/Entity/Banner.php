@@ -3,6 +3,8 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
+use Exception;
+
 /**
  * Class Banner
  * @package aboalarm\BannerManagerSdk\Entity
@@ -103,6 +105,8 @@ class Banner extends Base
      * Banner constructor.
      *
      * @param array $data Data from json response
+     *
+     * @throws Exception
      */
     public function __construct(array $data = null)
     {
@@ -499,50 +503,19 @@ class Banner extends Base
      */
     public function toArray(): array
     {
-        $data = [];
-
-        if ($this->name !== null) {
-            $data['name'] = $this->name;
-        }
-
-        if ($this->description !== null) {
-            $data['description'] = $this->description;
-        }
-
-        if ($this->path !== null) {
-            $data['path'] = $this->path;
-        }
-
-        if ($this->text !== null) {
-            $data['text'] = $this->text;
-        }
-
-        if ($this->link !== null) {
-            $data['link'] = $this->link;
-        }
-
-        if ($this->phoneNumber !== null) {
-            $data['phone_number'] = $this->phoneNumber;
-        }
-
-        if ($this->isThirdParty !== null) {
-            $data['is_third_party'] = $this->isThirdParty;
-        }
-
-        if ($this->thirdPartyTrackingEnabled !== null) {
-            $data['third_party_tracking_enabled'] = $this->thirdPartyTrackingEnabled;
-        }
-
-        if ($this->thirdPartyEmbedCode !== null) {
-            $data['third_party_embed_code'] = $this->thirdPartyEmbedCode;
-        }
-
-        $data['approved'] = $this->approved;
-
-        $data['is_tracking'] = $this->isTracking;
-
-        $data['is_commercial'] = $this->isCommercial;
-
-        return $data;
+        return [
+            'name'        => $this->name,
+            'description' => $this->description,
+            'path'        => $this->path,
+            'text' => $this->text,
+            'link' => $this->link,
+            'phone_number' => $this->phoneNumber,
+            'approved' => $this->approved,
+            'is_tracking' => $this->isTracking,
+            'is_commercial' => $this->isCommercial,
+            'is_third_party' => $this->isThirdParty,
+            'third_party_tracking_enabled' => $this->thirdPartyTrackingEnabled,
+            'third_party_embed_code' => $this->thirdPartyEmbedCode,
+        ];
     }
 }

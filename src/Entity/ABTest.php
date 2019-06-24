@@ -3,6 +3,8 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
+use Exception;
+
 /**
  * Class ABTest
  * @package aboalarm\BannerManagerSdk\Entity
@@ -33,6 +35,8 @@ class ABTest extends Base
      * ABTest constructor.
      *
      * @param array $data Data from json response
+     *
+     * @throws Exception
      */
     public function __construct(array $data = null)
     {
@@ -150,13 +154,8 @@ class ABTest extends Base
     {
         $data = [];
 
-        if ($this->name !== null) {
-            $data['name'] = $this->name;
-        }
-
-        if ($this->description !== null) {
-            $data['description'] = $this->description;
-        }
+        $data['name'] = $this->name;
+        $data['description'] = $this->description;
 
         return $data;
     }

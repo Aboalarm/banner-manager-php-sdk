@@ -5,6 +5,7 @@ namespace aboalarm\BannerManagerSdk\Entity;
 
 use aboalarm\BannerManagerSdk\Entity\Traits\ErrorTrait;
 use DateTime;
+use Exception;
 
 /**
  * Class Base
@@ -30,12 +31,23 @@ abstract class Base implements EntityInterface
     private $updatedAt;
 
     /**
+     * @var array Raw response data
+     */
+    private $raw;
+
+    /**
      * Base constructor.
      *
      * @param array $data Data from json response
+     *
+     * @throws Exception
      */
     public function __construct(array $data = null)
     {
+        if($data) {
+            $this->raw = $data;
+        }
+
         if($data && !isset($data['error'])) {
             $this->id = isset($data['id']) ? $data['id'] : null;
             $this->createdAt = isset($data['created_at']) ? new DateTime($data['created_at']) : null;
@@ -92,5 +104,13 @@ abstract class Base implements EntityInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRaw(): array
+    {
+        return $this->raw;
     }
 }

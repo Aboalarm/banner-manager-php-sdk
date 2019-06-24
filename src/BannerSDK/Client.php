@@ -20,6 +20,8 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Session as SessionFacade;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class Client
@@ -97,6 +99,7 @@ class Client
      *
      * @return PaginatedCollection Banner collection.
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getBanners(PaginationOptions $options, $withStats = false)
     {
@@ -144,6 +147,7 @@ class Client
      *
      * @return Banner
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getBanner(string $identifier)
     {
@@ -169,6 +173,7 @@ class Client
      *
      * @return Banner
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postBanner(Banner $banner)
     {
@@ -186,7 +191,6 @@ class Client
      * @return Banner
      *
      * @throws BannerManagerException
-     * @throws GuzzleException
      */
     public function uploadBanner(Banner $banner, UploadedFile $file)
     {
@@ -226,6 +230,7 @@ class Client
      *
      * @return Banner
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function putBanner(Banner $banner)
     {
@@ -657,6 +662,7 @@ class Client
      *
      * @return PaginatedCollection ABtests collection.
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getABTests(PaginationOptions $options)
     {
@@ -700,6 +706,7 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getABTest(string $identifier)
     {
@@ -717,6 +724,7 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postABTest(ABTest $abtest)
     {
@@ -730,6 +738,7 @@ class Client
      *
      * @return ABTest
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function putABTest(ABTest $abtest)
     {
@@ -858,91 +867,6 @@ class Client
     }
 
     /**
-     * Get rotation data for a given banner position name and returns the html to render.
-     *
-     * @param string $position Position name
-     * @param string $session  Session id
-     * @param string|null $campaign Campaign identifier to force in rotation
-     *
-     * @return string HTML to render
-     */
-    public function render($position, $session = null, $campaign = null): string
-    {
-        $data = $this->getPositionBanner($position, $session, $campaign);
-
-        if (!empty($data) && array_key_exists('html', $data)) {
-            return $data['html'];
-        }
-
-        return '<!-- Could not load banner for position '.$position.' -->';
-    }
-
-    /**
-     * Get rotation data for a given banner position name and returns the raw data.
-     *
-     * @param string $position Position name
-     * @param string $session  Session id
-     * @param string|null $campaign Campaign identifier to force in rotation
-     *
-     * @return array Raw Data
-     */
-    public function getPositionBanner($position, $session = null, $campaign = null): array
-    {
-        $uri = sprintf('/api/banner-positions/%s/rotation', $position);
-
-        try {
-            $params = [];
-            if ($session) {
-                $params['session'] = $session;
-            }
-
-            if ($campaign) {
-                $params['campaign'] = $campaign;
-            }
-
-            $response = $this->doRequest('GET', $uri, $params);
-
-            if ($response->getStatusCode() === 200) {
-                $json = $response->getBody()->getContents();
-                $data = json_decode($json, true);
-
-                if (isset($data['session'])) {
-                    SessionFacade::put("banner_session_id", $data['session']);
-                }
-
-
-
-                return $data;
-            }
-        } catch (GuzzleException $e) {
-            return ['error' => 'Could not load banner for position '.$position];
-        }
-
-        return [];
-    }
-
-    /**
-     * Get rotation data for a list of banner position names and returns the html to render.
-     *
-     * @param array $positions
-     * @param string|null $session Session id
-     * @param string|null $campaign Campaign identifier to force in rotation
-     *
-     * @return string HTML to render
-     * @throws GuzzleException
-     */
-    public function renderMultiplePositions(array $positions, $session = null, $campaign = null): string
-    {
-        $rotationData = $this->getMultiplePositionsBanner($positions, $session, $campaign);
-
-        if (!$rotationData->hasErrors() && $rotationData->getHtml()) {
-            return $rotationData->getHtml();
-        }
-
-        return '<!-- Could not load banner for positions '.implode(', ', $positions).' -->';
-    }
-
-    /**
      * Get rotation data for a list of banner position names and return the raw data.
      *
      * @param array  $positions
@@ -1020,7 +944,7 @@ class Client
      * @param string $startDate  Start Date in YYYY-MM-DD format
      * @param string $endDate    End Date in YYYY-MM-DD format
      *
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return StreamedResponse
      * @throws BannerManagerException
      */
     public function getReportByCampaignAndTimespan($campaignId, $startDate, $endDate)
@@ -1215,7 +1139,7 @@ class Client
      *
      * See: http://docs.guzzlephp.org/en/stable/request-options.html#multipart
      *
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return mixed|ResponseInterface
      * @throws GuzzleException
      */
     private function doRequest(

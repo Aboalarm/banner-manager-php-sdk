@@ -124,6 +124,11 @@ class Rotation
      */
     private $thirdPartyEmbedCode;
 
+     /**
+     * @var array|null Raw response data
+     */
+    private $raw;
+
     /**
      * Banner constructor.
      *
@@ -131,29 +136,31 @@ class Rotation
      */
     public function __construct(array $data = null)
     {
-        if($data) {
-            $this->id = $data['id'];
-            $this->name = $data['name'];
-            $this->text = $data['text'];
-            $this->bannerUrl = $data['banner_url'];
-            $this->bannerLink = $data['banner_link'];
-            $this->phoneNumber = $data['phone_number'];
-            $this->gaType = $data['ga_type'];
-            $this->gaKeyword = $data['ga_keyword'];
-            $this->isHotline = boolval($data['is_hotline']);
-            $this->session = $data['session'];
-            $this->positionName = $data['position_name'];
-            $this->campaignName = $data['campaign_name'];
-            $this->width = $data['width'];
-            $this->height = $data['height'];
-            $this->html = $data['html'];
-            $this->size = $data['size'];
-            $this->abTest = $data['ab_test'];
-            $this->isTracking = boolval($data['is_tracking']);
-            $this->isCommercial = boolval($data['is_commercial']);
-            $this->isThirdParty = boolval($data['is_third_party']);
-            $this->thirdPartyTrackingEnabled = boolval($data['third_party_tracking_enabled']);
-            $this->thirdPartyEmbedCode = $data['third_party_embed_code'];
+        $this->raw = $data;
+
+        if ($data && !isset($data['error'])) {
+            $this->id = isset($data['id']) ? $data['id'] : null;
+            $this->name = isset($data['name']) ? $data['name'] : null;
+            $this->text = isset($data['text']) ? $data['text'] : null;
+            $this->bannerUrl = isset($data['banner_url']) ? $data['banner_url'] : null;
+            $this->bannerLink = isset($data['banner_link']) ? $data['banner_link'] : null;
+            $this->phoneNumber = isset($data['phone_number']) ? $data['phone_number'] : null;
+            $this->gaType = isset($data['ga_type']) ? $data['ga_type'] : null;
+            $this->gaKeyword = isset($data['ga_keyword']) ? $data['ga_keyword'] : null;
+            $this->isHotline = isset($data['is_hotline']) ? boolval($data['is_hotline']) : false;
+            $this->session = isset($data['session']) ? $data['session'] : null;
+            $this->positionName = isset($data['position_name']) ? $data['position_name'] : null;
+            $this->campaignName = isset($data['campaign_name']) ? $data['campaign_name'] : null;
+            $this->width = isset($data['width']) ? $data['width'] : null;
+            $this->height = isset($data['height']) ? $data['height'] : null;
+            $this->html = isset($data['html']) ? $data['html'] : null;
+            $this->size = isset($data['size']) ? $data['size'] : null;
+            $this->abTest = isset($data['ab_test']) ? $data['ab_test'] : null;
+            $this->isTracking = isset($data['is_tracking']) ? boolval($data['is_tracking']) : false;
+            $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
+            $this->isThirdParty = isset($data['is_third_party']) ? boolval($data['is_third_party']) : false;
+            $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : false;
+            $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
         }
     }
 
@@ -221,6 +228,7 @@ class Rotation
     public function setBannerLink(string $bannerLink)
     {
         $this->bannerLink = $bannerLink;
+
         return $this;
     }
 
@@ -273,6 +281,7 @@ class Rotation
     {
         return $this->session;
     }
+
     /**
      * Get PositionName
      *
@@ -393,5 +402,13 @@ class Rotation
     public function toArray(): array
     {
         return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getRaw(): array
+    {
+        return $this->raw;
     }
 }

@@ -17,7 +17,7 @@ class ClientConversionsTest extends TestCase
     public function testPostConversion()
     {
         //Init session by requesting banner rotation
-        BannerSDK::getPositionBanner(TestConstants::BANNER_POSITION_WITH_VALID_ROTATION);
+        BannerSDK::getMultiplePositionsBanner([TestConstants::BANNER_POSITION_WITH_VALID_ROTATION]);
 
         $conversion = new Conversion();
 
