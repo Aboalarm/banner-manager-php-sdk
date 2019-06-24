@@ -504,18 +504,18 @@ class Banner extends Base
     public function toArray(): array
     {
         return [
-            'name'        => $this->name,
-            'description' => $this->description,
-            'path'        => $this->path,
-            'text' => $this->text,
-            'link' => $this->link,
-            'phone_number' => $this->phoneNumber,
-            'approved' => $this->approved,
-            'is_tracking' => $this->isTracking,
-            'is_commercial' => $this->isCommercial,
-            'is_third_party' => $this->isThirdParty,
+            'name'                         => $this->name,
+            'description'                  => $this->description,
+            'path'                         => $this->path,
+            'text'                         => $this->text,
+            'link'                         => $this->link,
+            'phone_number'                 => $this->phoneNumber,
+            'approved'                     => $this->approved,
+            'is_tracking'                  => $this->isTracking,
+            'is_commercial'                => $this->isCommercial,
+            'is_third_party'               => $this->isThirdParty,
             'third_party_tracking_enabled' => $this->thirdPartyTrackingEnabled,
-            'third_party_embed_code' => $this->thirdPartyEmbedCode,
+            'third_party_embed_code'       => $this->thirdPartyEmbedCode,
         ];
     }
 }
