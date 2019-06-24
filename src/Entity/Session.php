@@ -3,6 +3,8 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
+use Exception;
+
 /**
  * Class Session
  * @package aboalarm\BannerManagerSdk\Entity
@@ -24,7 +26,6 @@ class Session extends Base
      */
     private $campaign;
 
-
     /**
      * @var Conversion[]
      */
@@ -34,6 +35,8 @@ class Session extends Base
      * Session constructor.
      *
      * @param array $data Data from json response
+     *
+     * @throws Exception
      */
     public function __construct(array $data = null)
     {
@@ -44,12 +47,7 @@ class Session extends Base
 
             $this->session = isset($data['session']) ? $data['session'] : null;
             $this->external = isset($data['external']) ? boolval($data['external']) : null;
-
-            if (isset($data['campaign'])) {
-                $this->campaign = new Campaign($data['campaign']);
-            } else {
-                $this->campaign = null;
-            }
+            $this->campaign = isset($data['campaign']) ? new Campaign($data['campaign']) : null;
 
             if (isset($data['conversions'])) {
                 foreach ($data['conversions'] as $conversion) {
@@ -141,14 +139,9 @@ class Session extends Base
 
     public function toArray()
     {
-        $data = [];
-
-        if ($this->session) {
-            $data['session'] = $this->session;
-        }
-
-        if ($this->external) {
-            $data['external'] = $this->external;
-        }
+        return [
+            'session'  => $this->session,
+            'external' => $this->external,
+        ];
     }
 }

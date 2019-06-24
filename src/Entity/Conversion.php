@@ -3,6 +3,8 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
+use Exception;
+
 /**
  * Class Conversion
  * @package aboalarm\BannerManagerSdk\Entity
@@ -31,15 +33,17 @@ class Conversion extends Base
      * Conversion constructor.
      *
      * @param array $data Data from json response
+     *
+     * @throws Exception
      */
     public function __construct(array $data = null)
     {
         parent::__construct($data);
 
-        if($data && !isset($data['error'])) {
-            $this->type = $data['type'];
-            $this->externalIdentifier = $data['external_identifier'];
-            $this->session = $data['session'] ? new Session($data['session']) : null;
+        if ($data && !isset($data['error'])) {
+            $this->type = isset($data['type']) ? $data['type'] : null;
+            $this->externalIdentifier = isset($data['external_identifier']) ? $data['external_identifier'] : null;
+            $this->session = isset($data['session']) ? new Session($data['session']) : null;
         }
     }
 
@@ -108,20 +112,10 @@ class Conversion extends Base
      */
     public function toArray()
     {
-        $data = [];
-
-        if ($this->type) {
-            $data['type'] = $this->type;
-        }
-
-        if ($this->externalIdentifier) {
-            $data['external_identifier'] = $this->externalIdentifier;
-        }
-
-        if ($this->session) {
-            $data['session'] = $this->session->getId();
-        }
-
-        return $data;
+        return [
+            'type'                => $this->type,
+            'external_identifier' => $this->externalIdentifier,
+            'session'             => ($this->session instanceof Session) ? $this->session->getId() : null,
+        ];
     }
 }

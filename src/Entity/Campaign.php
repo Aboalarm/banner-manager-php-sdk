@@ -55,6 +55,8 @@ class Campaign extends Base
      * Campaign constructor.
      *
      * @param array $data Data from json response
+     *
+     * @throws \Exception
      */
     public function __construct(array $data = null)
     {
@@ -86,11 +88,7 @@ class Campaign extends Base
                 }
             }
 
-            if (isset($data['ab_test']) && $data['ab_test']) {
-                $this->abTest = new ABTest($data['ab_test']);
-            } else {
-                $this->abTest = null;
-            }
+            $this->abTest = (isset($data['ab_test']) && $data['ab_test']) ? new ABTest($data['ab_test']) : null;
         }
     }
 
@@ -259,28 +257,13 @@ class Campaign extends Base
      */
     public function toArray()
     {
-        $data = [];
-
-        if ($this->name !== null) {
-            $data['name'] = $this->name;
-        }
-
-        if ($this->description !== null) {
-            $data['description'] = $this->description;
-        }
-
-        if ($this->weight !== null) {
-            $data['weight'] = $this->weight;
-        }
-
-        if ($this->abTest instanceof ABTest) {
-            $data['ab_test'] = $this->abTest->getId();
-        }
-
-        $data['app_mobile_always_hotline'] = $this->appMobileAlwaysHotline;
-
-        $data['tracking_disabled'] = $this->trackingDisabled;
-
-        return $data;
+        return [
+            'name'                      => $this->name,
+            'description'               => $this->description,
+            'weight'                    => $this->weight,
+            'ab_test'                   => ($this->abTest instanceof ABTest) ? $this->abTest->getId() : null,
+            'app_mobile_always_hotline' => $this->appMobileAlwaysHotline,
+            'tracking_disabled'         => $this->trackingDisabled,
+        ];
     }
 }
