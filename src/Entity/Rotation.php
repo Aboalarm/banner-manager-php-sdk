@@ -112,11 +112,6 @@ class Rotation
     /**
      * @var bool
      */
-    private $isThirdParty = false;
-
-    /**
-     * @var bool
-     */
     private $thirdPartyTrackingEnabled = false;
 
     /**
@@ -158,7 +153,6 @@ class Rotation
             $this->abTest = isset($data['ab_test']) ? $data['ab_test'] : null;
             $this->isTracking = isset($data['is_tracking']) ? boolval($data['is_tracking']) : false;
             $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
-            $this->isThirdParty = isset($data['is_third_party']) ? boolval($data['is_third_party']) : false;
             $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : false;
             $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
         }
@@ -377,7 +371,7 @@ class Rotation
      */
     public function isThirdParty(): bool
     {
-        return $this->isThirdParty;
+        return !empty($this->getThirdPartyEmbedCode());
     }
 
     /**
