@@ -3,7 +3,7 @@
 namespace aboalarm\BannerManagerSdk\Entity;
 
 
-use phpDocumentor\Reflection\Types\Nullable;
+use Exception;
 
 /**
  * Class Campaign
@@ -37,6 +37,11 @@ class Campaign extends Base
     private $trackingDisabled = false;
 
     /**
+     * @var bool
+     */
+    private $isActive = false;
+
+    /**
      * @var Banner[]|null
      */
     private $banners;
@@ -56,7 +61,7 @@ class Campaign extends Base
      *
      * @param array $data Data from json response
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(array $data = null)
     {
@@ -74,6 +79,10 @@ class Campaign extends Base
                 : false;
             $this->trackingDisabled = isset($data['tracking_disabled'])
                 ? boolval($data['tracking_disabled'])
+                : false;
+
+            $this->isActive = isset($data['is_active'])
+                ? boolval($data['is_active'])
                 : false;
 
             if (isset($data['banners']) && $data['banners']) {
@@ -193,6 +202,26 @@ class Campaign extends Base
     }
 
     /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     *
+     * @return Campaign
+     */
+    public function setIsActive(bool $isActive): Campaign
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
      * @return Banner[]
      */
     public function getBanners(): array
@@ -264,6 +293,7 @@ class Campaign extends Base
             'ab_test'                   => ($this->abTest instanceof ABTest) ? $this->abTest->getId() : null,
             'app_mobile_always_hotline' => $this->appMobileAlwaysHotline,
             'tracking_disabled'         => $this->trackingDisabled,
+            'is_active'                 => $this->isActive,
         ];
     }
 }
