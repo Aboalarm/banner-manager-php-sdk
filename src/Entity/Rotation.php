@@ -110,6 +110,16 @@ class Rotation
     private $isCommercial;
 
     /**
+     * @var bool
+     */
+    private $thirdPartyTrackingEnabled = false;
+
+    /**
+     * @var string|null
+     */
+    private $thirdPartyEmbedCode;
+
+     /**
      * @var array|null Raw response data
      */
     private $raw;
@@ -121,7 +131,6 @@ class Rotation
      */
     public function __construct(array $data = null)
     {
-
         $this->raw = $data;
 
         if ($data && !isset($data['error'])) {
@@ -144,6 +153,8 @@ class Rotation
             $this->abTest = isset($data['ab_test']) ? $data['ab_test'] : null;
             $this->isTracking = isset($data['is_tracking']) ? boolval($data['is_tracking']) : false;
             $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
+            $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : false;
+            $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
         }
     }
 
@@ -353,6 +364,30 @@ class Rotation
     public function isCommercial(): bool
     {
         return $this->isCommercial;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isThirdParty(): bool
+    {
+        return !empty($this->getThirdPartyEmbedCode());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isThirdPartyTrackingEnabled(): bool
+    {
+        return $this->thirdPartyTrackingEnabled;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThirdPartyEmbedCode()
+    {
+        return $this->thirdPartyEmbedCode;
     }
 
     /**

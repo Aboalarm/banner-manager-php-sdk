@@ -57,6 +57,16 @@ class Banner extends Base
     private $isCommercial = false;
 
     /**
+     * @var bool
+     */
+    private $thirdPartyTrackingEnabled = false;
+
+    /**
+     * @var string|null
+     */
+    private $thirdPartyEmbedCode;
+
+    /**
      * @var string
      */
     private $previewUrl;
@@ -113,6 +123,8 @@ class Banner extends Base
             $this->approved = isset($data['approved']) ? boolval($data['approved']) : false;
             $this->isTracking = isset($data['is_tracking']) ? boolval($data['is_tracking']) : false;
             $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
+            $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : false;
+            $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -309,6 +321,66 @@ class Banner extends Base
     }
 
     /**
+     * @return bool
+     */
+    public function isThirdParty(): bool
+    {
+        return !empty($this->getThirdPartyEmbedCode());
+    }
+
+    /**
+     * @param bool $isThirdParty
+     *
+     * @return Banner
+     */
+    public function setIsThirdParty(bool $isThirdParty): Banner
+    {
+        $this->isThirdParty = $isThirdParty;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isThirdPartyTrackingEnabled(): bool
+    {
+        return $this->thirdPartyTrackingEnabled;
+    }
+
+    /**
+     * @param bool $thirdPartyTrackingEnabled
+     *
+     * @return Banner
+     */
+    public function setThirdPartyTrackingEnabled(bool $thirdPartyTrackingEnabled): Banner
+    {
+        $this->thirdPartyTrackingEnabled = $thirdPartyTrackingEnabled;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThirdPartyEmbedCode()
+    {
+        return $this->thirdPartyEmbedCode;
+    }
+
+    /**
+     * @param string|null $thirdPartyEmbedCode
+     *
+     * @return Banner
+     */
+    public function setThirdPartyEmbedCode($thirdPartyEmbedCode): Banner
+    {
+        $this->thirdPartyEmbedCode = $thirdPartyEmbedCode;
+
+        return $this;
+    }
+
+    /**
      * Get PreviewUrl
      *
      * @return string|null
@@ -426,15 +498,17 @@ class Banner extends Base
     public function toArray(): array
     {
         return [
-            'name'        => $this->name,
-            'description' => $this->description,
-            'path'        => $this->path,
-            'text' => $this->text,
-            'link' => $this->link,
-            'phone_number' => $this->phoneNumber,
-            'approved' => $this->approved,
-            'is_tracking' => $this->isTracking,
-            'is_commercial' => $this->isCommercial,
+            'name'                         => $this->name,
+            'description'                  => $this->description,
+            'path'                         => $this->path,
+            'text'                         => $this->text,
+            'link'                         => $this->link,
+            'phone_number'                 => $this->phoneNumber,
+            'approved'                     => $this->approved,
+            'is_tracking'                  => $this->isTracking,
+            'is_commercial'                => $this->isCommercial,
+            'third_party_tracking_enabled' => $this->thirdPartyTrackingEnabled,
+            'third_party_embed_code'       => $this->thirdPartyEmbedCode,
         ];
     }
 }
