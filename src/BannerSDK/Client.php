@@ -301,16 +301,23 @@ class Client
     /**
      * Post multiple banner positions to be assigned to a banner
      *
-     * @param string $identifier          Banner identifier
-     * @param array  $positionIdentifiers Array with position identifiers to add
+     * @param string $identifier Banner identifier
+     * @param array $positionIdentifiers Array with position identifiers to add
+     *
+     * @param bool $force
      *
      * @return array
      * @throws BannerManagerException
      */
-    public function postBannerBannerPositions(string $identifier, array $positionIdentifiers)
+    public function postBannerBannerPositions(string $identifier, array $positionIdentifiers, bool $force = false)
     {
-        $uri = '/api/banners/'.$identifier.'/banner-positions';
+        $uri = '/api/banners/' . $identifier . '/banner-positions';
         $formParams = ['positions' => $positionIdentifiers];
+
+        // Check if we want to force assign positions to banner
+        if ($force) {
+            $formParams['force'] = 1;
+        }
 
         return $this->doPostRequest($uri, $formParams);
     }
