@@ -59,7 +59,7 @@ class Banner extends Base
     /**
      * @var bool
      */
-    private $thirdPartyTrackingEnabled = false;
+    private $thirdPartyTrackingEnabled = true;
 
     /**
      * @var string|null
@@ -123,7 +123,7 @@ class Banner extends Base
             $this->approved = isset($data['approved']) ? boolval($data['approved']) : false;
             $this->isTracking = isset($data['is_tracking']) ? boolval($data['is_tracking']) : false;
             $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
-            $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : false;
+            $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : true;
             $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
