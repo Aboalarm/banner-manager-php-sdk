@@ -507,7 +507,7 @@ class Banner extends Base
             'approved'                     => $this->approved,
             'is_tracking'                  => $this->isTracking,
             'is_commercial'                => $this->isCommercial,
-            'third_party_tracking_enabled' => $this->thirdPartyTrackingEnabled,
+            'third_party_tracking_enabled' => $this->thirdPartyEmbedCode ? $this->thirdPartyTrackingEnabled : false,
             'third_party_embed_code'       => $this->thirdPartyEmbedCode,
         ];
     }
