@@ -96,6 +96,10 @@ class Banner extends Base
      */
     private $forcePut = false;
 
+    private $width = 0;
+
+    private $height = 0;
+
     /**
      * Banner constructor.
      *
@@ -125,6 +129,8 @@ class Banner extends Base
             $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
             $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : true;
             $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
+            $this->width = isset($data['width']) ? $data['width'] : 0;
+            $this->height = isset($data['height']) ? $data['height'] : 0;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -490,6 +496,35 @@ class Banner extends Base
         $this->forcePut = $forcePut;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    public function getBannerOrientation()
+    {
+        if ($this->width === 0 || $this->height === 0) {
+            return 'incorrect dimensions';
+        }
+
+        if ($this->width === $this->height) {
+            return 'square';
+        }
+
+        return ($this->width > $this->height) ? 'horizontal' : 'vertical';
     }
 
     /**
