@@ -9,6 +9,8 @@ use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Entity\Timing;
 use aboalarm\BannerManagerSdk\Laravel\Facade;
 use aboalarm\BannerManagerSdk\Laravel\ServiceProvider;
+use Exception;
+use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -16,7 +18,7 @@ class TestCase extends OrchestraTestCase
     /**
      * Load package service provider
      *
-     * @param  \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
@@ -28,7 +30,7 @@ class TestCase extends OrchestraTestCase
     /**
      * Load package alias
      *
-     * @param  \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
@@ -43,6 +45,7 @@ class TestCase extends OrchestraTestCase
      * Create a new banner
      *
      * @return Banner
+     * @throws Exception
      */
     public function createBanner()
     {
@@ -63,8 +66,10 @@ class TestCase extends OrchestraTestCase
      * Create a banner that will cause validation errors
      *
      * @return Banner
+     * @throws Exception
      */
-    public function createInvalidBanner() {
+    public function createInvalidBanner()
+    {
         $banner = new Banner();
 
         $banner->setLink(TestConstants::BANNER_INVALID_LINK);
@@ -76,6 +81,7 @@ class TestCase extends OrchestraTestCase
      * Create a new Campaign
      *
      * @return Campaign
+     * @throws Exception
      */
     public function createCampaign()
     {
@@ -91,6 +97,7 @@ class TestCase extends OrchestraTestCase
     /**
      * Create a new Banner position
      * @return BannerPosition
+     * @throws Exception
      */
     public function createBannerPosition()
     {
@@ -112,6 +119,7 @@ class TestCase extends OrchestraTestCase
      * Create new ABTest
      *
      * @return ABTest
+     * @throws Exception
      */
     public function createABTest()
     {
@@ -127,6 +135,7 @@ class TestCase extends OrchestraTestCase
      * Create new Timing
      *
      * @return Timing
+     * @throws Exception
      */
     public function createTiming()
     {
@@ -140,114 +149,123 @@ class TestCase extends OrchestraTestCase
 
     /**
      * @param string $id
+     *
      * @return array
      */
     public function getPositionMock($id = 'pos_123')
     {
         return [
-            'id' => $id,
-            'created_at' => '2018-11-11 00:00:00',
-            'updated_at' => '2018-11-11 00:00:00',
-            'name' => 'test name',
+            'id'          => $id,
+            'created_at'  => '2018-11-11 00:00:00',
+            'updated_at'  => '2018-11-11 00:00:00',
+            'name'        => 'test name',
             'description' => 'description',
-            'width' => 100,
-            'height' => 200,
-            'ga_type' => 'ga_type',
-            'ga_keyword' => 'ga_keyword',
-            'device' => 'dumPhone',
-            'view_port' => 'foo',
-            'parent' => null,
-            'banners' => [
+            'width'       => 100,
+            'height'      => 200,
+            'ga_type'     => 'ga_type',
+            'ga_keyword'  => 'ga_keyword',
+            'device'      => 'dumPhone',
+            'view_port'   => 'foo',
+            'parent'      => null,
+            'banners'     => [
                 [
-                    'id' => 'ban_123',
-                    'created_at' => '2018-11-09 00:00:00',
-                    'updated_at' => '2018-11-09 00:00:00',
-                    'name' => 'foo',
-                    'path' => 'path.jpg',
-                    'text' => 'text',
-                    'link' => 'google.de',
+                    'id'           => 'ban_123',
+                    'created_at'   => '2018-11-09 00:00:00',
+                    'updated_at'   => '2018-11-09 00:00:00',
+                    'name'         => 'foo',
+                    'path'         => 'path.jpg',
+                    'text'         => 'text',
+                    'link'         => 'google.de',
                     'phone_number' => '021343215',
-                    'preview_url' => 'bar.com/foo.jpg'
-                ]
-            ]
+                    'preview_url'  => 'bar.com/foo.jpg',
+                ],
+            ],
         ];
     }
 
     /**
      * @param string $id
+     * @param int $width
+     * @param int $height
+     *
      * @return array
      */
-    public function getBannerMock($id = 'ban_123')
+    public function getBannerMock($id = 'ban_123', $width = 300, $height = 300)
     {
         return [
-            'id' => $id,
-            'created_at' => '2018-11-09 00:00:00',
-            'updated_at' => '2018-11-09 00:00:00',
-            'name' => 'foo',
-            'path' => 'path.jpg',
-            'text' => 'text',
-            'link' => 'google.de',
+            'id'           => $id,
+            'created_at'   => '2018-11-09 00:00:00',
+            'updated_at'   => '2018-11-09 00:00:00',
+            'name'         => 'foo',
+            'path'         => 'path.jpg',
+            'text'         => 'text',
+            'link'         => 'google.de',
             'phone_number' => '021343215',
-            'preview_url' => 'bar.com/foo.jpg'
+            'preview_url'  => 'bar.com/foo.jpg',
+            'width'        => $width,
+            'height'       => $height,
         ];
     }
 
     /**
      * @param string $id
+     *
      * @return array
      */
     public function getCampaignMock($id = 'cm_12345')
     {
         return [
-            'id' => $id,
-            'created_at' => '2019-03-03 11:21:21',
-            'updated_at' => '2019-03-06 11:11:32',
-            'name' => TestConstants::CAMPAIGN_NAME,
-            'description' => TestConstants::CAMPAIGN_DESCRIPTION,
-            'weight' => TestConstants::CAMPAIGN_WEIGHT,
+            'id'                        => $id,
+            'created_at'                => '2019-03-03 11:21:21',
+            'updated_at'                => '2019-03-06 11:11:32',
+            'name'                      => TestConstants::CAMPAIGN_NAME,
+            'description'               => TestConstants::CAMPAIGN_DESCRIPTION,
+            'weight'                    => TestConstants::CAMPAIGN_WEIGHT,
             'app_mobile_always_hotline' => false,
-            'tracking_disabled' => false,
-            'banners' => [],
-            'timings' => [],
-            'ab_test' => null,
+            'tracking_disabled'         => false,
+            'banners'                   => [],
+            'timings'                   => [],
+            'ab_test'                   => null,
         ];
     }
 
     /**
      * @param string $id
+     *
      * @return array
      */
     public function getTimingMock($id = 'tim_12345')
     {
         return [
-            "type" => null,
-            "date_from"=> null,
-            "date_until"=> null,
-            "time_from"=> null,
-            "time_until"=> null,
-            "is_hotline"=> false,
-            "campaign"=> null,
-            "ab_test"=> null,
-            "id"=> $id,
-            "created_at"=> "2019-03-19 11:21:02",
-            "updated_at"=> "2019-03-19 11:21:02"
+            "type"       => null,
+            "date_from"  => null,
+            "date_until" => null,
+            "time_from"  => null,
+            "time_until" => null,
+            "is_hotline" => false,
+            "campaign"   => null,
+            "ab_test"    => null,
+            "id"         => $id,
+            "created_at" => "2019-03-19 11:21:02",
+            "updated_at" => "2019-03-19 11:21:02",
         ];
     }
 
     /**
      * @param string $id
+     *
      * @return array
      */
     public function getABTestMock($id = 'abt_12345')
     {
         return [
-            "id" => $id,
-            "name" => "Test Laura",
+            "id"          => $id,
+            "name"        => "Test Laura",
             "description" => "Test Laura",
-            "campaigns" => [],
-            "created_at" => "2019-02-20 11:03:39",
-            "updated_at" => "2019-02-20 11:03:39",
-            "timings" => [],
+            "campaigns"   => [],
+            "created_at"  => "2019-02-20 11:03:39",
+            "updated_at"  => "2019-02-20 11:03:39",
+            "timings"     => [],
         ];
     }
 }

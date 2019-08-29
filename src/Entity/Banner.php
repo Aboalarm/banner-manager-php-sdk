@@ -129,8 +129,8 @@ class Banner extends Base
             $this->isCommercial = isset($data['is_commercial']) ? boolval($data['is_commercial']) : false;
             $this->thirdPartyTrackingEnabled = isset($data['third_party_tracking_enabled']) ? boolval($data['third_party_tracking_enabled']) : true;
             $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
-            $this->width = isset($data['width']) ? $data['width'] : 0;
-            $this->height = isset($data['height']) ? $data['height'] : 0;
+            $this->width = isset($data['width']) ? (int) $data['width'] : 0;
+            $this->height = isset($data['height']) ? (int) $data['height'] : 0;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
