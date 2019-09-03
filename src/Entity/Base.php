@@ -44,6 +44,8 @@ abstract class Base implements EntityInterface
      */
     public function __construct(array $data = null)
     {
+        $this->raw = [];
+
         if($data) {
             $this->raw = $data;
         }
