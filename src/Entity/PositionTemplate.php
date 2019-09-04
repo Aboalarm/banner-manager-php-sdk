@@ -71,6 +71,10 @@ class PositionTemplate extends Base
      */
     private $gaKeyword;
 
+    /**
+     * @var bool|null
+     */
+    private $match;
 
     /**
      * BannerPosition constructor.
@@ -96,6 +100,7 @@ class PositionTemplate extends Base
             $this->height = isset($data['height']) ? (int) $data['height'] : null;
             $this->gaType = isset($data['ga_type']) ? $data['ga_type'] : null;
             $this->gaKeyword = isset($data['ga_keyword']) ? $data['ga_keyword'] : null;
+            $this->match = isset($data['match']) ? (bool) $data['match'] : null;
         }
     }
 
@@ -337,6 +342,14 @@ class PositionTemplate extends Base
         $this->gaKeyword = $gaKeyword;
 
         return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getMatch(): bool
+    {
+        return $this->match;
     }
 
     /**

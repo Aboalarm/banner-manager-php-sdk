@@ -534,18 +534,19 @@ class Client
      * Get all position templates.
      *
      * @param PaginationOptions $options
-     * @param bool $withStats
+     * @param string|null $bannerIdentifier If specified the results will contain matching status for each position
+     *     template regarding to given banner identifier
      *
      * @return PaginatedCollection PositionTemplate collection.
      * @throws BannerManagerException
      * @throws Exception
      */
-    public function getPositionTemplates(PaginationOptions $options, $withStats = false)
+    public function getPositionTemplates(PaginationOptions $options, $bannerIdentifier = null)
     {
         $queryParams = [];
 
-        if ($withStats) {
-            $queryParams['with_stats'] = 1;
+        if ($bannerIdentifier) {
+            $queryParams['banner'] = $bannerIdentifier;
         }
 
         $queryParams['page'] = $options->getPage();
@@ -991,7 +992,7 @@ class Client
             if (!session("banner_session_id")) {
                 return new Conversion();
             }
-            
+
             $session = new Session([
                 'id' => session("banner_session_id")
             ]);
