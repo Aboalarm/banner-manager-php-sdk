@@ -74,7 +74,12 @@ class PositionTemplate extends Base
     /**
      * @var bool|null
      */
-    private $match;
+    private $exactMatch;
+
+    /**
+     * @var bool|null
+     */
+    private $orientationMatch;
 
     /**
      * BannerPosition constructor.
@@ -100,7 +105,8 @@ class PositionTemplate extends Base
             $this->height = isset($data['height']) ? (int) $data['height'] : null;
             $this->gaType = isset($data['ga_type']) ? $data['ga_type'] : null;
             $this->gaKeyword = isset($data['ga_keyword']) ? $data['ga_keyword'] : null;
-            $this->match = isset($data['match']) ? (bool) $data['match'] : null;
+            $this->exactMatch = isset($data['exact_match']) ? (bool) $data['exact_match'] : null;
+            $this->orientationMatch = isset($data['orientation_match']) ? (bool) $data['orientation_match'] : null;
         }
     }
 
@@ -347,9 +353,17 @@ class PositionTemplate extends Base
     /**
      * @return bool|null
      */
-    public function getMatch(): bool
+    public function getExactMatch(): bool
     {
-        return $this->match;
+        return $this->exactMatch;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getOrientationMatch(): bool
+    {
+        return $this->orientationMatch;
     }
 
     /**
