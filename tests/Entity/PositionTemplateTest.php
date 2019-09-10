@@ -30,9 +30,6 @@ class PositionTemplateTest extends TestCase
         $this->assertEquals($positionTemplate->getCreatedAt()->format('Y-m-d H:i:s'), $data['created_at']);
         $this->assertInternalType(IsType::TYPE_INT, $positionTemplate->getWidth());
         $this->assertInternalType(IsType::TYPE_INT, $positionTemplate->getHeight());
-        $this->assertFalse($positionTemplate->isStatic());
-
-        $positionTemplate->setDynamicKey(null);
-        $this->assertTrue($positionTemplate->isStatic());
+        $this->assertEquals($data['static'], $positionTemplate->isStatic());
     }
 }

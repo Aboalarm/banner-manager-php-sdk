@@ -216,7 +216,7 @@ class TestCase extends OrchestraTestCase
      *
      * @return array
      */
-    public function getBannerMock($id = 'ban_123', $width = 300, $height = 300)
+    public function getBannerMock($id = 'ban_123')
     {
         return [
             'id'           => $id,
@@ -228,8 +228,9 @@ class TestCase extends OrchestraTestCase
             'link'         => 'google.de',
             'phone_number' => '021343215',
             'preview_url'  => 'bar.com/foo.jpg',
-            'width'        => $width,
-            'height'       => $height,
+            'width'        => 300,
+            'height'       => 300,
+            'orientation'  => 'square'
         ];
     }
 
