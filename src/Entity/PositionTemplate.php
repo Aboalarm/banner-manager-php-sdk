@@ -112,7 +112,7 @@ class PositionTemplate extends Base
             $this->gaKeyword = isset($data['ga_keyword']) ? $data['ga_keyword'] : null;
             $this->exactMatch = isset($data['exact_match']) ? (bool) $data['exact_match'] : null;
             $this->orientationMatch = isset($data['orientation_match']) ? (bool) $data['orientation_match'] : null;
-            $this->orientation = isset($data['orientation']) ? (bool) $data['orientation'] : null;
+            $this->orientation = isset($data['orientation']) ? $data['orientation'] : null;
         }
     }
 
