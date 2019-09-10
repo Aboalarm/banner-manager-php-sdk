@@ -107,7 +107,7 @@ class Banner extends Base
     private $height = 0;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $orientation;
 
@@ -142,7 +142,7 @@ class Banner extends Base
             $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
             $this->width = isset($data['width']) ? (int) $data['width'] : 0;
             $this->height = isset($data['height']) ? (int) $data['height'] : 0;
-            $this->orientation = isset($data['orientation']) ? $data['orientation'] : '';
+            $this->orientation = isset($data['orientation']) ? $data['orientation'] : null;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -527,9 +527,9 @@ class Banner extends Base
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrientation(): string
+    public function getOrientation()
     {
         return $this->orientation;
     }
