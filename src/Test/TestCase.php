@@ -161,7 +161,7 @@ class TestCase extends OrchestraTestCase
             "name"        => " web_cancellation_form_vertical_right",
             "description" => "aboalarm.de web_cancellation_form_vertical_right",
             "portal"      => "aa",
-            "dynamic_key" => "prv",
+            "static"      => false,
             "device"      => "web",
             "page"        => "cancellation",
             "section"     => "form",

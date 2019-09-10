@@ -27,9 +27,9 @@ class PositionTemplate extends Base
     private $portal;
 
     /**
-     * @var string|null
+     * @var bool
      */
-    private $dynamicKey;
+    private $static = false;
 
     /**
      * @var string|null
@@ -96,7 +96,7 @@ class PositionTemplate extends Base
             $this->name = isset($data['name']) ? $data['name'] : null;
             $this->description = isset($data['description']) ? $data['description'] : null;
             $this->portal = isset($data['portal']) ? $data['portal'] : null;
-            $this->dynamicKey = isset($data['dynamic_key']) ? $data['dynamic_key'] : null;
+            $this->static = isset($data['static']) ? (bool) $data['static'] : false;
             $this->device = isset($data['device']) ? $data['device'] : null;
             $this->page = isset($data['page']) ? $data['page'] : null;
             $this->section = isset($data['section']) ? $data['section'] : null;
@@ -171,21 +171,21 @@ class PositionTemplate extends Base
     }
 
     /**
-     * @return string|null
+     * @return bool
      */
-    public function getDynamicKey()
+    public function isStatic()
     {
-        return $this->dynamicKey;
+        return $this->static;
     }
 
     /**
-     * @param string|null $dynamicKey
+     * @param bool $static
      *
      * @return PositionTemplate
      */
-    public function setDynamicKey($dynamicKey): PositionTemplate
+    public function setDynamicKey($static): PositionTemplate
     {
-        $this->dynamicKey = $dynamicKey;
+        $this->static = $static;
 
         return $this;
     }
@@ -367,14 +367,6 @@ class PositionTemplate extends Base
     }
 
     /**
-     * @return bool
-     */
-    public function isStatic()
-    {
-        return $this->dynamicKey === null;
-    }
-
-    /**
      * @return array
      */
     public function toArray()
@@ -383,7 +375,7 @@ class PositionTemplate extends Base
             'name'        => $this->name,
             'description' => $this->description,
             'portal'      => $this->portal,
-            'dynamic_key' => $this->dynamicKey,
+            'static'      => $this->static,
             'device'      => $this->device,
             'page'        => $this->page,
             'section'     => $this->section,
