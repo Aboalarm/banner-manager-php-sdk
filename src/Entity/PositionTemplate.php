@@ -367,7 +367,7 @@ class PositionTemplate extends Base
     /**
      * @return bool|null
      */
-    public function getExactMatch(): bool
+    public function getExactMatch()
     {
         return $this->exactMatch;
     }
@@ -375,7 +375,7 @@ class PositionTemplate extends Base
     /**
      * @return bool|null
      */
-    public function getOrientationMatch(): bool
+    public function getOrientationMatch()
     {
         return $this->orientationMatch;
     }
