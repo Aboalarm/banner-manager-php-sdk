@@ -19,7 +19,7 @@ class BannerTest extends TestCase
      */
     public function testCreate()
     {
-        $data = $this->getBannerMock('ban_1234', '160', '600');
+        $data = $this->getBannerMock('ban_1234');
         $data['banner_positions'] = [
             $this->getPositionMock()
         ];
@@ -45,15 +45,6 @@ class BannerTest extends TestCase
         $this->assertInstanceOf(Campaign::class, $campaigns[0]);
         $this->assertEquals($data['campaigns'][0]['id'], $campaigns[0]->getId());
 
-        $this->assertEquals('vertical', $banner->getBannerOrientation());
-
-        $bannerHorizontal = new Banner($this->getBannerMock('ban_1234', '600', '160'));
-        $this->assertEquals('horizontal', $bannerHorizontal->getBannerOrientation());
-
-        $bannerSquare = new Banner($this->getBannerMock('ban_1234', '300', '300'));
-        $this->assertEquals('square', $bannerSquare->getBannerOrientation());
-
-        $bannerIncorrect = new Banner($this->getBannerMock('ban_1234', '0', '160'));
-        $this->assertEquals('incorrect dimensions', $bannerIncorrect->getBannerOrientation());
+        $this->assertEquals($data['orientation'], $banner->getOrientation());
     }
 }

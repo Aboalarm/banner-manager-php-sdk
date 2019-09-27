@@ -96,9 +96,20 @@ class Banner extends Base
      */
     private $forcePut = false;
 
+    /**
+     * @var int
+     */
     private $width = 0;
 
+    /**
+     * @var int
+     */
     private $height = 0;
+
+    /**
+     * @var string|null
+     */
+    private $orientation;
 
     /**
      * Banner constructor.
@@ -131,6 +142,7 @@ class Banner extends Base
             $this->thirdPartyEmbedCode = isset($data['third_party_embed_code']) ? $data['third_party_embed_code'] : null;
             $this->width = isset($data['width']) ? (int) $data['width'] : 0;
             $this->height = isset($data['height']) ? (int) $data['height'] : 0;
+            $this->orientation = isset($data['orientation']) ? $data['orientation'] : null;
 
             if (isset($data['banner_positions']) && is_array($data['banner_positions'])) {
                 foreach ($data['banner_positions'] as $bannerPosition) {
@@ -514,17 +526,12 @@ class Banner extends Base
         return $this->height;
     }
 
-    public function getBannerOrientation()
+    /**
+     * @return string|null
+     */
+    public function getOrientation()
     {
-        if ($this->width === 0 || $this->height === 0) {
-            return 'incorrect dimensions';
-        }
-
-        if ($this->width === $this->height) {
-            return 'square';
-        }
-
-        return ($this->width > $this->height) ? 'horizontal' : 'vertical';
+        return $this->orientation;
     }
 
     /**

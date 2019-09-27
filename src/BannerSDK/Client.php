@@ -8,6 +8,7 @@ use aboalarm\BannerManagerSdk\Entity\BannerPosition;
 use aboalarm\BannerManagerSdk\Entity\Base;
 use aboalarm\BannerManagerSdk\Entity\Campaign;
 use aboalarm\BannerManagerSdk\Entity\Conversion;
+use aboalarm\BannerManagerSdk\Entity\PositionTemplate;
 use aboalarm\BannerManagerSdk\Entity\Rotation;
 use aboalarm\BannerManagerSdk\Entity\Session;
 use aboalarm\BannerManagerSdk\Entity\Timing;
@@ -348,6 +349,7 @@ class Client
      *
      * @return PaginatedCollection Campaign collection.
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getCampaigns(PaginationOptions $options)
     {
@@ -391,6 +393,7 @@ class Client
      *
      * @return Campaign
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getCampaign(string $identifier)
     {
@@ -408,6 +411,7 @@ class Client
      *
      * @return Campaign
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postCampaign(Campaign $campaign)
     {
@@ -421,6 +425,7 @@ class Client
      *
      * @return Campaign
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function putCampaign(Campaign $campaign)
     {
@@ -484,6 +489,7 @@ class Client
      *
      * @return Timing
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postCampaignTiming(string $campaignIdentifier, Timing $timing)
     {
@@ -499,6 +505,7 @@ class Client
      *
      * @return Timing
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function putCampaignTiming(string $campaignIdentifier, Timing $timing)
     {
@@ -524,12 +531,131 @@ class Client
     }
 
     /**
+     * Get all position templates.
+     *
+     * @param PaginationOptions $options
+     * @param string|null $bannerIdentifier If specified the results will contain matching status for each position
+     *     template regarding to given banner identifier
+     *
+     * @return PaginatedCollection PositionTemplate collection.
+     * @throws BannerManagerException
+     * @throws Exception
+     */
+    public function getPositionTemplates(PaginationOptions $options, $bannerIdentifier = null)
+    {
+        $queryParams = [];
+
+        if ($bannerIdentifier) {
+            $queryParams['banner'] = $bannerIdentifier;
+        }
+
+        $queryParams['page'] = $options->getPage();
+        $queryParams['limit'] = $options->getLimit();
+
+        if ($options->getFilter()) {
+            $queryParams['filter'] = $options->getFilter();
+        }
+
+        if ($options->getSort()) {
+            $queryParams['sort'] = $options->getSort();
+        }
+
+        $data = $this->doGetRequest('/api/position-templates', $queryParams);
+
+        $positionTemplates = [];
+
+        if ($data['items']) {
+            foreach ($data['items'] as $datum) {
+                $positionTemplates[] = new PositionTemplate($datum);
+            }
+        }
+
+        return new PaginatedCollection(
+            $positionTemplates,
+            $data['count'],
+            $data['total'],
+            $data['page'],
+            $data['total_pages'],
+            $data['pages']
+        );
+    }
+
+    /**
+     * Get single position template by id
+     *
+     * @param string $identifier PositionTemplate identifier
+     *
+     * @return PositionTemplate
+     * @throws BannerManagerException
+     * @throws Exception
+     */
+    public function getPositionTemplate(string $identifier)
+    {
+        $data = $this->doGetRequest('/api/position-templates/'.$identifier);
+
+        if (!empty($data)) {
+            $positionTemplate = new PositionTemplate($data);
+
+            return $positionTemplate;
+        }
+
+        throw new BannerManagerException("Error reading position template data");
+    }
+
+    /**
+     * @param PositionTemplate $positionTemplate
+     *
+     * @return PositionTemplate
+     * @throws BannerManagerException
+     * @throws Exception
+     */
+    public function postPositionTemplate(PositionTemplate $positionTemplate)
+    {
+        $data = $this->doPostRequest('/api/position-templates', $positionTemplate->toArray());
+
+        return new PositionTemplate($data);
+    }
+
+    /**
+     * @param PositionTemplate $positionTemplate
+     *
+     * @return PositionTemplate
+     * @throws BannerManagerException
+     * @throws Exception
+     */
+    public function putPositionTemplate(PositionTemplate $positionTemplate)
+    {
+        $uri = '/api/position-templates/'.$positionTemplate->getId();
+
+        $queryParams = null;
+
+        $data = $this->doPutRequest($uri, $positionTemplate, $queryParams);
+
+        return new PositionTemplate($data);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return bool
+     * @throws BannerManagerException
+     * @throws GuzzleException
+     */
+    public function deletePositionTemplate(string $identifier)
+    {
+        $uri = '/api/position-templates/'.$identifier;
+
+        return $this->doDeleteRequest($uri);
+    }
+
+    /**
      * Get all banner positions.
      *
      * @param PaginationOptions $options
      *
      * @return PaginatedCollection BannerPosition collection.
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getBannerPositions(PaginationOptions $options)
     {
@@ -573,6 +699,7 @@ class Client
      *
      * @return BannerPosition
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function getBannerPosition(string $identifier)
     {
@@ -590,6 +717,7 @@ class Client
      *
      * @return BannerPosition
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postBannerPosition(BannerPosition $bannerPosition)
     {
@@ -603,6 +731,7 @@ class Client
      *
      * @return BannerPosition
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function putBannerPosition(BannerPosition $bannerPosition)
     {
@@ -809,6 +938,7 @@ class Client
      *
      * @return Timing
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postABTestTiming(string $abtestIdentifier, Timing $timing)
     {
@@ -824,6 +954,7 @@ class Client
      *
      * @return Timing
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function putABtestTiming(string $abtestIdentifier, Timing $timing)
     {
@@ -853,6 +984,7 @@ class Client
      *
      * @return Conversion
      * @throws BannerManagerException
+     * @throws Exception
      */
     public function postConversion(Conversion $conversion)
     {
@@ -860,7 +992,7 @@ class Client
             if (!session("banner_session_id")) {
                 return new Conversion();
             }
-            
+
             $session = new Session([
                 'id' => session("banner_session_id")
             ]);

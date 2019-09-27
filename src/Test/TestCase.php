@@ -152,6 +152,32 @@ class TestCase extends OrchestraTestCase
      *
      * @return array
      */
+    public function getPositionTemplateMock($id = 'tpl_123')
+    {
+        return [
+            'id'          => $id,
+            "created_at"  => "2019-09-03 00:00:00",
+            "updated_at"  => "2019-09-03 00:00:00",
+            "name"        => " web_cancellation_form_vertical_right",
+            "description" => "aboalarm.de web_cancellation_form_vertical_right",
+            "portal"      => "aa",
+            "static"      => false,
+            "device"      => "web",
+            "page"        => "cancellation",
+            "section"     => "form",
+            "position"    => "right",
+            "width"       => "160",
+            "height"      => "680",
+            "ga_type"     => "web_vertical_right",
+            "ga_keyword"  => "cancellation_form",
+        ];
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return array
+     */
     public function getPositionMock($id = 'pos_123')
     {
         return [
@@ -190,7 +216,7 @@ class TestCase extends OrchestraTestCase
      *
      * @return array
      */
-    public function getBannerMock($id = 'ban_123', $width = 300, $height = 300)
+    public function getBannerMock($id = 'ban_123')
     {
         return [
             'id'           => $id,
@@ -202,8 +228,9 @@ class TestCase extends OrchestraTestCase
             'link'         => 'google.de',
             'phone_number' => '021343215',
             'preview_url'  => 'bar.com/foo.jpg',
-            'width'        => $width,
-            'height'       => $height,
+            'width'        => 300,
+            'height'       => 300,
+            'orientation'  => 'square'
         ];
     }
 
