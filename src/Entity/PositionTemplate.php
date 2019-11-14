@@ -189,7 +189,7 @@ class PositionTemplate extends Base
      *
      * @return PositionTemplate
      */
-    public function setDynamicKey($static): PositionTemplate
+    public function setStatic($static): PositionTemplate
     {
         $this->static = $static;
 
