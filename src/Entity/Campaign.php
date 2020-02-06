@@ -103,7 +103,7 @@ class Campaign extends Base
             }
 
             $this->abTest = (isset($data['ab_test']) && $data['ab_test']) ? new ABTest($data['ab_test']) : null;
-            $this->hasActiveTiming = isset($data['status']) ? $data['status'] : false;
+            $this->hasActiveTiming = isset($data['hasActiveTiming']) ? $data['hasActiveTiming'] : false;
         }
     }
 
