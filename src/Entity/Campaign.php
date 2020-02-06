@@ -57,6 +57,11 @@ class Campaign extends Base
     private $abTest;
 
     /**
+     * @var bool
+     */
+    private $hasActiveTiming;
+
+    /**
      * Campaign constructor.
      *
      * @param array $data Data from json response
@@ -98,6 +103,7 @@ class Campaign extends Base
             }
 
             $this->abTest = (isset($data['ab_test']) && $data['ab_test']) ? new ABTest($data['ab_test']) : null;
+            $this->hasActiveTiming = isset($data['status']) ? $data['status'] : false;
         }
     }
 
@@ -277,6 +283,25 @@ class Campaign extends Base
     public function setAbTest(ABTest $abTest = null): Campaign
     {
         $this->abTest = $abTest;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasActiveTiming(): bool
+    {
+        return $this->hasActiveTiming;
+    }
+
+    /**
+     * @param bool $hasActiveTiming
+     * @return Campaign
+     */
+    public function setHasActiveTiming(bool $hasActiveTiming)
+    {
+        $this->hasActiveTiming = $hasActiveTiming;
 
         return $this;
     }
