@@ -1,15 +1,15 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Entity;
+namespace Aboalarm\BannerManagerSdk\Entity;
 
 
-use aboalarm\BannerManagerSdk\Entity\Traits\ErrorTrait;
+use Aboalarm\BannerManagerSdk\Entity\Traits\ErrorTrait;
 use DateTime;
 use Exception;
 
 /**
  * Class Base
- * @package aboalarm\BannerManagerSdk\Entity
+ * @package Aboalarm\BannerManagerSdk\Entity
  */
 abstract class Base implements EntityInterface
 {

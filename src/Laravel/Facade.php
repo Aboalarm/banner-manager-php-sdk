@@ -1,6 +1,6 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Laravel;
+namespace Aboalarm\BannerManagerSdk\Laravel;
 
 
 class Facade extends \Illuminate\Support\Facades\Facade

@@ -1,13 +1,13 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Entity;
+namespace Aboalarm\BannerManagerSdk\Entity;
 
 
 use Exception;
 
 /**
  * Class ABTest
- * @package aboalarm\BannerManagerSdk\Entity
+ * @package Aboalarm\BannerManagerSdk\Entity
  */
 class ABTest extends Base
 {

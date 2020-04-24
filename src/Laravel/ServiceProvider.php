@@ -1,8 +1,8 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Laravel;
+namespace Aboalarm\BannerManagerSdk\Laravel;
 
-use aboalarm\BannerManagerSdk\BannerSDK\Client;
+use Aboalarm\BannerManagerSdk\BannerSDK\Client;
 
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -43,7 +43,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             }
         );
 
-        $this->app->bind('aboalarm\BannerManagerSdk\BannerSDK\Client', 'aboalarm.bannersdk');
+        $this->app->bind('Aboalarm\BannerManagerSdk\BannerSDK\Client', 'aboalarm.bannersdk');
     }
 
     /**

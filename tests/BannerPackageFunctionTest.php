@@ -1,10 +1,10 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Test;
+namespace Aboalarm\BannerManagerSdk\Test;
 
-use aboalarm\BannerManagerSdk\Entity\Banner;
-use aboalarm\BannerManagerSdk\Entity\Rotation;
-use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
+use Aboalarm\BannerManagerSdk\Entity\Banner;
+use Aboalarm\BannerManagerSdk\Entity\Rotation;
+use Aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 use BannerSDK;
 
 class BannerPackageFunctionTest extends TestCase

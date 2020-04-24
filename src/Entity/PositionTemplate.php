@@ -1,13 +1,13 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Entity;
+namespace Aboalarm\BannerManagerSdk\Entity;
 
 
 use Exception;
 
 /**
  * Class PositionTemplate
- * @package aboalarm\BannerManagerSdk\Entity
+ * @package Aboalarm\BannerManagerSdk\Entity
  */
 class PositionTemplate extends Base
 {

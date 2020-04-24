@@ -1,16 +1,16 @@
 <?php
 
 
-namespace aboalarm\BannerManagerSdk\Test;
+namespace Aboalarm\BannerManagerSdk\Test;
 
 
-use aboalarm\BannerManagerSdk\Entity\Conversion;
-use aboalarm\BannerManagerSdk\Entity\Session;
+use Aboalarm\BannerManagerSdk\Entity\Conversion;
+use Aboalarm\BannerManagerSdk\Entity\Session;
 use BannerSDK;
 
 /**
  * Class ClientConversionsTest
- * @package aboalarm\BannerManagerSdk\Test
+ * @package Aboalarm\BannerManagerSdk\Test
  */
 class ClientConversionsTest extends TestCase
 {

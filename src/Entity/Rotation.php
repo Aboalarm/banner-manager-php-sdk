@@ -1,14 +1,14 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Entity;
+namespace Aboalarm\BannerManagerSdk\Entity;
 
 
-use aboalarm\BannerManagerSdk\Entity\Traits\ErrorTrait;
+use Aboalarm\BannerManagerSdk\Entity\Traits\ErrorTrait;
 
 /**
  * Class Rotation
  *
- * @package aboalarm\BannerManagerSdk\Entity
+ * @package Aboalarm\BannerManagerSdk\Entity
  */
 class Rotation
 {

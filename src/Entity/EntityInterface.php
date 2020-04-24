@@ -1,6 +1,6 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Entity;
+namespace Aboalarm\BannerManagerSdk\Entity;
 
 use DateTime;
 

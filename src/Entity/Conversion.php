@@ -1,13 +1,13 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Entity;
+namespace Aboalarm\BannerManagerSdk\Entity;
 
 
 use Exception;
 
 /**
  * Class Conversion
- * @package aboalarm\BannerManagerSdk\Entity
+ * @package Aboalarm\BannerManagerSdk\Entity
  */
 class Conversion extends Base
 {

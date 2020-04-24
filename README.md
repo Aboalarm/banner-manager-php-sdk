@@ -27,7 +27,7 @@ This is a Laravel Package providing access to Banner Manager API.
         
         ...
         
-        aboalarm\BannerManagerSdk\Laravel\ServiceProvider::class,
+        Aboalarm\BannerManagerSdk\Laravel\ServiceProvider::class,
         
     ];
 
@@ -36,12 +36,12 @@ This is a Laravel Package providing access to Banner Manager API.
     'aliases' => [
         ...
         
-        'BannerSDK' => aboalarm\BannerManagerSdk\Laravel\Facade::class,
+        'BannerSDK' => Aboalarm\BannerManagerSdk\Laravel\Facade::class,
     ]
 
 To set the params used by the SDK, you have to publish the config files:
 
-    $ php artisan vendor:publish --provider="aboalarm\BannerManagerSdk\Laravel\ServiceProvider::class"
+    $ php artisan vendor:publish --provider="Aboalarm\BannerManagerSdk\Laravel\ServiceProvider::class"
 
 Then go to `/config/banner.php` to see the config values.
 

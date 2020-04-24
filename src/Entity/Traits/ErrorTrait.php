@@ -1,11 +1,11 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Entity\Traits;
+namespace Aboalarm\BannerManagerSdk\Entity\Traits;
 
 /**
  * Trait ErrorTrait
  *
- * @package aboalarm\BannerManagerSdk\Entity\Traits
+ * @package Aboalarm\BannerManagerSdk\Entity\Traits
  */
 trait ErrorTrait
 {

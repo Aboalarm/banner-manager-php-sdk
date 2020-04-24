@@ -1,6 +1,6 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Test;
+namespace Aboalarm\BannerManagerSdk\Test;
 
 
 class TestConstants

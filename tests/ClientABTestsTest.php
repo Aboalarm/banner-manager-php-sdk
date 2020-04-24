@@ -1,14 +1,14 @@
 <?php
 /** @noinspection PhpUndefinedClassInspection */
 
-namespace aboalarm\BannerManagerSdk\Test;
+namespace Aboalarm\BannerManagerSdk\Test;
 
 
-use aboalarm\BannerManagerSdk\Entity\ABTest;
-use aboalarm\BannerManagerSdk\Entity\Campaign;
-use aboalarm\BannerManagerSdk\Entity\Timing;
-use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
-use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
+use Aboalarm\BannerManagerSdk\Entity\ABTest;
+use Aboalarm\BannerManagerSdk\Entity\Campaign;
+use Aboalarm\BannerManagerSdk\Entity\Timing;
+use Aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
+use Aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use BannerSDK;
 
 class ClientABTestsTest extends TestCase

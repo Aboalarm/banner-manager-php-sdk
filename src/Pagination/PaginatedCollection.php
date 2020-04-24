@@ -1,9 +1,9 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Pagination;
+namespace Aboalarm\BannerManagerSdk\Pagination;
 
 
-use aboalarm\BannerManagerSdk\Entity\Base;
+use Aboalarm\BannerManagerSdk\Entity\Base;
 
 class PaginatedCollection
 {
