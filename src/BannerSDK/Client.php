@@ -1,20 +1,20 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\BannerSDK;
+namespace Aboalarm\BannerManagerSdk\BannerSDK;
 
-use aboalarm\BannerManagerSdk\Entity\ABTest;
-use aboalarm\BannerManagerSdk\Entity\Banner;
-use aboalarm\BannerManagerSdk\Entity\BannerPosition;
-use aboalarm\BannerManagerSdk\Entity\Base;
-use aboalarm\BannerManagerSdk\Entity\Campaign;
-use aboalarm\BannerManagerSdk\Entity\Conversion;
-use aboalarm\BannerManagerSdk\Entity\PositionTemplate;
-use aboalarm\BannerManagerSdk\Entity\Rotation;
-use aboalarm\BannerManagerSdk\Entity\Session;
-use aboalarm\BannerManagerSdk\Entity\Timing;
-use aboalarm\BannerManagerSdk\Exception\BannerManagerException;
-use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
-use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
+use Aboalarm\BannerManagerSdk\Entity\ABTest;
+use Aboalarm\BannerManagerSdk\Entity\Banner;
+use Aboalarm\BannerManagerSdk\Entity\BannerPosition;
+use Aboalarm\BannerManagerSdk\Entity\Base;
+use Aboalarm\BannerManagerSdk\Entity\Campaign;
+use Aboalarm\BannerManagerSdk\Entity\Conversion;
+use Aboalarm\BannerManagerSdk\Entity\PositionTemplate;
+use Aboalarm\BannerManagerSdk\Entity\Rotation;
+use Aboalarm\BannerManagerSdk\Entity\Session;
+use Aboalarm\BannerManagerSdk\Entity\Timing;
+use Aboalarm\BannerManagerSdk\Exception\BannerManagerException;
+use Aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
+use Aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use Exception;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Exception\ClientException;
@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class Client
- * @package aboalarm\BannerManagerSdk\BannerSDK
+ * @package Aboalarm\BannerManagerSdk\BannerSDK
  */
 class Client
 {

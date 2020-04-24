@@ -1,13 +1,13 @@
 <?php
 /** @noinspection PhpUndefinedClassInspection */
 
-namespace aboalarm\BannerManagerSdk\Test;
+namespace Aboalarm\BannerManagerSdk\Test;
 
-use aboalarm\BannerManagerSdk\Entity\Banner;
-use aboalarm\BannerManagerSdk\Entity\BannerPosition;
-use aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
+use Aboalarm\BannerManagerSdk\Entity\Banner;
+use Aboalarm\BannerManagerSdk\Entity\BannerPosition;
+use Aboalarm\BannerManagerSdk\Pagination\PaginatedCollection;
 
-use aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
+use Aboalarm\BannerManagerSdk\Pagination\PaginationOptions;
 use BannerSDK;
 
 class ClientBannerPositionsTest extends TestCase

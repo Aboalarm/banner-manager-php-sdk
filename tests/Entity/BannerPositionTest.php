@@ -1,15 +1,15 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Test\Entity;
+namespace Aboalarm\BannerManagerSdk\Test\Entity;
 
-use aboalarm\BannerManagerSdk\Entity\Banner;
-use aboalarm\BannerManagerSdk\Entity\BannerPosition;
-use aboalarm\BannerManagerSdk\Test\TestCase;
+use Aboalarm\BannerManagerSdk\Entity\Banner;
+use Aboalarm\BannerManagerSdk\Entity\BannerPosition;
+use Aboalarm\BannerManagerSdk\Test\TestCase;
 use DateTime;
 
 /**
  * Class BannerPositionTest
- * @package aboalarm\BannerManagerSdk\Test\Entity
+ * @package Aboalarm\BannerManagerSdk\Test\Entity
  */
 class BannerPositionTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Exception;
+namespace Aboalarm\BannerManagerSdk\Exception;
 
 
 use Exception;

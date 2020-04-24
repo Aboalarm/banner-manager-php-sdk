@@ -1,17 +1,17 @@
 <?php
 
 
-namespace aboalarm\BannerManagerSdk\Test\Entity;
+namespace Aboalarm\BannerManagerSdk\Test\Entity;
 
-use aboalarm\BannerManagerSdk\Entity\ABTest;
-use aboalarm\BannerManagerSdk\Entity\Banner;
-use aboalarm\BannerManagerSdk\Entity\Campaign;
-use aboalarm\BannerManagerSdk\Entity\Timing;
-use aboalarm\BannerManagerSdk\Test\TestCase;
+use Aboalarm\BannerManagerSdk\Entity\ABTest;
+use Aboalarm\BannerManagerSdk\Entity\Banner;
+use Aboalarm\BannerManagerSdk\Entity\Campaign;
+use Aboalarm\BannerManagerSdk\Entity\Timing;
+use Aboalarm\BannerManagerSdk\Test\TestCase;
 
 /**
  * Class CampaignTest
- * @package aboalarm\BannerManagerSdk\Test\Entity
+ * @package Aboalarm\BannerManagerSdk\Test\Entity
  */
 class CampaignTest extends TestCase
 {

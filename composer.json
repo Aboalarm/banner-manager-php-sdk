@@ -20,17 +20,17 @@
     },
     "autoload": {
         "psr-4": {
-            "aboalarm\\BannerManagerSdk\\": "src/",
-            "aboalarm\\BannerManagerSdk\\Test\\": "tests/"
+            "Aboalarm\\BannerManagerSdk\\": "src/",
+            "Aboalarm\\BannerManagerSdk\\Test\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "aboalarm\\BannerManagerSdk\\Laravel\\ServiceProvider"
+                "Aboalarm\\BannerManagerSdk\\Laravel\\ServiceProvider"
             ],
             "aliases": {
-                "Banner": "aboalarm\\BannerManagerSdk\\Laravel\\Facade"
+                "Banner": "Aboalarm\\BannerManagerSdk\\Laravel\\Facade"
             }
         }
     },

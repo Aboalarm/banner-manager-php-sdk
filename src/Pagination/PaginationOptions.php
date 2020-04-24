@@ -1,11 +1,11 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Pagination;
+namespace Aboalarm\BannerManagerSdk\Pagination;
 
 
 /**
  * Class PaginationOptions
- * @package aboalarm\BannerManagerSdk\Pagination
+ * @package Aboalarm\BannerManagerSdk\Pagination
  */
 class PaginationOptions
 {

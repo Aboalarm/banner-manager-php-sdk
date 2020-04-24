@@ -1,14 +1,14 @@
 <?php
 
-namespace aboalarm\BannerManagerSdk\Test;
+namespace Aboalarm\BannerManagerSdk\Test;
 
-use aboalarm\BannerManagerSdk\Entity\ABTest;
-use aboalarm\BannerManagerSdk\Entity\Banner;
-use aboalarm\BannerManagerSdk\Entity\BannerPosition;
-use aboalarm\BannerManagerSdk\Entity\Campaign;
-use aboalarm\BannerManagerSdk\Entity\Timing;
-use aboalarm\BannerManagerSdk\Laravel\Facade;
-use aboalarm\BannerManagerSdk\Laravel\ServiceProvider;
+use Aboalarm\BannerManagerSdk\Entity\ABTest;
+use Aboalarm\BannerManagerSdk\Entity\Banner;
+use Aboalarm\BannerManagerSdk\Entity\BannerPosition;
+use Aboalarm\BannerManagerSdk\Entity\Campaign;
+use Aboalarm\BannerManagerSdk\Entity\Timing;
+use Aboalarm\BannerManagerSdk\Laravel\Facade;
+use Aboalarm\BannerManagerSdk\Laravel\ServiceProvider;
 use Exception;
 use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
