@@ -42,6 +42,11 @@ class Campaign extends Base
     private $isActive = false;
 
     /**
+     * @var bool
+     */
+    private $isArchived = false;
+
+    /**
      * @var Banner[]|null
      */
     private $banners;
@@ -88,6 +93,10 @@ class Campaign extends Base
 
             $this->isActive = isset($data['is_active'])
                 ? boolval($data['is_active'])
+                : false;
+
+            $this->isArchived = isset($data['is_archived'])
+                ? boolval($data['is_archived'])
                 : false;
 
             if (isset($data['banners']) && $data['banners']) {
@@ -228,6 +237,14 @@ class Campaign extends Base
     }
 
     /**
+     * @return bool
+     */
+    public function isArchived(): bool
+    {
+        return $this->isArchived;
+    }
+
+    /**
      * @return Banner[]
      */
     public function getBanners(): array
@@ -319,6 +336,7 @@ class Campaign extends Base
             'app_mobile_always_hotline' => $this->appMobileAlwaysHotline,
             'tracking_disabled'         => $this->trackingDisabled,
             'is_active'                 => $this->isActive,
+            'is_archived'               => $this->isArchived,
         ];
     }
 }
